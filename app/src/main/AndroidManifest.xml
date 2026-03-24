@@ -11,9 +11,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartElderlyCareApp">
-
-        <activity android:name=".component.CheckinActivity"
-            android:exported="true"  />
+        <activity
+            android:name=".component.PostDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".component.CreatePostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".component.CommunityActivity"
+            android:exported="false" />
+        <activity
+            android:name=".component.CheckinActivity"
+            android:exported="true" />
         <activity
             android:name=".component.TextputDemoActivity"
             android:exported="true" />

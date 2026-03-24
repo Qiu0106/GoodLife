@@ -22,7 +22,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         cardCommunity.setOnClickListener {
-            showToast("打开了：社区")
+            val intent = android.content.Intent(this, CommunityActivity::class.java)
+            startActivity(intent)
         }
 
         cardVoiceAssistant.setOnClickListener {
