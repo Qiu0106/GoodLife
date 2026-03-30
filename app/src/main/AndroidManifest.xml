@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -10,7 +16,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SmartElderlyCareApp">
+        android:theme="@style/Theme.SmartElderlyCareApp"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".component.PostDetailActivity"
             android:exported="false" />
@@ -22,27 +29,6 @@
             android:exported="false" />
         <activity
             android:name=".component.CheckinActivity"
-            android:exported="true" />
-        <activity
-            android:name=".component.TextputDemoActivity"
-            android:exported="true" />
-        <activity
-            android:name=".component.ButtonDemoActivity"
-            android:exported="true" />
-        <activity
-            android:name=".component.TextViewDemoActivity"
-            android:exported="true" />
-        <activity
-            android:name=".demo.layout.FrameLayoutActivity"
-            android:exported="true" />
-        <activity
-            android:name=".demo.layout.RelativeLayoutDemoActivity"
-            android:exported="true" />
-        <activity
-            android:name=".demo.layout.LinearLayoutDemoActivity"
-            android:exported="true" />
-        <activity
-            android:name=".test"
             android:exported="true" />
         <activity
             android:name=".component.MainActivity"

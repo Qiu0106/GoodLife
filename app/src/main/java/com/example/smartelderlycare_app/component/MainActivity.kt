@@ -14,6 +14,8 @@ class MainActivity : AppCompatActivity() {
 
         val cardCheckin = findViewById<CardView>(R.id.card_checkin)
         val cardCommunity = findViewById<CardView>(R.id.card_community)
+        val cardAfterlife = findViewById<CardView>(R.id.card_afterlife)
+        val cardStarrySky = findViewById<CardView>(R.id.card_starry_sky)
         val cardVoiceAssistant = findViewById<CardView>(R.id.card_voice_assistant)
         val cardMine = findViewById<CardView>(R.id.card_mine)
 
@@ -28,6 +30,14 @@ class MainActivity : AppCompatActivity() {
 
         cardVoiceAssistant.setOnClickListener {
             showToast("正在唤醒：语音助手...")
+        }
+
+        cardAfterlife.setOnClickListener {
+            showToast("打开了：身后事定制")
+        }
+
+        cardStarrySky.setOnClickListener {
+            showToast("打开了：星空纪念馆")
         }
 
         cardMine.setOnClickListener {

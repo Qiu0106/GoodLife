@@ -4,5 +4,6 @@ data class Post(
     val title: String,
     val userName: String,
     val coverResId: Int,
-    val likeCount: Int
+    val likeCount: Int,
+    val content: String
 )

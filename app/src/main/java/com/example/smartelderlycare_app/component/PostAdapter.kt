@@ -1,5 +1,6 @@
 package com.example.smartelderlycare_app.component
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,18 @@ class PostAdapter(private val postList: List<Post>) :
         holder.tvLikes.text = post.likeCount.toString()
         // 暂时先用系统图标占位，防止内存溢出
         holder.ivCover.setImageResource(post.coverResId)
+
+        // 添加点击事件
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, PostDetailActivity::class.java)
+            intent.putExtra("title", post.title)
+            intent.putExtra("userName", post.userName)
+            intent.putExtra("coverResId", post.coverResId)
+            intent.putExtra("likeCount", post.likeCount)
+            intent.putExtra("content", post.content)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount() = postList.size
