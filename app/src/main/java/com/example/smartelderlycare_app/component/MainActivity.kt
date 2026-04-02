@@ -12,6 +12,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // 检查登录状态，未登录则跳转到登录界面
+        val isLoggedIn = getSharedPreferences("user", MODE_PRIVATE).getBoolean("isLoggedIn", false)
+        if (!isLoggedIn) {
+            val intent = android.content.Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
+
         val cardCheckin = findViewById<CardView>(R.id.card_checkin)
         val cardCommunity = findViewById<CardView>(R.id.card_community)
         val cardAfterlife = findViewById<CardView>(R.id.card_afterlife)
@@ -33,15 +42,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         cardAfterlife.setOnClickListener {
-            showToast("打开了：身后事定制")
+            val intent = android.content.Intent(this, AfterlifeCustomActivity::class.java)
+            startActivity(intent)
         }
 
         cardStarrySky.setOnClickListener {
-            showToast("打开了：星空纪念馆")
+            val intent = android.content.Intent(this, StarMemorialComposeActivity::class.java)
+            startActivity(intent)
         }
 
         cardMine.setOnClickListener {
-            showToast("打开了：我的中心")
+            val intent = android.content.Intent(this, MineActivity::class.java)
+            startActivity(intent)
         }
     }
 
