@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="遗物处理与下葬方式"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp"
+        android:textColor="#333333" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="遗物处理倾向"
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp"
+        android:textColor="#666666" />
+
+    <RadioGroup
+        android:id="@+id/rgRelics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp">
+
+        <RadioButton
+            android:id="@+id/rbKeep"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="保留重要遗物"
+            android:textSize="16sp"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/rbDonate"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="捐赠有用物品"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/rbDispose"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="全部处理"
+            android:textSize="16sp" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="下葬方式"
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp"
+        android:textColor="#666666" />
+
+    <RadioGroup
+        android:id="@+id/rgBurial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/rbCemetery"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="公墓安葬"
+            android:textSize="16sp"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/rbColumbarium"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="骨灰存放"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/rbSeaBurial"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="海葬"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/rbTreeBurial"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="树葬"
+            android:textSize="16sp" />
+    </RadioGroup>
+
+</LinearLayout>

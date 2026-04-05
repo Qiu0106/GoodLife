@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="背景音乐选择"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp"
+        android:textColor="#333333" />
+
+    <RadioGroup
+        android:id="@+id/rgBGM"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/rbClassic"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="古典音乐"
+            android:textSize="16sp"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/rbReligious"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="宗教音乐"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/rbPopular"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="流行音乐"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/rbSilent"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="无声"
+            android:textSize="16sp" />
+    </RadioGroup>
+
+</LinearLayout>

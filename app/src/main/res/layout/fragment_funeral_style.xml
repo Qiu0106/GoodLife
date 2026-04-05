@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="葬礼风格选择"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp"
+        android:textColor="#333333" />
+
+    <RadioGroup
+        android:id="@+id/rgFuneralStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/rbTraditional"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="传统葬礼"
+            android:textSize="16sp"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/rbEco"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="生态葬礼"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/rbSimple"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="简约葬礼"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/rbCustom"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="定制葬礼"
+            android:textSize="16sp" />
+    </RadioGroup>
+
+</LinearLayout>

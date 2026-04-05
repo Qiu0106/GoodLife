@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="殡葬用品选择"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp"
+        android:textColor="#333333" />
+
+    <CheckBox
+        android:id="@+id/cbCoffin"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="棺材"
+        android:textSize="16sp"
+        android:checked="true" />
+
+    <CheckBox
+        android:id="@+id/cbUrns"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="骨灰盒"
+        android:textSize="16sp"
+        android:checked="true" />
+
+    <CheckBox
+        android:id="@+id/cbFlowers"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="鲜花"
+        android:textSize="16sp"
+        android:checked="true" />
+
+    <CheckBox
+        android:id="@+id/cbCandles"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="蜡烛"
+        android:textSize="16sp"
+        android:checked="true" />
+
+    <CheckBox
+        android:id="@+id/cbPhotos"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="照片"
+        android:textSize="16sp"
+        android:checked="true" />
+
+</LinearLayout>
