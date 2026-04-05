@@ -32,7 +32,6 @@ class PostDetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     
     private var title: String = ""
     private var userName: String = ""
-    private var coverResId: Int = 0
     private var content: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,7 +78,6 @@ class PostDetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         val intent = intent
         title = intent.getStringExtra("title") ?: ""
         userName = intent.getStringExtra("userName") ?: ""
-        coverResId = intent.getIntExtra("coverResId", R.mipmap.ic_launcher)
         content = intent.getStringExtra("content") ?: ""
     }
 
@@ -87,7 +85,8 @@ class PostDetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         tvPostTitle.text = title
         tvUserName.text = userName
         tvPostContent.text = content
-        ivPostImage.setImageResource(coverResId)
+        // 使用默认图片
+        ivPostImage.setImageResource(R.mipmap.ic_launcher)
         
         // 使用 Glide 加载头像
         val avatarUrl = "https://randomuser.me/api/portraits/men/32.jpg" // 示例头像 URL

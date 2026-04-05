@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.smartelderlycare_app.R
+import com.example.smartelderlycare_app.data.model.Post
 
 class PostAdapter(private val postList: List<Post>) :
     RecyclerView.Adapter<PostAdapter.ViewHolder>() {
@@ -30,8 +31,17 @@ class PostAdapter(private val postList: List<Post>) :
         holder.tvTitle.text = post.title
         holder.tvUser.text = post.userName
         holder.tvLikes.text = post.likeCount.toString()
-        // 暂时先用系统图标占位，防止内存溢出
-        holder.ivCover.setImageResource(post.coverResId)
+
+        // 加载封面图片
+        if (post.coverImageUrl != null) {
+            // 如果有图片URL，使用Glide加载（需要添加依赖）
+            // Glide.with(holder.itemView.context).load(post.coverImageUrl).into(holder.ivCover)
+            // 暂时使用默认图标
+            holder.ivCover.setImageResource(R.mipmap.ic_launcher)
+        } else {
+            // 使用默认图标
+            holder.ivCover.setImageResource(R.mipmap.ic_launcher)
+        }
 
         // 添加点击事件
         holder.itemView.setOnClickListener {
@@ -39,7 +49,6 @@ class PostAdapter(private val postList: List<Post>) :
             val intent = Intent(context, PostDetailActivity::class.java)
             intent.putExtra("title", post.title)
             intent.putExtra("userName", post.userName)
-            intent.putExtra("coverResId", post.coverResId)
             intent.putExtra("likeCount", post.likeCount)
             intent.putExtra("content", post.content)
             context.startActivity(intent)
