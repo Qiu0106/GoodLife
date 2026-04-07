@@ -45,6 +45,9 @@
             android:name=".component.MineActivity"
             android:exported="false" />
         <activity
+            android:name=".component.EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".component.AfterlifeCustomActivity"
             android:exported="false" />
         <activity

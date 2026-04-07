@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.smartelderlycare_app.R
 import com.example.smartelderlycare_app.data.model.Post
 
@@ -32,14 +33,16 @@ class PostAdapter(private val postList: List<Post>) :
         holder.tvUser.text = post.userName
         holder.tvLikes.text = post.likeCount.toString()
 
-        // 加载封面图片
-        if (post.coverImageUrl != null) {
-            // 如果有图片URL，使用Glide加载（需要添加依赖）
-            // Glide.with(holder.itemView.context).load(post.coverImageUrl).into(holder.ivCover)
-            // 暂时使用默认图标
-            holder.ivCover.setImageResource(R.mipmap.ic_launcher)
+        // 使用 Glide 加载封面图片
+        if (!post.coverImageUrl.isNullOrEmpty()) {
+            Glide.with(holder.itemView.context)
+                .load(post.coverImageUrl)
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher)
+                .centerCrop()
+                .into(holder.ivCover)
         } else {
-            // 使用默认图标
+            // 无图片时使用默认图标
             holder.ivCover.setImageResource(R.mipmap.ic_launcher)
         }
 
@@ -51,6 +54,7 @@ class PostAdapter(private val postList: List<Post>) :
             intent.putExtra("userName", post.userName)
             intent.putExtra("likeCount", post.likeCount)
             intent.putExtra("content", post.content)
+            intent.putExtra("coverImageUrl", post.coverImageUrl)
             context.startActivity(intent)
         }
     }

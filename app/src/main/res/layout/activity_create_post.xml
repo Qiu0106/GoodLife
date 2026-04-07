@@ -41,12 +41,14 @@
         android:scrollbars="none">
 
         <LinearLayout
+            android:id="@+id/images_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp">
 
             <FrameLayout
+                android:id="@+id/btn_add_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:background="#F0F0F0">

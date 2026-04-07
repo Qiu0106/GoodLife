@@ -3,16 +3,20 @@ package com.example.smartelderlycare_app.data.repository
 import android.util.Log
 import com.example.smartelderlycare_app.data.model.*
 import com.example.smartelderlycare_app.data.network.BmobApiService
+import com.example.smartelderlycare_app.data.network.FileUploadResponse
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 
 class BmobRepository {
 
@@ -391,5 +395,44 @@ class BmobRepository {
 
     suspend fun changePassword(phone: String, oldPassword: String, newPassword: String): Result<Unit> {
         return Result.success(Unit)
+    }
+
+    /**
+     * 上传图片到 BMob 云存储
+     * 使用正确的 BMob v2 API 格式：POST https://api.bmob.cn/2/files/{fileName}
+     */
+    suspend fun uploadImage(imageFile: File): Result<String> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val requestBody = imageFile
+                    .asRequestBody("image/*".toMediaType())
+                val body = MultipartBody.Part.createFormData("file", imageFile.name, requestBody)
+
+                Log.d(TAG, "开始上传图片: ${imageFile.name}, 大小: ${imageFile.length()} bytes")
+                Log.d(TAG, "上传URL: https://api.bmob.cn/2/files/${imageFile.name}")
+
+                // ✅ 传递文件名参数（BMob要求URL必须包含文件名）
+                val response = apiService.uploadFile(imageFile.name, body)
+
+                if (response.isSuccessful && response.body() != null) {
+                    val uploadResponse = response.body()!!
+                    if (uploadResponse.url != null) {
+                        Log.d(TAG, "图片上传成功: ${uploadResponse.url}")
+                        Result.success(uploadResponse.url)
+                    } else {
+                        val errorMsg = uploadResponse.error ?: "上传失败"
+                        Log.e(TAG, "图片上传失败: $errorMsg")
+                        Result.failure(Exception(errorMsg))
+                    }
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    Log.e(TAG, "图片上传API错误: ${response.code()} - $errorBody")
+                    Result.failure(Exception("API错误: ${response.code()}"))
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "图片上传异常", e)
+                Result.failure(e)
+            }
+        }
     }
 }

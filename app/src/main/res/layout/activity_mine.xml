@@ -1,119 +1,244 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#F2F5F8">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="我的"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="32dp"
-        android:textColor="#333333" />
+    android:fillViewport="true"
+    android:background="@color/morandi_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#FFFFFF"
-        android:padding="16dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="16dp"
-        android:elevation="2dp">
+        android:paddingHorizontal="20dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="32dp">
 
-        <LinearLayout
+        <!-- 页面标题 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/morandi_text_primary"
+            android:layout_marginBottom="24dp" />
+
+        <!-- 用户信息卡片（含头像） -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="@color/morandi_surface"
+            android:layout_marginBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- 头像区域 -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="20dp">
+
+                    <!-- 头像 -->
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivUserAvatar"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@mipmap/ic_launcher"
+                        app:civ_border_width="4dp"
+                        app:civ_border_color="@color/morandi_orange"
+                        android:layout_gravity="center" />
+
+                    <!-- 上传头像按钮 -->
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/btnUploadAvatar"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@android:drawable/ic_menu_camera"
+                        android:background="#FFFFFF"
+                        app:civ_border_width="2dp"
+                        app:civ_border_color="@color/morandi_surface"
+                        android:layout_gravity="bottom|end"
+                        android:layout_marginEnd="-4dp"
+                        android:layout_marginBottom="-4dp"
+                        android:elevation="4dp"
+                        android:clickable="true"
+                        android:focusable="true" />
+                </FrameLayout>
+
+                <!-- 用户名 -->
+                <TextView
+                    android:id="@+id/tvUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="用户"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/morandi_text_primary"
+                    android:layout_marginBottom="4dp" />
+
+                <!-- 手机号 -->
+                <TextView
+                    android:id="@+id/tvUserPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="--"
+                    android:textSize="15sp"
+                    android:textColor="@color/morandi_text_secondary"
+                    android:layout_marginBottom="16dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 个人资料卡片 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/morandi_surface"
             android:layout_marginBottom="16dp">
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:text="姓名："
-                android:textSize="16sp"
-                android:textColor="#666666" />
-            <TextView
-                android:id="@+id/tvUserName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="--"
-                android:textSize="16sp"
-                android:textColor="#333333" />
-        </LinearLayout>
 
-        <LinearLayout
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <!-- 标题栏 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:text="👤"
+                        android:textSize="20sp"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="个人资料"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/morandi_text_primary"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
+
+                <!-- 资料详情 -->
+                <TextView
+                    android:id="@+id/tvPersonalInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="暂无个人资料"
+                    android:textSize="14sp"
+                    android:textColor="@color/morandi_text_secondary"
+                    android:lineSpacingMultiplier="1.4" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 身后事计划信息卡片 -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/morandi_surface"
             android:layout_marginBottom="16dp">
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:text="手机号："
-                android:textSize="16sp"
-                android:textColor="#666666" />
-            <TextView
-                android:id="@+id/tvUserPhone"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="--"
-                android:textSize="16sp"
-                android:textColor="#333333" />
-        </LinearLayout>
 
-        <LinearLayout
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <!-- 标题栏 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:text="📋"
+                        android:textSize="20sp"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="身后事计划"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/morandi_text_primary"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
+
+                <!-- 计划详情 -->
+                <TextView
+                    android:id="@+id/tvAfterlifePlan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="未配置身后事计划"
+                    android:textSize="14sp"
+                    android:textColor="@color/morandi_text_secondary"
+                    android:lineSpacingMultiplier="1.4" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 编辑资料按钮 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEditProfile"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:text="身后事计划："
-                android:textSize="16sp"
-                android:textColor="#666666" />
-            <TextView
-                android:id="@+id/tvAfterlifePlan"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="未配置"
-                android:textSize="16sp"
-                android:textColor="#333333" />
-        </LinearLayout>
+            android:layout_height="56dp"
+            android:text="编辑个人资料"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:backgroundTint="@color/morandi_pink"
+            app:cornerRadius="28dp"
+            android:stateListAnimator="@null"
+            android:layout_marginBottom="12dp" />
+
+        <!-- 退出登录按钮 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="退出登录"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:backgroundTint="@android:color/transparent"
+            android:textColor="@color/morandi_text_secondary"
+            app:cornerRadius="28dp"
+            app:strokeColor="@color/morandi_text_hint"
+            app:strokeWidth="1.5dp"
+            android:stateListAnimator="@null" />
+
+        <!-- 加载进度条 -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/morandi_accent_warm"
+            android:visibility="gone"
+            android:layout_marginTop="32dp" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnEditProfile"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="编辑个人资料"
-        android:backgroundTint="#E91E63"
-        android:textColor="#FFFFFF"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="16dp" />
-
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="退出登录"
-        android:backgroundTint="#999999"
-        android:textColor="#FFFFFF"
-        android:layout_marginHorizontal="16dp" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:layout_marginTop="32dp" />
-
-</LinearLayout>
+</ScrollView>

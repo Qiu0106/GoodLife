@@ -61,6 +61,8 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+    // CircleImageView for avatar
+    implementation("de.hdodenhof:circleimageview:3.1.0")
     // Compose dependencies
     implementation("androidx.compose.ui:ui:1.5.1")
     implementation("androidx.compose.material:material:1.5.1")

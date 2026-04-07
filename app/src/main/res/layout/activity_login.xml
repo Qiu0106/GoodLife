@@ -1,95 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#F2F5F8">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="登录/注册"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginTop="64dp"
-        android:layout_marginBottom="48dp"
-        android:textColor="#333333" />
+    android:fillViewport="true"
+    android:background="@color/morandi_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginBottom="24dp">
-        <TextView
+        android:paddingHorizontal="28dp"
+        android:paddingTop="48dp"
+        android:paddingBottom="32dp">
+
+        <!-- Logo 和标题区域 -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="手机号"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp"
-            android:textColor="#666666" />
-        <EditText
-            android:id="@+id/etPhone"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/shape_search_bg"
-            android:paddingHorizontal="16dp"
-            android:hint="请输入手机号"
-            android:inputType="phone" />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginBottom="48dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="48dp">
-        <TextView
+            <!-- 应用图标 -->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:src="@mipmap/ic_launcher"
+                app:civ_border_width="3dp"
+                app:civ_border_color="@color/morandi_orange"
+                android:layout_marginBottom="20dp" />
+
+            <!-- 应用名称 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="好生活"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:textColor="@color/morandi_text_primary" />
+
+            <!-- 副标题 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="智能老年关怀平台"
+                android:textSize="15sp"
+                android:textColor="@color/morandi_text_secondary"
+                android:layout_marginTop="6dp" />
+        </LinearLayout>
+
+        <!-- 登录/注册表单卡片 -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="密码"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp"
-            android:textColor="#666666" />
-        <EditText
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/shape_search_bg"
-            android:paddingHorizontal="16dp"
-            android:hint="请输入密码"
-            android:inputType="textPassword" />
+            app:cardCornerRadius="24dp"
+            app:cardElevation="8dp"
+            app:cardBackgroundColor="@color/morandi_surface"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- 标题 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="欢迎回来"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/morandi_text_primary"
+                    android:layout_marginBottom="24dp" />
+
+                <!-- 手机号输入框 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxStrokeColor="@color/morandi_orange"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:hintTextColor="@color/morandi_text_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:hint="请输入手机号"
+                        android:inputType="phone"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/morandi_text_primary" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 密码输入框 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="28dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxStrokeColor="@color/morandi_orange"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:hintTextColor="@color/morandi_text_hint"
+                    app:endIconMode="password_toggle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:hint="请输入密码"
+                        android:inputType="textPassword"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/morandi_text_primary" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 登录按钮 -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="登 录"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/morandi_accent_warm"
+                    app:cornerRadius="28dp"
+                    android:stateListAnimator="@null"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- 注册按钮（描边风格）-->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="注 册 新 账 号"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@android:color/transparent"
+                    android:textColor="@color/morandi_accent_warm"
+                    app:cornerRadius="28dp"
+                    app:strokeColor="@color/morandi_accent_warm"
+                    app:strokeWidth="2dp"
+                    android:stateListAnimator="@null" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 测试连接按钮（开发用） -->
+        <TextView
+            android:id="@+id/tvTestBmob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="测试 Bmob 连接"
+            android:textColor="@color/morandi_text_secondary"
+            android:textSize="14sp"
+            android:layout_gravity="center"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground" />
+
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="登录"
-        android:backgroundTint="#E91E63"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="16dp" />
-
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="注册"
-        android:backgroundTint="#4CAF50"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="32dp" />
-
-    <TextView
-        android:id="@+id/tvTestBmob"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="测试 Bmob 连接"
-        android:textColor="#2196F3"
-        android:textSize="14sp"
-        android:layout_gravity="center"
-        android:padding="8dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackground" />
-
-</LinearLayout>
+</ScrollView>
