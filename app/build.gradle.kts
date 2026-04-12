@@ -87,4 +87,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
     implementation("androidx.activity:activity-ktx:1.7.2")
+
+    implementation("org.pytorch:pytorch_android_lite:1.13.1")
+    implementation("org.pytorch:pytorch_android_torchvision_lite:1.13.1")
 }

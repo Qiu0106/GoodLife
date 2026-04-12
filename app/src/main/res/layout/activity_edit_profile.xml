@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/morandi_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="32dp">
+
+        <!-- 页面标题 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="编辑个人资料"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/morandi_text_primary"
+            android:layout_marginBottom="24dp" />
+
+        <!-- 头像区域 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginBottom="24dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivAvatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@mipmap/ic_launcher"
+                app:civ_border_width="4dp"
+                app:civ_border_color="@color/morandi_orange"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:id="@+id/tvChangeAvatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="点击更换头像"
+                android:textSize="14sp"
+                android:textColor="@color/morandi_accent_warm"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:background="?attr/selectableItemBackground" />
+        </LinearLayout>
+
+        <!-- 基础信息卡片 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/morandi_surface"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <!-- 标题 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="基础信息"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/morandi_text_primary"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- 昵称 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeColor="@color/morandi_teal"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:hintTextColor="@color/morandi_text_hint"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etNickname"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:hint="昵称（如：张大爷）"
+                        android:inputType="textPersonName"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/morandi_text_primary" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 真实姓名 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeColor="@color/morandi_teal"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:hintTextColor="@color/morandi_text_hint"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etRealName"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:hint="真实姓名"
+                        android:inputType="textPersonName"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/morandi_text_primary" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 性别选择器 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="性别"
+                    android:textSize="15sp"
+                    android:textColor="@color/morandi_text_secondary"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_input_field"
+                    android:paddingHorizontal="16dp"
+                    android:layout_marginBottom="12dp">
+
+                    <RadioGroup
+                        android:id="@+id/rgGender"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbMale"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="男"
+                            android:textSize="17sp"
+                            android:textColor="@color/morandi_text_primary"
+                            android:checked="false" />
+
+                        <RadioButton
+                            android:id="@+id/rbFemale"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="女"
+                            android:textSize="17sp"
+                            android:textColor="@color/morandi_text_primary"
+                            android:checked="false" />
+
+                        <RadioButton
+                            android:id="@+id/rbSecret"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="保密"
+                            android:textSize="17sp"
+                            android:textColor="@color/morandi_text_primary"
+                            android:checked="true" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <!-- 出生日期选择器 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="出生年月"
+                    android:textSize="15sp"
+                    android:textColor="@color/morandi_text_secondary"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout
+                    android:id="@+id/layoutBirthday"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_input_field"
+                    android:paddingHorizontal="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/tvBirthday"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="请选择出生日期"
+                        android:textSize="18sp"
+                        android:textColor="@color/morandi_text_secondary" />
+
+                    <TextView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:text="📅"
+                        android:textSize="20sp"
+                        android:gravity="center" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 安全与健康信息卡片 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/morandi_surface"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <!-- 标题 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="安全与健康信息"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/morandi_text_primary"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- 紧急联系人姓名 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeColor="@color/morandi_pink"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:hintTextColor="@color/morandi_text_hint"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEmergencyContact"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:hint="紧急联系人姓名（如：儿子、老伴）"
+                        android:inputType="textPersonName"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/morandi_text_primary" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 紧急联系人电话 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeColor="@color/morandi_pink"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:hintTextColor="@color/morandi_text_hint"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEmergencyPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:hint="紧急联系电话"
+                        android:inputType="phone"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/morandi_text_primary" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 血型选择器 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="血型"
+                    android:textSize="15sp"
+                    android:textColor="@color/morandi_text_secondary"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout
+                    android:id="@+id/layoutBloodType"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_input_field"
+                    android:paddingHorizontal="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:id="@+id/tvBloodType"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="请选择血型"
+                        android:textSize="18sp"
+                        android:textColor="@color/morandi_text_secondary" />
+
+                    <TextView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:text="🩸"
+                        android:textSize="20sp"
+                        android:gravity="center" />
+                </LinearLayout>
+
+                <!-- 过敏史/慢性病 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeColor="@color/morandi_pink"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:hintTextColor="@color/morandi_text_hint"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etMedicalHistory"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:hint="过敏史/慢性病简述（选填）"
+                        android:inputType="textMultiLine"
+                        android:gravity="top|start"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="12dp"
+                        android:textSize="17sp"
+                        android:textColor="@color/morandi_text_primary" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 个性签名卡片 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/morandi_surface"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <!-- 标题 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="个性签名"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/morandi_text_primary"
+                    android:layout_marginBottom="12dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeColor="@color/morandi_purple"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:hintTextColor="@color/morandi_text_hint"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etSignature"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:hint="写下你想对后辈说的话..."
+                        android:inputType="textMultiLine"
+                        android:gravity="top|start"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="12dp"
+                        android:textSize="17sp"
+                        android:textColor="@color/morandi_text_primary" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 保存按钮 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="保存修改"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:backgroundTint="@color/morandi_accent_warm"
+            app:cornerRadius="32dp"
+            android:stateListAnimator="@null"
+            android:layout_marginBottom="16dp" />
+
+        <!-- 取消按钮 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancel"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="取消"
+            android:textSize="16sp"
+            android:backgroundTint="@android:color/transparent"
+            android:textColor="@color/morandi_text_secondary"
+            app:cornerRadius="28dp"
+            app:strokeColor="@color/morandi_text_hint"
+            app:strokeWidth="1.5dp"
+            android:stateListAnimator="@null" />
+
+    </LinearLayout>
+
+</ScrollView>
