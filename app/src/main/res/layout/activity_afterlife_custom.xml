@@ -4,60 +4,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F2F5F8">
+    android:background="@color/elderly_bg">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="身后事定制"
-        android:textSize="32sp"
+        android:textSize="@dimen/elderly_text_title_large"
         android:textStyle="bold"
         android:gravity="center"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="32dp"
-        android:textColor="#333333" />
+        android:paddingTop="@dimen/elderly_spacing_lg"
+        android:paddingBottom="@dimen/elderly_spacing_lg"
+        android:textColor="@color/elderly_text_primary" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginHorizontal="16dp" />
+        android:layout_marginHorizontal="@dimen/elderly_padding_page" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginVertical="16dp">
-
-        <Button
-            android:id="@+id/btnPrevious"
-            android:layout_width="120dp"
-            android:layout_height="48dp"
-            android:text="上一步"
-            android:backgroundTint="#E0E0E0"
-            android:textColor="#333333"
-            android:layout_marginHorizontal="8dp"
-            android:visibility="gone" />
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/elderly_padding_page"
+        android:paddingVertical="@dimen/elderly_spacing_md">
 
         <Button
             android:id="@+id/btnNext"
-            android:layout_width="120dp"
-            android:layout_height="48dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/elderly_button_height"
             android:text="下一步"
-            android:backgroundTint="#E91E63"
-            android:textColor="#FFFFFF"
-            android:layout_marginHorizontal="8dp" />
+            android:textSize="@dimen/elderly_text_body_large"
+            android:textStyle="bold"
+            android:backgroundTint="@color/elderly_brand"
+            android:textColor="@color/white"
+            android:layout_marginBottom="@dimen/elderly_spacing_sm"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btnPrevious"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/elderly_button_height"
+            android:text="上一步"
+            android:textSize="@dimen/elderly_text_body_large"
+            android:textStyle="bold"
+            android:backgroundTint="@color/elderly_divider"
+            android:textColor="@color/elderly_text_primary"
+            android:layout_marginBottom="@dimen/elderly_spacing_sm"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btnSave"
-            android:layout_width="120dp"
-            android:layout_height="48dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/elderly_button_height"
             android:text="保存配置"
-            android:backgroundTint="#4CAF50"
-            android:textColor="#FFFFFF"
-            android:layout_marginHorizontal="8dp"
+            android:textSize="@dimen/elderly_text_body_large"
+            android:textStyle="bold"
+            android:backgroundTint="@color/elderly_success"
+            android:textColor="@color/white"
             android:visibility="gone" />
     </LinearLayout>
 

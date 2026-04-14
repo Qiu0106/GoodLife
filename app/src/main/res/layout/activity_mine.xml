@@ -202,6 +202,82 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- 社区互动卡片 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/morandi_surface"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:text="💬"
+                        android:textSize="20sp"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="社区互动"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/morandi_text_primary"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnMyPosts"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:text="我的帖子"
+                        android:textSize="14sp"
+                        app:cornerRadius="24dp"
+                        app:strokeColor="@color/morandi_text_hint"
+                        app:strokeWidth="1dp"
+                        android:textColor="@color/morandi_text_primary"
+                        android:layout_marginEnd="8dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnMyFavorites"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:text="我的收藏"
+                        android:textSize="14sp"
+                        app:cornerRadius="24dp"
+                        app:strokeColor="@color/morandi_text_hint"
+                        app:strokeWidth="1dp"
+                        android:textColor="@color/morandi_text_primary"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <!-- 编辑资料按钮 -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnEditProfile"
@@ -210,7 +286,7 @@
             android:text="编辑个人资料"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:backgroundTint="@color/morandi_pink"
+            android:backgroundTint="@color/elderly_brand"
             app:cornerRadius="28dp"
             android:stateListAnimator="@null"
             android:layout_marginBottom="12dp" />

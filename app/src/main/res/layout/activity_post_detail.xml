@@ -6,7 +6,6 @@
     android:orientation="vertical"
     android:background="#FFFFFF">
 
-    <!-- 顶部Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -42,7 +41,6 @@
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- 内容区域 -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -54,19 +52,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             
-            <!-- 帖子图片 -->
-            <ImageView
-                android:id="@+id/iv_post_image"
+            <LinearLayout
+                android:id="@+id/ll_images_container"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/ic_launcher"/>
-            
-            <!-- 标题区域 -->
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:background="#F5F5F5"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp">
+                android:paddingHorizontal="16dp"
+                android:paddingTop="16dp">
                 
                 <TextView
                     android:id="@+id/tv_post_title"
@@ -75,7 +73,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_toLeftOf="@+id/btn_voice"
                     android:text="帖子标题"
-                    android:textSize="24sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="#333333"
                     android:maxLines="2"
@@ -83,27 +81,27 @@
                 
                 <ImageButton
                     android:id="@+id/btn_voice"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
                     android:layout_alignParentRight="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_volume_up"
                     android:contentDescription="语音播报"/>
             </RelativeLayout>
             
-            <!-- 作者信息 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="16dp"
-                android:paddingBottom="16dp"
+                android:paddingVertical="12dp"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="#FAFAFA">
                 
                 <ImageView
                     android:id="@+id/iv_user_avatar"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:src="@mipmap/ic_launcher_round"
                     android:scaleType="centerCrop"/>
                 
@@ -112,31 +110,57 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginLeft="12dp"
+                    android:layout_marginStart="12dp"
                     android:text="用户名"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
+                    android:textColor="#666666"/>
+                
+                <ImageButton
+                    android:id="@+id/btn_like"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_heart_outline"
+                    android:contentDescription="点赞"/>
+                
+                <TextView
+                    android:id="@+id/tv_like_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="12dp"
+                    android:text="0"
+                    android:textSize="14sp"
                     android:textColor="#666666"/>
                 
                 <ImageButton
                     android:id="@+id/btn_favorite"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_star_outline"
                     android:contentDescription="收藏"/>
+                
+                <TextView
+                    android:id="@+id/tv_favorite_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="0"
+                    android:textSize="14sp"
+                    android:textColor="#666666"/>
             </LinearLayout>
             
-            <!-- 正文内容 -->
             <TextView
                 android:id="@+id/tv_post_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:text="帖子内容"
-                android:textSize="18sp"
-                android:lineSpacingMultiplier="1.5"
+                android:textSize="16sp"
+                android:lineSpacingMultiplier="1.6"
                 android:textColor="#333333"
-                android:background="#F5F5F5"/>
+                android:background="#FFFFFF"/>
         </LinearLayout>
     </ScrollView>
 

@@ -2,11 +2,14 @@ package com.example.smartelderlycare_app.component
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -15,14 +18,19 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
 import com.example.smartelderlycare_app.R
+import com.example.smartelderlycare_app.data.model.User
 import com.example.smartelderlycare_app.data.repository.BmobRepository
 import com.example.smartelderlycare_app.ui.viewmodel.AfterlifePlanViewModel
 import com.example.smartelderlycare_app.ui.viewmodel.UserViewModel
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 class MineActivity : AppCompatActivity() {
 
@@ -35,6 +43,8 @@ class MineActivity : AppCompatActivity() {
     private lateinit var tvUserPhone: TextView
     private lateinit var tvPersonalInfo: TextView
     private lateinit var tvAfterlifePlan: TextView
+    private lateinit var btnMyPosts: com.google.android.material.button.MaterialButton
+    private lateinit var btnMyFavorites: com.google.android.material.button.MaterialButton
     private lateinit var btnEditProfile: Button
     private lateinit var btnLogout: Button
     private lateinit var progressBar: View
@@ -43,8 +53,38 @@ class MineActivity : AppCompatActivity() {
     private val afterlifeViewModel: AfterlifePlanViewModel by viewModels()
     private val repository = BmobRepository()
     private var progressDialog: ProgressDialog? = null
+    private var isUploadingAvatar = false
+
+    private val httpClient = OkHttpClient.Builder()
+        .connectTimeout(15, TimeUnit.SECONDS)
+        .readTimeout(15, TimeUnit.SECONDS)
+        .writeTimeout(15, TimeUnit.SECONDS)
+        .build()
 
     private lateinit var pickImageLauncher: ActivityResultLauncher<Intent>
+
+    private suspend fun loadImageToView(url: String, imageView: ImageView) {
+        withContext(Dispatchers.IO) {
+            try {
+                val request = Request.Builder().url(url).build()
+                val response = httpClient.newCall(request).execute()
+                if (response.isSuccessful && response.body != null) {
+                    val bytes = response.body!!.bytes()
+                    val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                    withContext(Dispatchers.Main) {
+                        if (bitmap != null && !isDestroyed) {
+                            imageView.setImageBitmap(bitmap)
+                            Log.d(TAG, "✅ 图片加载成功(OkHttp): $url")
+                        }
+                    }
+                } else {
+                    Log.e(TAG, "❌ 图片加载失败(HTTP ${response.code}): $url")
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ 图片加载异常: $url", e)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,11 +117,19 @@ class MineActivity : AppCompatActivity() {
         tvUserPhone = findViewById(R.id.tvUserPhone)
         tvPersonalInfo = findViewById(R.id.tvPersonalInfo)
         tvAfterlifePlan = findViewById(R.id.tvAfterlifePlan)
+        btnMyPosts = findViewById(R.id.btnMyPosts)
+        btnMyFavorites = findViewById(R.id.btnMyFavorites)
         btnEditProfile = findViewById(R.id.btnEditProfile)
         btnLogout = findViewById(R.id.btnLogout)
         progressBar = findViewById(R.id.progressBar)
 
         btnUploadAvatar.setOnClickListener { openImagePicker() }
+        btnMyPosts.setOnClickListener {
+            startActivity(Intent(this, MyPostsActivity::class.java))
+        }
+        btnMyFavorites.setOnClickListener {
+            startActivity(Intent(this, MyFavoritesActivity::class.java))
+        }
         btnEditProfile.setOnClickListener {
             val intent = Intent(this, EditProfileActivity::class.java)
             startActivityForResult(intent, REQUEST_CODE_EDIT_PROFILE)
@@ -109,6 +157,7 @@ class MineActivity : AppCompatActivity() {
 
     private fun uploadAvatar(imageUri: Uri) {
         showProgressDialog("正在上传头像...")
+        isUploadingAvatar = true
 
         try {
             val inputStream = contentResolver.openInputStream(imageUri)
@@ -116,38 +165,73 @@ class MineActivity : AppCompatActivity() {
             tempFile.outputStream().use { output -> inputStream?.copyTo(output) }
             inputStream?.close()
 
+            val prefs = getSharedPreferences("user", MODE_PRIVATE)
+            val userId = prefs.getString("userId", "") ?: ""
+            val objectId = prefs.getString("objectId", "") ?: ""
+
+            Log.d(TAG, "开始上传头像 - userId: $userId, objectId: $objectId")
+
             lifecycleScope.launch {
                 try {
-                    val result = repository.uploadImage(tempFile)
+                    val result = repository.uploadAvatar(tempFile, userId)
                     result.onSuccess { avatarUrl ->
                         Log.d(TAG, "头像上传成功: $avatarUrl")
 
-                        getSharedPreferences("user", MODE_PRIVATE).edit()
+                        prefs.edit()
                             .putString("avatarUrl", avatarUrl)
                             .apply()
 
-                        Glide.with(this@MineActivity)
-                            .load(avatarUrl)
-                            .placeholder(R.mipmap.ic_launcher)
-                            .error(R.mipmap.ic_launcher)
-                            .circleCrop()
-                            .into(ivUserAvatar)
+                        val currentUser = repository.getCurrentUser()
+                        if (currentUser != null) {
+                            repository.setCurrentUser(currentUser.copy(avatarUrl = avatarUrl))
+                        }
 
-                        Toast.makeText(this@MineActivity, "头像更新成功", Toast.LENGTH_SHORT).show()
+                        loadImageToView(avatarUrl, ivUserAvatar)
+
+                        if (objectId.isNotEmpty()) {
+                            val token = prefs.getString("userId", null)
+                            val phone = prefs.getString("phone", "") ?: ""
+                            val nickname = prefs.getString("nickname", null)
+                            val userToUpdate = User(
+                                phone = phone,
+                                objectId = objectId,
+                                nickname = nickname,
+                                avatarUrl = avatarUrl,
+                                token = token
+                            )
+                            repository.updateUser(objectId, userToUpdate)
+                                .onSuccess { 
+                                    Log.d(TAG, "✅ 头像已同步到Bmob云端")
+                                }
+                                .onFailure { e -> 
+                                    Log.e(TAG, "❌ 同步头像到Bmob失败", e)
+                                }
+                        } else {
+                            Log.w(TAG, "⚠️ objectId 为空，跳过云端同步")
+                        }
+
+                        Toast.makeText(this@MineActivity, "头像更新成功 ✅", Toast.LENGTH_SHORT).show()
                     }.onFailure { error ->
-                        Log.e(TAG, "头像上传失败", error)
+                        Log.e(TAG, "❌ 头像上传失败", error)
                         Toast.makeText(this@MineActivity, "头像上传失败: ${error.message}", Toast.LENGTH_LONG).show()
                     }
                 } catch (e: Exception) {
-                    Log.e(TAG, "上传过程异常", e)
+                    Log.e(TAG, "❌ 上传过程异常", e)
                     Toast.makeText(this@MineActivity, "上传异常: ${e.message}", Toast.LENGTH_LONG).show()
                 }
                 hideProgressDialog()
+
+                try { tempFile.delete() } catch (_: Exception) {}
+
+                android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                    isUploadingAvatar = false
+                }, 2000)
             }
 
         } catch (e: Exception) {
             Log.e(TAG, "处理图片失败", e)
             hideProgressDialog()
+            isUploadingAvatar = false
             Toast.makeText(this, "处理图片失败", Toast.LENGTH_SHORT).show()
         }
     }
@@ -159,27 +243,17 @@ class MineActivity : AppCompatActivity() {
                 tvUserName.text = it.nickname ?: "用户"
                 tvUserPhone.text = it.phone
 
-                if (!it.avatarUrl.isNullOrEmpty()) {
-                    Glide.with(this)
-                        .load(it.avatarUrl)
-                        .placeholder(R.mipmap.ic_launcher)
-                        .error(R.mipmap.ic_launcher)
-                        .circleCrop()
-                        .into(ivUserAvatar)
-                } else {
+                if (!isUploadingAvatar) {
                     val prefs = getSharedPreferences("user", MODE_PRIVATE)
-                    val cachedAvatarUrl = prefs.getString("avatarUrl", null)
-                    if (!cachedAvatarUrl.isNullOrEmpty()) {
-                        Glide.with(this)
-                            .load(cachedAvatarUrl)
-                            .placeholder(R.mipmap.ic_launcher)
-                            .error(R.mipmap.ic_launcher)
-                            .circleCrop()
-                            .into(ivUserAvatar)
+                    val avatarUrl = it.avatarUrl ?: prefs.getString("avatarUrl", null)
+
+                    if (!avatarUrl.isNullOrEmpty()) {
+                        lifecycleScope.launch { loadImageToView(avatarUrl, ivUserAvatar) }
                     }
+                } else {
+                    Log.d(TAG, "正在上传头像，跳过 ViewModel 头像更新")
                 }
 
-                // 更新个人资料显示
                 loadPersonalInfo()
             }
         })
@@ -209,7 +283,6 @@ class MineActivity : AppCompatActivity() {
                 loadFromLocal()
             }
         })
-
         userViewModel.isLoading.observe(this, Observer { isLoading ->
             progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         })
@@ -235,12 +308,7 @@ class MineActivity : AppCompatActivity() {
         tvUserPhone.text = if (phone.isEmpty()) "--" else phone
 
         if (!avatarUrl.isNullOrEmpty()) {
-            Glide.with(this)
-                .load(avatarUrl)
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .circleCrop()
-                .into(ivUserAvatar)
+            lifecycleScope.launch { loadImageToView(avatarUrl, ivUserAvatar) }
         }
 
         // 加载个人资料信息
@@ -403,3 +471,4 @@ class MineActivity : AppCompatActivity() {
         progressDialog = null
     }
 }
+

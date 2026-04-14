@@ -3,6 +3,7 @@ package com.example.smartelderlycare_app.component
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -13,14 +14,18 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
 import com.example.smartelderlycare_app.R
 import com.example.smartelderlycare_app.data.model.User
 import com.example.smartelderlycare_app.data.repository.BmobRepository
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.io.File
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class EditProfileActivity : AppCompatActivity() {
 
@@ -49,6 +54,11 @@ class EditProfileActivity : AppCompatActivity() {
 
     private var currentUser: User? = null
     private var avatarUrl: String? = null
+
+    private val httpClient = OkHttpClient.Builder()
+        .connectTimeout(15, TimeUnit.SECONDS)
+        .readTimeout(15, TimeUnit.SECONDS)
+        .build()
 
     private lateinit var pickImageLauncher: ActivityResultLauncher<Intent>
 
@@ -101,6 +111,7 @@ class EditProfileActivity : AppCompatActivity() {
 
         currentUser = User(
             phone = prefs.getString("phone", "") ?: "",
+            objectId = prefs.getString("objectId", null),
             password = "",
             nickname = prefs.getString("nickname", null),
             realName = prefs.getString("realName", null),
@@ -112,18 +123,13 @@ class EditProfileActivity : AppCompatActivity() {
             bloodType = prefs.getString("bloodType", null),
             medicalHistory = prefs.getString("medicalHistory", null),
             signature = prefs.getString("signature", null),
-            token = prefs.getString("token", null)
+            token = prefs.getString("token", null) ?: prefs.getString("userId", null)
         )
 
         currentUser?.let { user ->
             if (!user.avatarUrl.isNullOrEmpty()) {
-                Glide.with(this)
-                    .load(user.avatarUrl)
-                    .placeholder(R.mipmap.ic_launcher)
-                    .error(R.mipmap.ic_launcher)
-                    .circleCrop()
-                    .into(ivAvatar)
                 avatarUrl = user.avatarUrl
+                lifecycleScope.launch { loadAvatarImage(user.avatarUrl!!, ivAvatar) }
             }
 
             etNickname.setText(user.nickname ?: "")
@@ -177,28 +183,28 @@ class EditProfileActivity : AppCompatActivity() {
             tempFile.outputStream().use { output -> inputStream?.copyTo(output) }
             inputStream?.close()
 
+            val prefs = getSharedPreferences("user", MODE_PRIVATE)
+            val userId = prefs.getString("userId", "") ?: ""
+
             lifecycleScope.launch {
                 try {
-                    val result = repository.uploadImage(tempFile)
+                    val result = repository.uploadAvatar(tempFile, userId)
                     result.onSuccess { url ->
                         Log.d(TAG, "头像上传成功: $url")
                         avatarUrl = url
-                        Glide.with(this@EditProfileActivity)
-                            .load(url)
-                            .placeholder(R.mipmap.ic_launcher)
-                            .error(R.mipmap.ic_launcher)
-                            .circleCrop()
-                            .into(ivAvatar)
+                        loadAvatarImage(url, ivAvatar)
                         Toast.makeText(this@EditProfileActivity, "头像更新成功", Toast.LENGTH_SHORT).show()
                     }.onFailure { error ->
                         Log.e(TAG, "头像上传失败", error)
-                        Toast.makeText(this@EditProfileActivity, "头像上传失败", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@EditProfileActivity, "头像上传失败: ${error.message}", Toast.LENGTH_SHORT).show()
                     }
                 } catch (e: Exception) {
                     Log.e(TAG, "上传异常", e)
                     Toast.makeText(this@EditProfileActivity, "上传异常", Toast.LENGTH_SHORT).show()
                 }
                 hideProgressDialog()
+
+                try { tempFile.delete() } catch (_: Exception) {}
             }
 
         } catch (e: Exception) {
@@ -290,8 +296,11 @@ class EditProfileActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val objectId = prefs.getString("objectId", null)
-                if (objectId != null && currentUser != null) {
-                    val updatedUser = currentUser!!.copy(
+                val token = prefs.getString("userId", null) ?: prefs.getString("token", null)
+                if (objectId != null) {
+                    val updatedUser = User(
+                        phone = prefs.getString("phone", "") ?: "",
+                        objectId = objectId,
                         nickname = nickname,
                         realName = etRealName.text.toString().trim(),
                         gender = gender,
@@ -301,13 +310,20 @@ class EditProfileActivity : AppCompatActivity() {
                         bloodType = bloodType,
                         medicalHistory = etMedicalHistory.text.toString().trim(),
                         signature = etSignature.text.toString().trim(),
-                        avatarUrl = avatarUrl
+                        avatarUrl = avatarUrl,
+                        token = token
                     )
-                    repository.updateUser(objectId, updatedUser)
-                    Log.d(TAG, "个人资料已同步到云端")
+                    val result = repository.updateUser(objectId, updatedUser)
+                    result.onSuccess {
+                        Log.d(TAG, "✅ 个人资料已同步到云端")
+                    }.onFailure { e ->
+                        Log.e(TAG, "❌ 云端同步失败", e)
+                    }
+                } else {
+                    Log.w(TAG, "⚠️ objectId 为空，跳过云端同步")
                 }
             } catch (e: Exception) {
-                Log.w(TAG, "云端同步失败（本地已保存）", e)
+                Log.e(TAG, "❌ 云端同步异常", e)
             }
 
             hideProgressDialog()
@@ -329,5 +345,26 @@ class EditProfileActivity : AppCompatActivity() {
     private fun hideProgressDialog() {
         progressDialog?.dismiss()
         progressDialog = null
+    }
+
+    private suspend fun loadAvatarImage(url: String, imageView: CircleImageView) {
+        withContext(Dispatchers.IO) {
+            try {
+                val request = Request.Builder().url(url.replace("https://", "http://")).build()
+                val response = httpClient.newCall(request).execute()
+                if (response.isSuccessful && response.body != null) {
+                    val bytes = response.body!!.bytes()
+                    val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                    if (bitmap != null) {
+                        withContext(Dispatchers.Main) {
+                            imageView.setImageBitmap(bitmap)
+                        }
+                    }
+                }
+                response.close()
+            } catch (e: Exception) {
+                Log.e(TAG, "加载头像失败: $url", e)
+            }
+        }
     }
 }

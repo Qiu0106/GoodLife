@@ -4,71 +4,81 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp">
+    android:layout_marginBottom="@dimen/elderly_spacing_md"
+    app:cardCornerRadius="@dimen/elderly_corner_radius_large"
+    app:cardElevation="@dimen/elderly_card_elevation"
+    app:cardBackgroundColor="@color/elderly_surface"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/elderly_divider"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/elderly_padding_card">
 
         <ImageView
             android:id="@+id/iv_post_cover"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginBottom="@dimen/elderly_spacing_md" />
 
         <TextView
             android:id="@+id/tv_post_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="这是一个分享帖子的标题，可能会有两行..."
-            android:textSize="14sp"
-            android:textColor="#333333"
+            android:text="这是一个分享帖子的标题"
+            android:textSize="@dimen/elderly_text_body_large"
+            android:textColor="@color/elderly_text_primary"
+            android:textStyle="bold"
             android:maxLines="2"
             android:ellipsize="end"
-            android:textStyle="bold"/>
+            android:lineSpacingMultiplier="1.6"
+            android:layout_marginBottom="@dimen/elderly_spacing_sm" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingHorizontal="8dp"
-            android:paddingBottom="8dp"
             android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@mipmap/ic_launcher_round"/>
+                android:id="@+id/iv_user_avatar"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@mipmap/ic_launcher_round" />
 
             <TextView
                 android:id="@+id/tv_user_name"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="@dimen/elderly_spacing_sm"
                 android:text="用户名"
-                android:textSize="12sp"
-                android:textColor="#999999"/>
+                android:textSize="@dimen/elderly_text_body"
+                android:textColor="@color/elderly_text_secondary" />
 
             <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@android:drawable/btn_star"/>
+                android:id="@+id/iv_like_icon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_heart_outline"
+                android:padding="2dp" />
 
             <TextView
                 android:id="@+id/tv_like_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:text="128"
-                android:textSize="12sp"
-                android:textColor="#999999"/>
+                android:layout_marginStart="@dimen/elderly_spacing_xs"
+                android:text="0"
+                android:textSize="@dimen/elderly_text_body"
+                android:textColor="@color/elderly_text_secondary" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

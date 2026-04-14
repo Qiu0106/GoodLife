@@ -8,19 +8,16 @@ import retrofit2.http.*
 interface BmobApiService {
 
     companion object {
-        // ✅ BMob REST API 配置（使用 bmobcloud.com 域名）
-        const val BASE_URL = "https://api.bmobcloud.com/1/"
+        const val BASE_URL = "http://api.bmobcloud.com/1/"
         const val APPLICATION_ID = "b9ab00843ca0d46f85a3d1f8c317164a"
         const val REST_API_KEY = "fb2a1df255a59958df971f18472cb2b4"
+
+        const val CDN_BASE_URL = "http://bmob-cdn-31634.bmobpay.com/"
+        const val FILE_UPLOAD_BASE_URL = "http://api.bmobcloud.com/2/"
     }
 
-    /**
-     * 文件上传 - 使用正确的 BMob API 格式
-     * 实际请求: POST https://api.bmobcloud.com/2/files/{fileName}
-     * 注意：/2/ 路径不能漏掉，末尾必须带文件名和后缀
-     */
     @Multipart
-    @POST("https://api.bmobcloud.com/2/files/{fileName}")
+    @POST("files/{fileName}")
     suspend fun uploadFile(
         @Path("fileName") fileName: String,
         @Part file: MultipartBody.Part,

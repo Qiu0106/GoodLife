@@ -2,15 +2,26 @@ package com.example.smartelderlycare_app.component
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
+import com.google.android.material.card.MaterialCardView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.example.smartelderlycare_app.R
+import com.example.smartelderlycare_app.data.model.CheckinRecord
+import com.example.smartelderlycare_app.data.repository.BmobRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,119 +29,188 @@ class CheckinActivity : AppCompatActivity() {
 
     private lateinit var tvTotalPoints: TextView
     private lateinit var tvConsecutiveDays: TextView
-    private lateinit var btnCheckin: CardView
+    private lateinit var btnCheckin: MaterialCardView
     private lateinit var tvCheckinText: TextView
-    
-    private var totalPoints = 0
-    private var consecutiveDays = 0
-    private var lastCheckinDate = ""
+    private lateinit var progressBar: android.widget.ProgressBar
+
+    private val repository = BmobRepository()
+    private var myRecord: CheckinRecord? = null
+    private var userId: String = ""
+    private var nickname: String = ""
+    private var avatarUrl: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_checkin)
 
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         tvTotalPoints = findViewById(R.id.tv_total_points)
         tvConsecutiveDays = findViewById(R.id.tv_consecutive_days)
         btnCheckin = findViewById(R.id.btn_checkin)
         tvCheckinText = findViewById(R.id.tv_checkin_text)
+        progressBar = findViewById(R.id.progressBar)
 
+        loadUserInfo()
         loadCheckinData()
-        updateUI()
-        setupCheckinButton()
-        setupDynamicLeaderboard()
+    }
+
+    private fun loadUserInfo() {
+        val prefs = getSharedPreferences("user", MODE_PRIVATE)
+        userId = prefs.getString("userObjectId", null)
+            ?: prefs.getString("objectId", null) ?: ""
+        nickname = prefs.getString("nickname", "") ?: ""
+        avatarUrl = prefs.getString("avatarUrl", "") ?: ""
     }
 
     private fun loadCheckinData() {
-        val sharedPreferences = getSharedPreferences("checkin_data", MODE_PRIVATE)
-        totalPoints = sharedPreferences.getInt("total_points", 0)
-        consecutiveDays = sharedPreferences.getInt("consecutive_days", 0)
-        lastCheckinDate = sharedPreferences.getString("last_checkin_date", "") ?: ""
-    }
+        if (userId.isEmpty()) {
+            showCenteredToast("请先登录")
+            return
+        }
+        progressBar.visibility = View.VISIBLE
 
-    private fun saveCheckinData() {
-        val sharedPreferences = getSharedPreferences("checkin_data", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putInt("total_points", totalPoints)
-        editor.putInt("consecutive_days", consecutiveDays)
-        editor.putString("last_checkin_date", lastCheckinDate)
-        editor.apply()
+        lifecycleScope.launch {
+            try {
+                val result = repository.getCheckinRecord(userId)
+                result.onSuccess { record ->
+                    myRecord = record
+                    withContext(Dispatchers.Main) {
+                        progressBar.visibility = View.GONE
+                        updateUI()
+                        loadLeaderboard()
+                    }
+                }.onFailure {
+                    withContext(Dispatchers.Main) {
+                        progressBar.visibility = View.GONE
+                        updateUI()
+                        loadLeaderboard()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    progressBar.visibility = View.GONE
+                    updateUI()
+                    loadLeaderboard()
+                }
+            }
+        }
     }
 
     private fun updateUI() {
-        tvTotalPoints.text = "我的积分: $totalPoints"
-        tvConsecutiveDays.text = "已连签: ${consecutiveDays}天"
-        
+        val record = myRecord
+        if (record != null) {
+            tvTotalPoints.text = "我的积分: ${record.totalPoints}"
+            tvConsecutiveDays.text = "已连签: ${record.consecutiveDays}天"
+        } else {
+            tvTotalPoints.text = "我的积分: 0"
+            tvConsecutiveDays.text = "已连签: 0天"
+        }
+
         val today = getCurrentDate()
-        if (lastCheckinDate == today) {
+        val lastDate = record?.lastCheckinDate ?: ""
+        if (lastDate == today) {
             btnCheckin.isClickable = false
             btnCheckin.isFocusable = false
-            btnCheckin.setCardBackgroundColor(resources.getColor(R.color.gray))
+            btnCheckin.setCardBackgroundColor(resources.getColor(R.color.gray, null))
             tvCheckinText.text = "已打卡"
         } else {
             btnCheckin.isClickable = true
             btnCheckin.isFocusable = true
-            btnCheckin.setCardBackgroundColor(resources.getColor(R.color.green))
+            btnCheckin.setCardBackgroundColor(resources.getColor(R.color.green, null))
             tvCheckinText.text = "点击\n打卡"
         }
-    }
 
-    private fun setupCheckinButton() {
         btnCheckin.setOnClickListener {
             performCheckin()
         }
     }
 
     private fun performCheckin() {
+        if (userId.isEmpty()) {
+            showCenteredToast("请先登录")
+            return
+        }
+
         val today = getCurrentDate()
         val yesterday = getYesterdayDate()
-        
-        if (lastCheckinDate == today) {
+        val record = myRecord
+
+        if (record != null && record.lastCheckinDate == today) {
             showCenteredToast("今天已经打卡过了")
             return
         }
-        
-        // 增加积分（每天5分）
-        totalPoints += 5
-        
-        // 更新连续打卡天数
-        if (lastCheckinDate == yesterday) {
-            consecutiveDays += 1
-        } else {
-            consecutiveDays = 1
+
+        val currentPoints = record?.totalPoints ?: 0
+        val currentConsecutive = record?.consecutiveDays ?: 0
+        val lastDate = record?.lastCheckinDate ?: ""
+
+        val newPoints = currentPoints + 5
+        val newConsecutive = if (lastDate == yesterday) currentConsecutive + 1 else 1
+        val bonusPoints = if (newConsecutive % 7 == 0) 20 else 0
+        val finalPoints = newPoints + bonusPoints
+
+        val updatedRecord = CheckinRecord(
+            objectId = record?.objectId,
+            userId = userId,
+            nickname = nickname,
+            avatarUrl = avatarUrl,
+            totalPoints = finalPoints,
+            consecutiveDays = newConsecutive,
+            lastCheckinDate = today
+        )
+
+        lifecycleScope.launch {
+            try {
+                if (record?.objectId != null) {
+                    repository.updateCheckinRecord(record.objectId!!, updatedRecord)
+                } else {
+                    repository.createCheckinRecord(updatedRecord).onSuccess { saved ->
+                        myRecord = saved
+                    }
+                }
+
+                myRecord = updatedRecord
+                withContext(Dispatchers.Main) {
+                    updateUI()
+                    loadLeaderboard()
+                    if (bonusPoints > 0) {
+                        showCenteredToast("🎉 连续打卡7天，额外奖励20分！")
+                    } else {
+                        showCenteredToast("打卡成功！获得5积分")
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    showCenteredToast("打卡失败，请重试")
+                }
+            }
         }
-        
-        // 连续打卡奖励
-        if (consecutiveDays % 7 == 0) {
-            totalPoints += 20 // 连续7天额外奖励20分
-            showCenteredToast("🎉 连续打卡7天，额外奖励20分！")
+    }
+
+    private fun loadLeaderboard() {
+        lifecycleScope.launch {
+            try {
+                val result = repository.getLeaderboard(10)
+                result.onSuccess { records ->
+                    withContext(Dispatchers.Main) {
+                        val rvLeaderboard = findViewById<RecyclerView>(R.id.rv_leaderboard)
+                        rvLeaderboard.layoutManager = LinearLayoutManager(this@CheckinActivity)
+                        rvLeaderboard.adapter = LeaderboardAdapter(records, userId)
+                    }
+                }
+            } catch (_: Exception) {}
         }
-        
-        // 更新最后打卡日期
-        lastCheckinDate = today
-        
-        // 保存数据
-        saveCheckinData()
-        
-        // 更新UI
-        updateUI()
-        
-        // 显示打卡成功提示
-        showCenteredToast("打卡成功！获得5积分")
-        
-        // 更新排行榜数据
-        setupDynamicLeaderboard()
     }
 
     private fun showCenteredToast(message: String) {
         val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
         toast.setGravity(android.view.Gravity.CENTER, 0, 0)
-        
-        // 创建自定义Toast布局
         val inflater = layoutInflater
         val layout = inflater.inflate(R.layout.custom_toast, null)
-        val text = layout.findViewById<android.widget.TextView>(R.id.toast_text)
+        val text = layout.findViewById<TextView>(R.id.toast_text)
         text.text = message
-        
         toast.view = layout
         toast.show()
     }
@@ -147,42 +227,19 @@ class CheckinActivity : AppCompatActivity() {
         return sdf.format(calendar.time)
     }
 
-    private fun setupDynamicLeaderboard() {
-        val rvLeaderboard = findViewById<RecyclerView>(R.id.rv_leaderboard)
-
-        // 生成动态排行榜数据
-        val users = generateLeaderboardData()
-
-        rvLeaderboard.layoutManager = LinearLayoutManager(this)
-        rvLeaderboard.adapter = LeaderboardAdapter(users)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) { finish(); return true }
+        return super.onOptionsItemSelected(item)
     }
 
-    private fun generateLeaderboardData(): List<UserRank> {
-        val userNames = listOf("李建国", "王世清", "赵秀梅", "刘斌", "陈秀花", "张栋", "王亭枝", "李裕民", "赵丽华")
-        val users = mutableListOf<UserRank>()
-
-        // 生成其他用户的随机积分（100-1000分）
-        for (name in userNames) {
-            val randomPoints = (100..1000).random()
-            users.add(UserRank(name, randomPoints))
-        }
-
-        // 添加自己的积分
-        users.add(UserRank("我 ", totalPoints))
-
-        // 按积分降序排序
-        users.sortByDescending { it.points }
-
-        // 只取前10名
-        return users.take(10)
-    }
-
-    data class UserRank(val name: String, val points: Int)
-
-    class LeaderboardAdapter(private val userList: List<UserRank>) : RecyclerView.Adapter<LeaderboardAdapter.ViewHolder>() {
+    class LeaderboardAdapter(
+        private val userList: List<CheckinRecord>,
+        private val currentUserId: String
+    ) : RecyclerView.Adapter<LeaderboardAdapter.ViewHolder>() {
 
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val tvRank: TextView = view.findViewById(R.id.tv_rank)
+            val ivAvatar: ImageView = view.findViewById(R.id.iv_avatar)
             val tvName: TextView = view.findViewById(R.id.tv_name)
             val tvPoints: TextView = view.findViewById(R.id.tv_points)
         }
@@ -195,8 +252,24 @@ class CheckinActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val user = userList[position]
             holder.tvRank.text = (position + 1).toString()
-            holder.tvName.text = user.name
-            holder.tvPoints.text = "${user.points} 分"
+
+            val displayName = if (user.userId == currentUserId) "我" else (user.nickname.ifEmpty { "用户" })
+            holder.tvName.text = displayName
+            holder.tvPoints.text = "${user.totalPoints} 分"
+
+            if (!user.avatarUrl.isNullOrEmpty()) {
+                val httpUrl = user.avatarUrl.replace("https://", "http://")
+                Glide.with(holder.itemView.context)
+                    .load(httpUrl)
+                    .apply(RequestOptions()
+                        .placeholder(R.mipmap.ic_launcher_round)
+                        .error(R.mipmap.ic_launcher_round)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .circleCrop())
+                    .into(holder.ivAvatar)
+            } else {
+                holder.ivAvatar.setImageResource(R.mipmap.ic_launcher_round)
+            }
 
             when (position) {
                 0 -> holder.tvRank.setTextColor(android.graphics.Color.parseColor("#FFD700"))

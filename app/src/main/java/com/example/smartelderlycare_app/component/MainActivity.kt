@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
+import com.google.android.material.card.MaterialCardView
 import com.bumptech.glide.Glide
 import com.example.smartelderlycare_app.R
 import de.hdodenhof.circleimageview.CircleImageView
@@ -121,32 +121,27 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupClickListeners() {
         // 打卡签到
-        findViewById<CardView>(R.id.card_checkin).setOnClickListener {
+        findViewById<MaterialCardView>(R.id.card_checkin).setOnClickListener {
             startActivity(Intent(this, CheckinActivity::class.java))
         }
 
-        // 社区动态
-        findViewById<CardView>(R.id.card_community).setOnClickListener {
+        findViewById<MaterialCardView>(R.id.card_community).setOnClickListener {
             startActivity(Intent(this, CommunityActivity::class.java))
         }
 
-        // 身后事定制
-        findViewById<CardView>(R.id.card_afterlife).setOnClickListener {
+        findViewById<MaterialCardView>(R.id.card_afterlife).setOnClickListener {
             startActivity(Intent(this, AfterlifeCustomActivity::class.java))
         }
 
-        // 星空纪念馆
-        findViewById<CardView>(R.id.card_starry_sky).setOnClickListener {
+        findViewById<MaterialCardView>(R.id.card_starry_sky).setOnClickListener {
             startActivity(Intent(this, StarMemorialComposeActivity::class.java))
         }
 
-        // 我的中心
-        findViewById<CardView>(R.id.card_mine).setOnClickListener {
+        findViewById<MaterialCardView>(R.id.card_mine).setOnClickListener {
             startActivity(Intent(this, MineActivity::class.java))
         }
 
-        // 语音助手
-        findViewById<CardView>(R.id.btn_voice_assistant).setOnClickListener {
+        findViewById<MaterialCardView>(R.id.btn_voice_assistant).setOnClickListener {
             showToast("正在唤醒：语音助手...")
             // TODO: 集成语音助手功能
         }

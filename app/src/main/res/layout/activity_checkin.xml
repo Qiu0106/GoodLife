@@ -4,46 +4,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#F2F5F8">
+    android:background="@color/elderly_bg">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/elderly_surface"
+        android:elevation="0dp"
+        app:title="每日打卡"
+        app:titleTextAppearance="@style/ElderlyTitleText"
+        app:titleTextColor="@color/elderly_text_primary" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@android:color/white"
-        android:padding="16dp"
-        android:elevation="4dp">
+        android:background="@color/elderly_surface"
+        android:padding="@dimen/elderly_padding_card"
+        android:layout_marginBottom="@dimen/elderly_spacing_md">
         <TextView
             android:id="@+id/tv_total_points"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="我的积分: 0"
-            android:textSize="24sp"
+            android:textSize="@dimen/elderly_text_body_large"
             android:textStyle="bold"
-            android:textColor="#FF9800"/>
+            android:textColor="@color/elderly_brand" />
         <TextView
             android:id="@+id/tv_consecutive_days"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="已连签: 0天"
-            android:textSize="24sp"
-            android:textColor="#4CAF50"/>
+            android:textSize="@dimen/elderly_text_body_large"
+            android:textColor="@color/elderly_success" />
     </LinearLayout>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/btn_checkin"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="@dimen/elderly_spacing_xl"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="100dp"
-        app:cardElevation="8dp"
-        app:cardBackgroundColor="#4CAF50">
+        app:cardElevation="@dimen/elderly_card_elevation"
+        app:cardBackgroundColor="@color/elderly_success"
+        app:strokeWidth="0dp">
         <TextView
             android:id="@+id/tv_checkin_text"
             android:layout_width="wrap_content"
@@ -53,25 +70,27 @@
             android:textAlignment="center"
             android:textSize="40sp"
             android:textStyle="bold"
-            android:textColor="#FFFFFF"/>
-    </androidx.cardview.widget.CardView>
+            android:textColor="@color/white" />
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/tv_leaderboard_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="🏆 社区打卡排行榜"
-        android:textSize="24sp"
+        android:textSize="@dimen/elderly_text_title"
         android:textStyle="bold"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="8dp"
-        android:textColor="#333333"/>
+        android:layout_marginTop="@dimen/elderly_spacing_xl"
+        android:layout_marginHorizontal="@dimen/elderly_padding_page"
+        android:layout_marginBottom="@dimen/elderly_spacing_sm"
+        android:textColor="@color/elderly_text_primary" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_leaderboard"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@android:color/white"
-        android:padding="8dp"/>
+        android:background="@color/elderly_surface"
+        android:layout_marginHorizontal="@dimen/elderly_padding_page"
+        android:padding="@dimen/elderly_padding_card" />
 </LinearLayout>

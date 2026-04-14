@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/custom_toast_bg"
-    android:padding="16dp"
+    android:padding="@dimen/elderly_padding_card"
     android:orientation="horizontal">
 
     <TextView
@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:gravity="center"/>
+        android:textSize="@dimen/elderly_text_body"
+        android:gravity="center" />
 
 </LinearLayout>

@@ -18,8 +18,27 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="35">
 
+        <!-- 主界面（启动页）- 检查登录状态 -->
+        <activity
+            android:name=".component.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 登录页面 -->
+        <activity
+            android:name=".component.LoginActivity"
+            android:exported="false" />
+
         <activity
             android:name=".component.PostDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".component.ImagePreviewActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:exported="false" />
         <activity
             android:name=".component.CreatePostActivity"
@@ -31,21 +50,16 @@
             android:name=".component.CheckinActivity"
             android:exported="false" />
         <activity
-            android:name=".component.MainActivity"
-            android:exported="true" />
-        <activity
-            android:name=".component.LoginActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".component.MineActivity"
             android:exported="false" />
         <activity
             android:name=".component.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".component.MyPostsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".component.MyFavoritesActivity"
             android:exported="false" />
         <activity
             android:name=".component.AfterlifeCustomActivity"

@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -27,6 +26,7 @@ import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONArray
 import java.io.File
 
 class CreatePostActivity : AppCompatActivity() {
@@ -40,10 +40,10 @@ class CreatePostActivity : AppCompatActivity() {
     private val viewModel: PostViewModel by viewModels()
     private val repository = BmobRepository()
     private var progressDialog: ProgressDialog? = null
-    
+
     private val selectedImageUris = mutableListOf<Uri>()
     private val uploadedImageUrls = mutableListOf<String>()
-    
+
     private lateinit var pickImageLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,8 +101,7 @@ class CreatePostActivity : AppCompatActivity() {
 
     private fun addSelectedImage(imageUri: Uri) {
         selectedImageUris.add(imageUri)
-        
-        // 创建图片预览视图
+
         val imageView = ImageView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 100.dpToPx(),
@@ -111,8 +110,7 @@ class CreatePostActivity : AppCompatActivity() {
                 setMargins(0, 0, 8.dpToPx(), 0)
             }
             scaleType = ImageView.ScaleType.CENTER_CROP
-            
-            // 加载图片缩略图
+
             try {
                 contentResolver.openInputStream(imageUri)?.use { inputStream ->
                     val bitmap = BitmapFactory.decodeStream(inputStream)
@@ -121,16 +119,13 @@ class CreatePostActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Log.e("CreatePostActivity", "加载图片失败", e)
             }
-            
-            // 点击删除图片
+
             setOnClickListener {
                 removeImage(imageUri, this)
             }
         }
 
-        // 将添加按钮移到最前面
         imagesContainer.addView(imageView, imagesContainer.childCount - 1)
-
         Toast.makeText(this, "已选择 ${selectedImageUris.size}/9 张图片", Toast.LENGTH_SHORT).show()
     }
 
@@ -177,17 +172,20 @@ class CreatePostActivity : AppCompatActivity() {
         }
 
         val sharedPreferences = getSharedPreferences("user", MODE_PRIVATE)
-        val userId = sharedPreferences.getString("userId", "anonymous") ?: "anonymous"
+        val userId = sharedPreferences.getString("userObjectId", null)
+            ?: sharedPreferences.getString("objectId", null)
+            ?: sharedPreferences.getString("userId", "anonymous") ?: "anonymous"
         val userName = sharedPreferences.getString("nickname", "匿名用户") ?: "匿名用户"
+        val userAvatarUrl = sharedPreferences.getString("avatarUrl", null)
 
         if (selectedImageUris.isNotEmpty()) {
-            uploadImagesAndPublish(content, userId, userName)
+            uploadImagesAndPublish(content, userId, userName, userAvatarUrl)
         } else {
-            publishPostDirectly(content, userId, userName, null)
+            publishPostDirectly(content, userId, userName, null, null, userAvatarUrl)
         }
     }
 
-    private fun uploadImagesAndPublish(content: String, userId: String, userName: String) {
+    private fun uploadImagesAndPublish(content: String, userId: String, userName: String, userAvatarUrl: String?) {
         progressDialog?.dismiss()
         progressDialog = ProgressDialog(this).apply {
             setMessage("正在上传图片 (0/${selectedImageUris.size})...")
@@ -200,13 +198,13 @@ class CreatePostActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.Main).launch {
             uploadedImageUrls.clear()
+            val tempFiles = mutableListOf<File>()
 
             for ((index, imageUri) in selectedImageUris.withIndex()) {
                 try {
-                    // 将 URI 转换为 File
                     val file = getFileFromUri(imageUri)
-                    
-                    // 上传到 BMob
+                    tempFiles.add(file)
+
                     repository.uploadImage(file)
                         .onSuccess { url ->
                             uploadedImageUrls.add(url)
@@ -224,21 +222,37 @@ class CreatePostActivity : AppCompatActivity() {
                 }
             }
 
+            for (file in tempFiles) {
+                try { file.delete() } catch (_: Exception) {}
+            }
+
             hideProgressDialog()
 
+            if (uploadedImageUrls.isEmpty() && selectedImageUris.isNotEmpty()) {
+                Toast.makeText(this@CreatePostActivity, "图片上传失败，请重试", Toast.LENGTH_LONG).show()
+                return@launch
+            }
+
             val coverUrl = uploadedImageUrls.firstOrNull()
-            publishPostDirectly(content, userId, userName, coverUrl)
+            val imageUrlsJson = if (uploadedImageUrls.size > 1) {
+                JSONArray().apply {
+                    uploadedImageUrls.forEach { put(it) }
+                }.toString()
+            } else null
+
+            publishPostDirectly(content, userId, userName, coverUrl, imageUrlsJson, userAvatarUrl)
         }
     }
 
-    private fun publishPostDirectly(content: String, userId: String, userName: String, coverUrl: String?) {
+    private fun publishPostDirectly(content: String, userId: String, userName: String, coverUrl: String?, imageUrls: String? = null, userAvatarUrl: String? = null) {
         val post = Post(
             userId = userId,
             title = content.take(20) + if (content.length > 20) "..." else "",
             content = content,
             coverImageUrl = coverUrl,
+            imageUrls = imageUrls,
             userName = userName,
-            userAvatarUrl = null,
+            userAvatarUrl = userAvatarUrl,
             likeCount = 0,
             commentCount = 0
         )

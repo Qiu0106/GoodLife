@@ -1,42 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:orientation="vertical"
+    android:background="@color/elderly_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/elderly_padding_page"
+        android:paddingTop="@dimen/elderly_spacing_lg"
+        android:paddingBottom="@dimen/elderly_spacing_md">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/tabActive"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/elderly_button_height"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/elderly_spacing_sm"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="@dimen/elderly_corner_radius_large"
+            app:cardElevation="0dp"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/elderly_brand"
+            app:cardBackgroundColor="@color/elderly_brand"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <TextView
+                android:id="@+id/tvTabActive"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="进行中"
+                android:textSize="@dimen/elderly_text_body_large"
+                android:textStyle="bold"
+                android:textColor="@color/white" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/tabEnded"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/elderly_button_height"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="@dimen/elderly_corner_radius_large"
+            app:cardElevation="0dp"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/elderly_divider"
+            app:cardBackgroundColor="@color/elderly_surface"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <TextView
+                android:id="@+id/tvTabEnded"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="已结束"
+                android:textSize="@dimen/elderly_text_body_large"
+                android:textStyle="bold"
+                android:textColor="@color/elderly_text_secondary" />
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_community"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="4dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="@dimen/elderly_padding_page"
         android:clipToPadding="false"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:background="@color/elderly_bg" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:layout_gravity="center" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/fab_add_post"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="#FF2442"
-        app:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/elderly_button_height"
+        android:layout_marginHorizontal="@dimen/elderly_padding_page"
+        android:layout_marginVertical="@dimen/elderly_spacing_md"
+        android:text="发布新动态"
+        android:textSize="@dimen/elderly_text_body_large"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/elderly_brand"
+        app:cornerRadius="@dimen/elderly_corner_radius_large"
+        android:stateListAnimator="@null" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -13,25 +13,34 @@ class UserBmob {
     var email: String? = null
     var emailVerified: Boolean = false
     var nickname: String? = null
+    var realName: String? = null
     var avatarUrl: String? = null
     var gender: String? = null
     var birthDate: String? = null
     var address: String? = null
     var emergencyContact: String? = null
     var emergencyPhone: String? = null
+    var bloodType: String? = null
+    var medicalHistory: String? = null
+    var signature: String? = null
 
     fun toUser(): User {
         return User(
             id = objectId?.hashCode()?.toLong(),
+            objectId = objectId,
             phone = mobilePhoneNumber ?: username ?: "",
             password = null,
             nickname = nickname,
+            realName = realName,
             avatarUrl = avatarUrl,
             gender = gender,
             birthDate = birthDate,
             address = address,
             emergencyContact = emergencyContact,
             emergencyPhone = emergencyPhone,
+            bloodType = bloodType,
+            medicalHistory = medicalHistory,
+            signature = signature,
             token = sessionToken,
             createdAt = createdAt,
             updatedAt = updatedAt
@@ -43,12 +52,16 @@ class UserBmob {
             "username" to username,
             "mobilePhoneNumber" to mobilePhoneNumber,
             "nickname" to nickname,
+            "realName" to realName,
             "avatarUrl" to avatarUrl,
             "gender" to gender,
             "birthDate" to birthDate,
             "address" to address,
             "emergencyContact" to emergencyContact,
-            "emergencyPhone" to emergencyPhone
+            "emergencyPhone" to emergencyPhone,
+            "bloodType" to bloodType,
+            "medicalHistory" to medicalHistory,
+            "signature" to signature
         )
     }
 
@@ -64,16 +77,20 @@ class UserBmob {
 
         fun fromUser(user: User): UserBmob {
             return UserBmob().apply {
-                objectId = user.id?.toString()
+                objectId = user.objectId
                 mobilePhoneNumber = user.phone
                 username = user.phone
                 nickname = user.nickname
+                realName = user.realName
                 avatarUrl = user.avatarUrl
                 gender = user.gender
                 birthDate = user.birthDate
                 address = user.address
                 emergencyContact = user.emergencyContact
                 emergencyPhone = user.emergencyPhone
+                bloodType = user.bloodType
+                medicalHistory = user.medicalHistory
+                signature = user.signature
             }
         }
 
@@ -89,12 +106,16 @@ class UserBmob {
                 email = map["email"] as? String
                 emailVerified = map["emailVerified"] as? Boolean ?: false
                 nickname = map["nickname"] as? String
+                realName = map["realName"] as? String
                 avatarUrl = map["avatarUrl"] as? String
                 gender = map["gender"] as? String
                 birthDate = map["birthDate"] as? String
                 address = map["address"] as? String
                 emergencyContact = map["emergencyContact"] as? String
                 emergencyPhone = map["emergencyPhone"] as? String
+                bloodType = map["bloodType"] as? String
+                medicalHistory = map["medicalHistory"] as? String
+                signature = map["signature"] as? String
             }
         }
     }

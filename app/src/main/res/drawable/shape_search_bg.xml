@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#F2F2F2" />
-    <corners android:radius="18dp" />
+    <solid android:color="@color/elderly_input_bg" />
+    <corners android:radius="@dimen/elderly_corner_radius" />
+    <stroke android:width="1.5dp" android:color="@color/elderly_input_border" />
 </shape>

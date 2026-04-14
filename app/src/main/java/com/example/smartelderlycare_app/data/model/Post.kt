@@ -6,15 +6,18 @@ package com.example.smartelderlycare_app.data.model
  */
 data class Post(
     val id: Long? = null,
+    val objectId: String? = null,
     val userId: String,
     val title: String,
     val content: String,
     val coverImageUrl: String? = null,
+    val imageUrls: String? = null,
     val userName: String,
     val userAvatarUrl: String? = null,
     val likeCount: Int = 0,
+    val favoriteCount: Int = 0,
     val commentCount: Int = 0,
     val createdAt: String? = null,
     val updatedAt: String? = null,
-    val syncStatus: Int = 0 // 0:未同步, 1:已同步, 2:同步失败
+    val syncStatus: Int = 0
 )

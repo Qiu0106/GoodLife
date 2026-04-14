@@ -23,7 +23,8 @@ class PostBmob {
     // 封面图片URL
     var coverImageUrl: String? = null
 
-    // 用户名
+    var imageUrls: String? = null
+
     var userName: String? = null
 
     // 用户头像URL
@@ -32,7 +33,8 @@ class PostBmob {
     // 点赞数
     var likeCount: Int = 0
 
-    // 评论数
+    var favoriteCount: Int = 0
+
     var commentCount: Int = 0
 
     fun toMap(): Map<String, Any?> {
@@ -41,9 +43,11 @@ class PostBmob {
             "title" to title,
             "content" to content,
             "coverImageUrl" to coverImageUrl,
+            "imageUrls" to imageUrls,
             "userName" to userName,
             "userAvatarUrl" to userAvatarUrl,
             "likeCount" to likeCount,
+            "favoriteCount" to favoriteCount,
             "commentCount" to commentCount
         )
     }
@@ -51,13 +55,16 @@ class PostBmob {
     fun toPost(): Post {
         return Post(
             id = objectId?.hashCode()?.toLong(),
+            objectId = objectId,
             userId = userId ?: "",
             title = title ?: "",
             content = content ?: "",
             coverImageUrl = coverImageUrl,
+            imageUrls = imageUrls,
             userName = userName ?: "",
             userAvatarUrl = userAvatarUrl,
             likeCount = likeCount,
+            favoriteCount = favoriteCount,
             commentCount = commentCount,
             createdAt = createdAt,
             updatedAt = updatedAt
@@ -67,14 +74,16 @@ class PostBmob {
     companion object {
         fun fromPost(post: Post): PostBmob {
             return PostBmob().apply {
-                objectId = post.id?.toString()
+                objectId = post.objectId
                 userId = post.userId
                 title = post.title
                 content = post.content
                 coverImageUrl = post.coverImageUrl
+                imageUrls = post.imageUrls
                 userName = post.userName
                 userAvatarUrl = post.userAvatarUrl
                 likeCount = post.likeCount
+                favoriteCount = post.favoriteCount
                 commentCount = post.commentCount
             }
         }
@@ -88,9 +97,11 @@ class PostBmob {
                 title = map["title"] as? String
                 content = map["content"] as? String
                 coverImageUrl = map["coverImageUrl"] as? String
+                imageUrls = map["imageUrls"] as? String
                 userName = map["userName"] as? String
                 userAvatarUrl = map["userAvatarUrl"] as? String
                 likeCount = (map["likeCount"] as? Number)?.toInt() ?: 0
+                favoriteCount = (map["favoriteCount"] as? Number)?.toInt() ?: 0
                 commentCount = (map["commentCount"] as? Number)?.toInt() ?: 0
             }
         }
