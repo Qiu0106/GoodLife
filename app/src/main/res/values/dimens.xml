@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="elderly_text_body">18sp</dimen>
+    <dimen name="elderly_text_body_large">20sp</dimen>
+    <dimen name="elderly_text_title">24sp</dimen>
+    <dimen name="elderly_text_title_large">28sp</dimen>
+    <dimen name="elderly_text_heading">32sp</dimen>
+    <dimen name="elderly_text_hint">18sp</dimen>
+    <dimen name="elderly_text_small">16sp</dimen>
+
+    <dimen name="elderly_input_height">64dp</dimen>
+    <dimen name="elderly_button_height">60dp</dimen>
+    <dimen name="elderly_card_min_height">80dp</dimen>
+    <dimen name="elderly_radio_card_height">64dp</dimen>
+    <dimen name="elderly_touch_min">48dp</dimen>
+
+    <dimen name="elderly_padding_page">24dp</dimen>
+    <dimen name="elderly_padding_card">20dp</dimen>
+    <dimen name="elderly_padding_input">20dp</dimen>
+
+    <dimen name="elderly_spacing_xs">8dp</dimen>
+    <dimen name="elderly_spacing_sm">12dp</dimen>
+    <dimen name="elderly_spacing_md">16dp</dimen>
+    <dimen name="elderly_spacing_lg">24dp</dimen>
+    <dimen name="elderly_spacing_xl">32dp</dimen>
+
+    <dimen name="elderly_corner_radius">16dp</dimen>
+    <dimen name="elderly_corner_radius_large">24dp</dimen>
+
+    <dimen name="elderly_card_elevation">2dp</dimen>
+
+    <item name="elderly_line_spacing_multiplier" type="dimen" format="float">1.6</item>
+</resources>
