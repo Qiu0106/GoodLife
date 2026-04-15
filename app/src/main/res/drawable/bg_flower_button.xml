@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- 献花按钮背景 - 温暖玫瑰色，高亮情感化 -->
+    <solid android:color="#33E8A0A0" />
+
+    <corners android:radius="20dp" />
+
+    <!-- 柔和粉色描边 -->
+    <stroke
+        android:width="2dp"
+        android:color="#E8A0A0" />
+
+</shape>

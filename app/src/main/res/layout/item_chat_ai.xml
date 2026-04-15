@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    AI 消息气泡（左对齐，灰色系）
+    适老化：字号 20sp，圆角气泡，AI 头像标识
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="start"
+    android:paddingStart="0dp"
+    android:paddingEnd="64dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
+
+    <!-- AI 头像 -->
+    <TextView
+        android:id="@+id/tvAiAvatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
+        android:text="🤖"
+        android:textSize="28sp"
+        android:gravity="center"
+        android:background="@drawable/bg_avatar_ai"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvAiMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_bubble_ai"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:textSize="20sp"
+            android:textColor="@color/elderly_text_primary"
+            android:lineSpacingMultiplier="1.3"
+            android:text="AI 消息" />
+
+        <TextView
+            android:id="@+id/tvAiTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="8dp"
+            android:textSize="14sp"
+            android:textColor="@color/elderly_text_hint"
+            android:text="12:30" />
+
+    </LinearLayout>
+
+</LinearLayout>

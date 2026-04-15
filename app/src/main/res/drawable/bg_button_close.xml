@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- 关闭按钮背景 - 深灰色，低调辅助 -->
+    <solid android:color="#22FFFFFF" />
+
+    <corners android:radius="16dp" />
+
+    <!-- 淡边框 -->
+    <stroke
+        android:width="1dp"
+        android:color="#44FFFFFF" />
+
+</shape>

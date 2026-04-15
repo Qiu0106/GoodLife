@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!-- 头像占位圆 -->
+    <solid android:color="@color/memorial_avatar_placeholder" />
+
+    <!-- 边框已在外层ShapeableImageView中设置 -->
+
+</shape>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    星空纪念馆 Activity 布局
+
+    全屏展示星空视图，用户可自由滑动浏览
+    背景为深色系，减少眼睛疲劳
+-->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/memorial_background">
+
+    <!-- 星空视图 -->
+    <com.example.smartelderlycare_app.component.StarrySkyView
+        android:id="@+id/starrySkyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- 顶部提示文字（适老化引导） -->
+    <TextView
+        android:id="@+id/tvHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="24dp"
+        android:text="滑动屏幕浏览星空 · 点击星星查看详情"
+        android:textColor="@color/memorial_text_secondary"
+        android:textSize="16sp"
+        android:background="@drawable/bg_hint_pill"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp" />
+
+    <!-- 添加逝者按钮（右下角悬浮） -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="100dp"
+        android:src="@drawable/ic_add_person"
+        android:contentDescription="添加逝者"
+        app:backgroundTint="@color/elderly_brand"
+        app:tint="@color/white"
+        app:fabSize="normal"
+        app:elevation="6dp" />
+
+</FrameLayout>

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    添加逝者信息表单
+
+    适老化设计：
+    1. 大字号输入框
+    2. 清晰的标签
+    3. 提交后需后台审核
+-->
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/morandi_bg"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/elderly_padding_page">
+
+        <!-- 顶部标题栏 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/elderly_brand"
+            android:paddingStart="@dimen/elderly_padding_page"
+            android:paddingEnd="@dimen/elderly_spacing_sm">
+
+            <TextView
+                android:id="@+id/btnBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:text="←"
+                android:textSize="32sp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="添加纪念星"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:gravity="center" />
+
+            <View
+                android:layout_width="48dp"
+                android:layout_height="48dp" />
+
+        </LinearLayout>
+
+        <!-- 提示信息 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/elderly_spacing_lg"
+            android:text="请填写逝者信息，提交后需后台审核确认"
+            android:textSize="18sp"
+            android:textColor="@color/elderly_text_secondary"
+            android:gravity="center" />
+
+        <!-- 照片上传区域 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/elderly_spacing_xl"
+            android:text="逝者照片（选填）"
+            android:textSize="20sp"
+            android:textColor="@color/elderly_text_primary"
+            android:textStyle="bold" />
+
+        <FrameLayout
+            android:id="@+id/layoutPhoto"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_chat_input"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/ivPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/layoutAddPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_add_person"
+                    app:tint="@color/elderly_text_hint" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="点击上传照片"
+                    android:textSize="16sp"
+                    android:textColor="@color/elderly_text_hint" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <!-- 姓名输入 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/elderly_spacing_xl"
+            android:text="逝者姓名 *"
+            android:textSize="20sp"
+            android:textColor="@color/elderly_text_primary"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etName"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="8dp"
+            android:hint="请输入姓名"
+            android:textSize="22sp"
+            android:textColor="@color/elderly_text_primary"
+            android:textColorHint="@color/elderly_text_hint"
+            android:background="@drawable/bg_chat_input"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:inputType="textPersonName"
+            android:maxLines="1" />
+
+        <!-- 生年输入 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/elderly_spacing_lg"
+            android:text="出生年份"
+            android:textSize="20sp"
+            android:textColor="@color/elderly_text_primary"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etBirthYear"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="8dp"
+            android:hint="如：1945"
+            android:textSize="22sp"
+            android:textColor="@color/elderly_text_primary"
+            android:textColorHint="@color/elderly_text_hint"
+            android:background="@drawable/bg_chat_input"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:inputType="number"
+            android:maxLength="4"
+            android:maxLines="1" />
+
+        <!-- 卒年输入 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/elderly_spacing_lg"
+            android:text="逝世年份 *"
+            android:textSize="20sp"
+            android:textColor="@color/elderly_text_primary"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etDeathYear"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="8dp"
+            android:hint="如：2023"
+            android:textSize="22sp"
+            android:textColor="@color/elderly_text_primary"
+            android:textColorHint="@color/elderly_text_hint"
+            android:background="@drawable/bg_chat_input"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:inputType="number"
+            android:maxLength="4"
+            android:maxLines="1" />
+
+        <!-- 寄语输入 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/elderly_spacing_lg"
+            android:text="寄语（遗言）"
+            android:textSize="20sp"
+            android:textColor="@color/elderly_text_primary"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="请输入寄语或遗言"
+            android:textSize="22sp"
+            android:textColor="@color/elderly_text_primary"
+            android:textColorHint="@color/elderly_text_hint"
+            android:background="@drawable/bg_chat_input"
+            android:padding="20dp"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:maxLines="5"
+            android:gravity="top" />
+
+        <!-- 生平事迹输入 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/elderly_spacing_lg"
+            android:text="生平事迹"
+            android:textSize="20sp"
+            android:textColor="@color/elderly_text_primary"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etStory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="请输入生平简介"
+            android:textSize="22sp"
+            android:textColor="@color/elderly_text_primary"
+            android:textColorHint="@color/elderly_text_hint"
+            android:background="@drawable/bg_chat_input"
+            android:padding="20dp"
+            android:inputType="textMultiLine"
+            android:minLines="4"
+            android:maxLines="8"
+            android:gravity="top" />
+
+        <!-- 提交按钮 -->
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_marginTop="@dimen/elderly_spacing_xl"
+            android:layout_marginBottom="@dimen/elderly_spacing_lg"
+            android:text="提交审核"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_button_send"
+            android:elevation="4dp" />
+
+    </LinearLayout>
+
+</ScrollView>
