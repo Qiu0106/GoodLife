@@ -74,7 +74,7 @@ class BmobRepository {
             apiService.createObject("AfterlifePlan", bmobPlan.toJsonRequestBody())
         }.map { response ->
             plan.copy(
-                id = (response.objectId ?: "").hashCode().toLong(),
+                id = response.objectId?.let { it.hashCode().toLong() } ?: 0L,
                 createdAt = response.createdAt,
                 updatedAt = response.updatedAt
             )
@@ -129,6 +129,7 @@ class BmobRepository {
             apiService.createObject("Post", bmobPost.toJsonRequestBody())
         }.map { response ->
             post.copy(
+                objectId = response.objectId,
                 id = (response.objectId ?: "").hashCode().toLong(),
                 createdAt = response.createdAt,
                 updatedAt = response.updatedAt
@@ -139,6 +140,21 @@ class BmobRepository {
     suspend fun getAllPosts(): Result<List<Post>> {
         return safeApiCall {
             apiService.getObjects("Post", order = "-createdAt")
+        }.map { response ->
+            if (response.results != null) {
+                val type = object : TypeToken<List<Map<String, Any>>>() {}.type
+                val list: List<Map<String, Any>> = gson.fromJson(gson.toJson(response.results), type)
+                list.map { PostBmob.fromMap(it).toPost() }
+            } else {
+                emptyList()
+            }
+        }
+    }
+
+    suspend fun getPostsByCategory(category: String): Result<List<Post>> {
+        return safeApiCall {
+            val where = """{"category":"$category"}"""
+            apiService.getObjects("Post", where = where, order = "-createdAt")
         }.map { response ->
             if (response.results != null) {
                 val type = object : TypeToken<List<Map<String, Any>>>() {}.type
@@ -208,6 +224,17 @@ class BmobRepository {
         }.map { }
     }
 
+    /**
+     * 纪念星献花 - 原子性递增 flowerCount
+     * 使用 Bmob 的 Increment 操作防止并发冲突
+     */
+    suspend fun incrementMemorialFlowers(objectId: String): Result<Unit> {
+        return safeApiCall {
+            val body = mapOf<String, Any?>("flowerCount" to mapOf("__op" to "Increment", "amount" to 1))
+            apiService.updateObject("MemorialStar", objectId, body.toJsonRequestBody())
+        }.map { }
+    }
+
     suspend fun addInteraction(interaction: PostInteraction): Result<PostInteraction> {
         return safeApiCall {
             val body = PostInteractionBmob.fromPostInteraction(interaction).toMap()
@@ -261,10 +288,8 @@ class BmobRepository {
         return safeApiCall {
             apiService.getObject("Post", objectId)
         }.map { response ->
-            if (response.results != null) {
-                val typeToken = object : TypeToken<Map<String, Any>>() {}.type
-                val map: Map<String, Any> = gson.fromJson(gson.toJson(response.results), typeToken)
-                PostBmob.fromMap(map).toPost()
+            if (response.isNotEmpty() && response["objectId"] != null) {
+                PostBmob.fromMap(response).toPost()
             } else {
                 null
             }
@@ -384,7 +409,7 @@ class BmobRepository {
             apiService.registerUser(body.toJsonRequestBody())
         }.map { response ->
             User(
-                id = (response.objectId ?: "").hashCode().toLong(),
+                id = response.objectId,
                 phone = phone,
                 password = password,
                 nickname = nickname ?: "用户${phone.takeLast(4)}",
@@ -420,7 +445,7 @@ class BmobRepository {
             val objectIdStr = data["objectId"] as? String ?: ""
 
             User(
-                id = if (objectIdStr.isNotEmpty()) objectIdStr.hashCode().toLong() else null,
+                id = objectIdStr.ifEmpty { null },
                 objectId = objectIdStr.ifEmpty { null },
                 phone = data["username"] as? String ?: data["mobilePhoneNumber"] as? String ?: phone,
                 password = password,
@@ -645,5 +670,94 @@ class BmobRepository {
                 emptyList()
             }
         }
+    }
+
+    suspend fun createMemorialStar(star: MemorialStarBmob): Result<MemorialStarBmob> {
+        return safeApiCall {
+            val body = star.toMap()
+            apiService.createObject("MemorialStar", body.toJsonRequestBody())
+        }.map { response ->
+            star.apply {
+                objectId = response.objectId
+                createdAt = response.createdAt
+                updatedAt = response.updatedAt
+            }
+        }
+    }
+
+    suspend fun getApprovedMemorialStars(): Result<List<MemorialStarBmob>> {
+        return safeApiCall {
+            val where = """{"status":"approved"}"""
+            apiService.getObjects("MemorialStar", where = where, order = "-createdAt")
+        }.map { response ->
+            if (response.results != null) {
+                val type = object : TypeToken<List<Map<String, Any>>>() {}.type
+                val list: List<Map<String, Any>> = gson.fromJson(gson.toJson(response.results), type)
+                list.map { MemorialStarBmob.fromMap(it) }
+            } else {
+                emptyList()
+            }
+        }
+    }
+
+    suspend fun getMemorialStarById(objectId: String): Result<MemorialStarBmob?> {
+        return safeApiCall {
+            apiService.getObject("MemorialStar", objectId)
+        }.map { response ->
+            if (response.isNotEmpty() && response["objectId"] != null) {
+                MemorialStarBmob.fromMap(response)
+            } else {
+                null
+            }
+        }
+    }
+
+    suspend fun createComment(comment: Comment): Result<Comment> {
+        return safeApiCall {
+            val bmobComment = CommentBmob.fromComment(comment).toMap()
+            apiService.createObject("Comment", bmobComment.toJsonRequestBody())
+        }.map { response ->
+            comment.copy(
+                id = (response.objectId ?: "").hashCode().toLong(),
+                objectId = response.objectId,
+                createdAt = response.createdAt,
+                updatedAt = response.updatedAt
+            )
+        }
+    }
+
+    suspend fun getCommentsByPostId(postId: String): Result<List<Comment>> {
+        return safeApiCall {
+            val where = """{"postId":"$postId"}"""
+            apiService.getObjects("Comment", where = where, order = "createdAt")
+        }.map { response ->
+            if (response.results != null) {
+                val type = object : TypeToken<List<Map<String, Any>>>() {}.type
+                val list: List<Map<String, Any>> = gson.fromJson(gson.toJson(response.results), type)
+                list.map { CommentBmob.fromMap(it).toComment() }
+            } else {
+                emptyList()
+            }
+        }
+    }
+
+    suspend fun deleteComment(objectId: String): Result<Unit> {
+        return safeApiCall {
+            apiService.deleteObject("Comment", objectId)
+        }.map { }
+    }
+
+    suspend fun incrementPostCommentCount(objectId: String): Result<Unit> {
+        return safeApiCall {
+            val body = mapOf<String, Any?>("commentCount" to mapOf("__op" to "Increment", "amount" to 1))
+            apiService.updateObject("Post", objectId, body.toJsonRequestBody())
+        }.map { }
+    }
+
+    suspend fun decrementPostCommentCount(objectId: String): Result<Unit> {
+        return safeApiCall {
+            val body = mapOf<String, Any?>("commentCount" to mapOf("__op" to "Increment", "amount" to -1))
+            apiService.updateObject("Post", objectId, body.toJsonRequestBody())
+        }.map { }
     }
 }

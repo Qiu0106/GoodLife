@@ -11,30 +11,16 @@ class PostBmob {
     var createdAt: String? = null
     var updatedAt: String? = null
 
-    // 用户ID
     var userId: String? = null
-
-    // 帖子标题
     var title: String? = null
-
-    // 帖子内容
     var content: String? = null
-
-    // 封面图片URL
+    var category: String? = null
     var coverImageUrl: String? = null
-
     var imageUrls: String? = null
-
     var userName: String? = null
-
-    // 用户头像URL
     var userAvatarUrl: String? = null
-
-    // 点赞数
     var likeCount: Int = 0
-
     var favoriteCount: Int = 0
-
     var commentCount: Int = 0
 
     fun toMap(): Map<String, Any?> {
@@ -42,6 +28,7 @@ class PostBmob {
             "userId" to userId,
             "title" to title,
             "content" to content,
+            "category" to category,
             "coverImageUrl" to coverImageUrl,
             "imageUrls" to imageUrls,
             "userName" to userName,
@@ -59,6 +46,7 @@ class PostBmob {
             userId = userId ?: "",
             title = title ?: "",
             content = content ?: "",
+            category = category ?: "",
             coverImageUrl = coverImageUrl,
             imageUrls = imageUrls,
             userName = userName ?: "",
@@ -78,6 +66,7 @@ class PostBmob {
                 userId = post.userId
                 title = post.title
                 content = post.content
+                category = post.category
                 coverImageUrl = post.coverImageUrl
                 imageUrls = post.imageUrls
                 userName = post.userName
@@ -96,6 +85,7 @@ class PostBmob {
                 userId = map["userId"] as? String
                 title = map["title"] as? String
                 content = map["content"] as? String
+                category = map["category"] as? String
                 coverImageUrl = map["coverImageUrl"] as? String
                 imageUrls = map["imageUrls"] as? String
                 userName = map["userName"] as? String

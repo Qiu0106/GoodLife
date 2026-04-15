@@ -3,7 +3,6 @@ package com.example.smartelderlycare_app.component
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +12,7 @@ import com.example.smartelderlycare_app.R
 import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.jvm.java
 
 class MainActivity : AppCompatActivity() {
 
@@ -134,7 +134,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<MaterialCardView>(R.id.card_starry_sky).setOnClickListener {
-            startActivity(Intent(this, StarMemorialComposeActivity::class.java))
+            startActivity(Intent(this, StarrySkyActivity::class.java))
         }
 
         findViewById<MaterialCardView>(R.id.card_mine).setOnClickListener {
@@ -142,8 +142,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<MaterialCardView>(R.id.btn_voice_assistant).setOnClickListener {
-            showToast("正在唤醒：语音助手...")
-            // TODO: 集成语音助手功能
+            startActivity(Intent(this, ChatActivity::class.java))
         }
     }
 

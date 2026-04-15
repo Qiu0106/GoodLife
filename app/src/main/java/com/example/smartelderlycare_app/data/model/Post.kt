@@ -10,6 +10,7 @@ data class Post(
     val userId: String,
     val title: String,
     val content: String,
+    val category: String = "",
     val coverImageUrl: String? = null,
     val imageUrls: String? = null,
     val userName: String,

@@ -6,65 +6,26 @@
     android:orientation="vertical"
     android:background="@color/elderly_bg">
 
-    <LinearLayout
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingHorizontal="@dimen/elderly_padding_page"
-        android:paddingTop="@dimen/elderly_spacing_lg"
-        android:paddingBottom="@dimen/elderly_spacing_md">
+        android:layout_height="64dp"
+        android:background="@color/elderly_surface"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabIndicatorColor="@color/elderly_brand"
+        app:tabIndicatorHeight="4dp"
+        app:tabIndicatorFullWidth="true"
+        app:tabRippleColor="@color/elderly_brand_light"
+        app:tabSelectedTextColor="@color/elderly_brand"
+        app:tabTextColor="@color/elderly_text_secondary"
+        app:tabTextAppearance="@style/ElderlyTabTextAppearance"
+        app:tabIndicator="@drawable/bg_tab_indicator" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tabActive"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/elderly_button_height"
-            android:layout_weight="1"
-            android:layout_marginEnd="@dimen/elderly_spacing_sm"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardCornerRadius="@dimen/elderly_corner_radius_large"
-            app:cardElevation="0dp"
-            app:strokeWidth="2dp"
-            app:strokeColor="@color/elderly_brand"
-            app:cardBackgroundColor="@color/elderly_brand"
-            android:foreground="?android:attr/selectableItemBackground">
-
-            <TextView
-                android:id="@+id/tvTabActive"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="进行中"
-                android:textSize="@dimen/elderly_text_body_large"
-                android:textStyle="bold"
-                android:textColor="@color/white" />
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/tabEnded"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/elderly_button_height"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardCornerRadius="@dimen/elderly_corner_radius_large"
-            app:cardElevation="0dp"
-            app:strokeWidth="2dp"
-            app:strokeColor="@color/elderly_divider"
-            app:cardBackgroundColor="@color/elderly_surface"
-            android:foreground="?android:attr/selectableItemBackground">
-
-            <TextView
-                android:id="@+id/tvTabEnded"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="已结束"
-                android:textSize="@dimen/elderly_text_body_large"
-                android:textStyle="bold"
-                android:textColor="@color/elderly_text_secondary" />
-        </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/elderly_divider" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_community"

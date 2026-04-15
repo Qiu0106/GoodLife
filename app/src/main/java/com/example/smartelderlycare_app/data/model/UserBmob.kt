@@ -26,7 +26,7 @@ class UserBmob {
 
     fun toUser(): User {
         return User(
-            id = objectId?.hashCode()?.toLong(),
+            id = objectId,
             objectId = objectId,
             phone = mobilePhoneNumber ?: username ?: "",
             password = null,

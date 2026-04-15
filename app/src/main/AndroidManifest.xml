@@ -53,6 +53,9 @@
             android:name=".component.MineActivity"
             android:exported="false" />
         <activity
+            android:name=".component.AddMemorialActivity"
+            android:exported="false" />
+        <activity
             android:name=".component.EditProfileActivity"
             android:exported="false" />
         <activity
@@ -70,6 +73,14 @@
         <activity
             android:name=".component.StarMemorialComposeActivity"
             android:exported="false" />
+        <activity
+            android:name=".component.StarrySkyActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SmartElderlyCareApp" />
+        <activity
+            android:name=".component.ChatActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SmartElderlyCareApp" />
     </application>
 
 </manifest>

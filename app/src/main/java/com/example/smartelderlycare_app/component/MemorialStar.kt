@@ -7,8 +7,8 @@ data class MemorialStar(
     val profileImageUrl: String?,
     var x: Float,
     var y: Float,
-    val radius: Float,
-    var speedX: Float,
-    var speedY: Float,
-    var alpha: Float
+    var radius: Float = 40f,
+    var speedX: Float = 0f,
+    var speedY: Float = 0f,    // 加上 = 0f 赋予默认值
+    var alpha: Float = 255f    // 加上 = 255f 赋予默认值
 )

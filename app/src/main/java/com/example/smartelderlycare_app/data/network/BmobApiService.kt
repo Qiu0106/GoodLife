@@ -69,7 +69,7 @@ interface BmobApiService {
         @Path("objectId") objectId: String,
         @Header("X-Bmob-Application-Id") appId: String = APPLICATION_ID,
         @Header("X-Bmob-REST-API-Key") apiKey: String = REST_API_KEY
-    ): Response<BmobResponse<Map<String, Any>>>
+    ): Response<Map<String, Any>>
 
     // ========== 用户管理 API (v1) ==========
 
@@ -111,6 +111,14 @@ data class BmobResponse<T>(
     val createdAt: String? = null,
     val updatedAt: String? = null,
     val sessionToken: String? = null,
+    val code: Int? = null,
+    val error: String? = null
+)
+
+data class BmobResponseSingle<T>(
+    val objectId: String? = null,
+    val createdAt: String? = null,
+    val updatedAt: String? = null,
     val code: Int? = null,
     val error: String? = null
 )

@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -14,10 +16,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.setPadding
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.smartelderlycare_app.R
+import com.example.smartelderlycare_app.data.model.Comment
 import com.example.smartelderlycare_app.data.model.PostInteraction
 import com.example.smartelderlycare_app.data.repository.BmobRepository
 import kotlinx.coroutines.Dispatchers
@@ -34,11 +39,17 @@ class PostDetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var tvUserName: TextView
     private lateinit var tvPostContent: TextView
     private lateinit var btnVoice: ImageButton
-    private lateinit var btnShare: ImageButton
-    private lateinit var btnLike: ImageButton
-    private lateinit var btnFavorite: ImageButton
+    private lateinit var btnShare: ImageView
+    private lateinit var etCommentInput: EditText
+    private lateinit var btnSendComment: ImageButton
+    private lateinit var layoutLike: LinearLayout
+    private lateinit var ivLike: ImageView
     private lateinit var tvLikeCount: TextView
+    private lateinit var layoutFavorite: LinearLayout
+    private lateinit var ivFavorite: ImageView
     private lateinit var tvFavoriteCount: TextView
+    private lateinit var layoutShare: LinearLayout
+    private lateinit var rvComments: RecyclerView
 
     private lateinit var textToSpeech: TextToSpeech
     private var isSpeaking = false
@@ -48,6 +59,8 @@ class PostDetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var favoriteInteractionId: String? = null
 
     private val repository = BmobRepository()
+    private lateinit var commentAdapter: CommentAdapter
+    private val commentList = mutableListOf<Comment>()
 
     private var postObjectId: String = ""
     private var title: String = ""
@@ -76,9 +89,11 @@ class PostDetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         receiveIntentData()
         displayPostData()
+        setupCommentRecyclerView()
 
         textToSpeech = TextToSpeech(this, this)
         loadInteractionStatus()
+        loadComments()
         setupButtonListeners()
     }
 
@@ -91,10 +106,22 @@ class PostDetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         tvPostContent = findViewById(R.id.tv_post_content)
         btnVoice = findViewById(R.id.btn_voice)
         btnShare = findViewById(R.id.btn_share)
-        btnLike = findViewById(R.id.btn_like)
-        btnFavorite = findViewById(R.id.btn_favorite)
+        etCommentInput = findViewById(R.id.et_comment_input)
+        btnSendComment = findViewById(R.id.btn_send_comment)
+        layoutLike = findViewById(R.id.layout_like)
+        ivLike = findViewById(R.id.iv_like)
         tvLikeCount = findViewById(R.id.tv_like_count)
+        layoutFavorite = findViewById(R.id.layout_favorite)
+        ivFavorite = findViewById(R.id.iv_favorite)
         tvFavoriteCount = findViewById(R.id.tv_favorite_count)
+        layoutShare = findViewById(R.id.layout_share)
+        rvComments = findViewById(R.id.rv_comments)
+    }
+
+    private fun setupCommentRecyclerView() {
+        commentAdapter = CommentAdapter(commentList)
+        rvComments.layoutManager = LinearLayoutManager(this)
+        rvComments.adapter = commentAdapter
     }
 
     private fun receiveIntentData() {
@@ -126,6 +153,17 @@ class PostDetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         lifecycleScope.launch { loadUserAvatar() }
         lifecycleScope.launch { loadPostImages() }
+    }
+
+    private fun loadComments() {
+        if (postObjectId.isEmpty()) return
+        lifecycleScope.launch {
+            repository.getCommentsByPostId(postObjectId).onSuccess { comments ->
+                commentList.clear()
+                commentList.addAll(comments)
+                commentAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     private fun loadInteractionStatus() {
@@ -212,11 +250,11 @@ class PostDetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()
 
     private fun updateLikeIcon() {
-        btnLike.setImageResource(if (isLiked) R.drawable.ic_heart_filled else R.drawable.ic_heart_outline)
+        ivLike.setImageResource(if (isLiked) R.drawable.ic_heart_filled else R.drawable.ic_heart_outline)
     }
 
     private fun updateFavoriteIcon() {
-        btnFavorite.setImageResource(if (isFavorite) R.drawable.ic_star_filled else R.drawable.ic_star_outline)
+        ivFavorite.setImageResource(if (isFavorite) R.drawable.ic_star_filled else R.drawable.ic_star_outline_yellow)
     }
 
     private fun toggleLike() {
@@ -241,8 +279,8 @@ class PostDetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 repository.incrementPostLikes(postObjectId)
                 isLiked = true
                 likeCount += 1
-                btnLike.animate().scaleX(1.3f).scaleY(1.3f).setDuration(200).withEndAction {
-                    btnLike.animate().scaleX(1f).scaleY(1f).setDuration(200).start()
+                ivLike.animate().scaleX(1.3f).scaleY(1.3f).setDuration(200).withEndAction {
+                    ivLike.animate().scaleX(1f).scaleY(1f).setDuration(200).start()
                 }.start()
             }
             runOnUiThread {
@@ -273,8 +311,8 @@ class PostDetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     repository.incrementPostFavorites(postObjectId)
                     isFavorite = true
                     favoriteCount += 1
-                    btnFavorite.animate().scaleX(1.3f).scaleY(1.3f).setDuration(200).withEndAction {
-                        btnFavorite.animate().scaleX(1f).scaleY(1f).setDuration(200).start()
+                    ivFavorite.animate().scaleX(1.3f).scaleY(1.3f).setDuration(200).withEndAction {
+                        ivFavorite.animate().scaleX(1f).scaleY(1f).setDuration(200).start()
                     }.start()
                     runOnUiThread {
                         updateFavoriteIcon()
@@ -286,7 +324,21 @@ class PostDetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                         Toast.makeText(this@PostDetailActivity, "收藏失败，请重试", Toast.LENGTH_SHORT).show()
                     }
                 }
+                return@launch
             }
+            runOnUiThread {
+                updateFavoriteIcon()
+                tvFavoriteCount.text = favoriteCount.toString()
+            }
+        }
+    }
+
+    private fun sharePost() {
+        Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_SUBJECT, title)
+            putExtra(Intent.EXTRA_TEXT, "$title\n\n$content\n\n作者：$userName")
+            startActivity(Intent.createChooser(this, "分享到"))
         }
     }
 
@@ -302,23 +354,61 @@ class PostDetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 btnVoice.setImageResource(R.drawable.ic_media_pause)
             }
         }
-        btnShare.setOnClickListener { sharePost() }
-        btnLike.setOnClickListener { toggleLike() }
-        btnFavorite.setOnClickListener { toggleFavorite() }
+        layoutShare.setOnClickListener { sharePost() }
+        layoutLike.setOnClickListener { toggleLike() }
+        layoutFavorite.setOnClickListener { toggleFavorite() }
+        btnSendComment.setOnClickListener { sendComment() }
+        etCommentInput.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                sendComment()
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun sendComment() {
+        val commentContent = etCommentInput.text.toString().trim()
+        if (commentContent.isEmpty()) {
+            Toast.makeText(this, "请输入评论内容", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (userId.isEmpty()) {
+            Toast.makeText(this, "请先登录", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        btnSendComment.isEnabled = false
+        lifecycleScope.launch {
+            val prefs = getSharedPreferences("user", MODE_PRIVATE)
+            val comment = Comment(
+                postId = postObjectId,
+                authorName = prefs.getString("nickname", "匿名用户") ?: "匿名用户",
+                authorAvatar = prefs.getString("avatarUrl", null),
+                content = commentContent
+            )
+
+            repository.createComment(comment).onSuccess {
+                runOnUiThread {
+                    etCommentInput.text.clear()
+                    Toast.makeText(this@PostDetailActivity, "评论发送成功", Toast.LENGTH_SHORT).show()
+                    loadComments()
+                }
+            }.onFailure {
+                runOnUiThread {
+                    Toast.makeText(this@PostDetailActivity, "评论发送失败: ${it.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+            runOnUiThread {
+                btnSendComment.isEnabled = true
+            }
+        }
     }
 
     private fun speakText() {
         val text = "$title。$content"
         textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
-    }
-
-    private fun sharePost() {
-        Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_SUBJECT, title)
-            putExtra(Intent.EXTRA_TEXT, "$title\n\n$content\n\n作者：$userName")
-            startActivity(Intent.createChooser(this, "分享到"))
-        }
     }
 
     override fun onInit(status: Int) {

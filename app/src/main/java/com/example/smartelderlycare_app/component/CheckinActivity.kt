@@ -1,10 +1,12 @@
 package com.example.smartelderlycare_app.component
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -51,6 +53,11 @@ class CheckinActivity : AppCompatActivity() {
         btnCheckin = findViewById(R.id.btn_checkin)
         tvCheckinText = findViewById(R.id.tv_checkin_text)
         progressBar = findViewById(R.id.progressBar)
+
+        // Debug 按钮：触发3天未打卡预警
+        findViewById<Button>(R.id.btn_debug_alert).setOnClickListener {
+            simulateThreeDaysNoCheckinAlert()
+        }
 
         loadUserInfo()
         loadCheckinData()
@@ -230,6 +237,82 @@ class CheckinActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) { finish(); return true }
         return super.onOptionsItemSelected(item)
+    }
+
+    /**
+     * Debug 功能：模拟3天未打卡预警
+     * 直接跳过时间校验，构造触发条件并执行预警
+     */
+    private fun simulateThreeDaysNoCheckinAlert() {
+        Log.d("CheckinDebug", "========== Debug: 触发3天未打卡预警 ==========")
+
+        // 模拟数据：构造3天未打卡的场景
+        val prefs = getSharedPreferences("user", MODE_PRIVATE)
+        val emergencyContact = prefs.getString("emergencyContact", "未知联系人")
+        val emergencyPhone = prefs.getString("emergencyPhone", "未知号码")
+        val nickname = prefs.getString("nickname", "用户")
+
+        Log.d("CheckinDebug", "当前用户: $nickname")
+        Log.d("CheckinDebug", "紧急联系人: $emergencyContact ($emergencyPhone)")
+        Log.d("CheckinDebug", "模拟场景: 最后打卡时间为3天前")
+        Log.d("CheckinDebug", "连续未打卡天数: 3天")
+
+        // 调用预警发送桩函数
+        sendAlertToEmergencyContact(emergencyContact ?: "未知", emergencyPhone ?: "未知", 3)
+    }
+
+    /**
+     * 桩函数：向紧急联系人发送预警通知
+     *
+     * 当前实现：仅显示 Toast 和打印 Log
+     *
+     * ============================================================
+     * 未来接入真实短信/网络通知需要的权限和实现：
+     * ============================================================
+     *
+     * 【短信方式 - 需要权限】
+     * AndroidManifest 添加：
+     * <uses-permission android:name="android.permission.SEND_SMS" />
+     *
+     * 代码示例：
+     * val smsManager = SmsManager.getDefault()
+     * smsManager.sendTextMessage(phone, null, message, null, null)
+     *
+     * 【网络推送方式 - 推荐】
+     * 使用极光推送 / 友盟推送 / Firebase Cloud Messaging
+     * AndroidManifest 添加：
+     * <uses-permission android:name="android.permission.INTERNET" />
+     * <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+     *
+     * 代码示例（以极光为例）：
+     * JPushInterface.pushMessage(mContext, title, content, mapOf("type" to "checkin_alert"))
+     *
+     * 【微信/钉钉企业消息 - 通过服务端】
+     * 通过后端调用第三方通知 API，App 端只需调用自己的后端接口
+     *
+     * ============================================================
+     */
+    private fun sendAlertToEmergencyContact(name: String, phone: String, days: Int) {
+        val message = "警告：您的家人 [$name] 已连续 $days 天未打卡，情况值得关注。"
+
+        // 打印详细 Log
+        Log.w("CheckinAlert", "========================================")
+        Log.w("CheckinAlert", "【打卡预警通知】")
+        Log.w("CheckinAlert", "发送对象: $name")
+        Log.w("CheckinAlert", "联系电话: $phone")
+        Log.w("CheckinAlert", "未打卡天数: $days 天")
+        Log.w("CheckinAlert", "预警消息: $message")
+        Log.w("CheckinAlert", "========================================")
+
+        // TODO: 接入真实通知时，取消下面这行注释
+        // sendRealAlert(phone, message)
+
+        // 显示 Toast 提示
+        Toast.makeText(
+            this,
+            "⚠️ 警告：已向紧急联系人 [$name / $phone] 发送 $days 天未打卡通知",
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     class LeaderboardAdapter(

@@ -4,164 +4,288 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFFFFF">
+    android:background="@color/elderly_bg">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#FFFFFF"
+        android:layout_height="64dp"
+        android:background="@color/elderly_surface"
         android:elevation="4dp"
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:title="">
-        
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            
+
             <TextView
                 android:id="@+id/tv_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="帖子详情"
-                android:textSize="18sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
-                android:textColor="#333333"/>
-            
+                android:textColor="@color/elderly_text_primary"/>
+
             <ImageButton
                 android:id="@+id/btn_share"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_alignParentRight="true"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_menu_share"
-                android:contentDescription="分享"/>
+                android:contentDescription="分享"
+                app:tint="@color/elderly_text_primary"/>
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:fillViewport="true">
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
+
             <LinearLayout
                 android:id="@+id/ll_images_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="8dp"
-                android:background="#F5F5F5"/>
+                android:padding="12dp"
+                android:background="@color/elderly_input_bg"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="16dp"
-                android:paddingTop="16dp">
-                
-                <TextView
-                    android:id="@+id/tv_post_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_toLeftOf="@+id/btn_voice"
-                    android:text="帖子标题"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:textColor="#333333"
-                    android:maxLines="2"
-                    android:ellipsize="end"/>
-                
-                <ImageButton
-                    android:id="@+id/btn_voice"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:layout_alignParentRight="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_volume_up"
-                    android:contentDescription="语音播报"/>
-            </RelativeLayout>
-            
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="12dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="#FAFAFA">
-                
-                <ImageView
-                    android:id="@+id/iv_user_avatar"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@mipmap/ic_launcher_round"
-                    android:scaleType="centerCrop"/>
-                
-                <TextView
-                    android:id="@+id/tv_user_name"
-                    android:layout_width="0dp"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="20dp"
+                android:background="@color/elderly_surface">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="12dp"
-                    android:text="用户名"
-                    android:textSize="15sp"
-                    android:textColor="#666666"/>
-                
-                <ImageButton
-                    android:id="@+id/btn_like"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_heart_outline"
-                    android:contentDescription="点赞"/>
-                
-                <TextView
-                    android:id="@+id/tv_like_count"
-                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tv_post_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="帖子标题"
+                        android:textSize="26sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/elderly_text_primary"
+                        android:maxLines="3"
+                        android:ellipsize="end"/>
+
+                    <ImageButton
+                        android:id="@+id/btn_voice"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_marginStart="12dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_volume_up"
+                        android:contentDescription="语音播报"
+                        app:tint="@color/elderly_brand"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginEnd="12dp"
-                    android:text="0"
-                    android:textSize="14sp"
-                    android:textColor="#666666"/>
-                
-                <ImageButton
-                    android:id="@+id/btn_favorite"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_star_outline"
-                    android:contentDescription="收藏"/>
-                
-                <TextView
-                    android:id="@+id/tv_favorite_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:text="0"
-                    android:textSize="14sp"
-                    android:textColor="#666666"/>
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/iv_user_avatar"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:src="@mipmap/ic_launcher_round"
+                        android:scaleType="centerCrop"/>
+
+                    <TextView
+                        android:id="@+id/tv_user_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="14dp"
+                        android:text="用户名"
+                        android:textSize="18sp"
+                        android:textColor="@color/elderly_text_primary"/>
+                </LinearLayout>
             </LinearLayout>
-            
+
             <TextView
                 android:id="@+id/tv_post_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:padding="20dp"
                 android:text="帖子内容"
-                android:textSize="16sp"
-                android:lineSpacingMultiplier="1.6"
-                android:textColor="#333333"
-                android:background="#FFFFFF"/>
+                android:textSize="20sp"
+                android:lineSpacingMultiplier="1.8"
+                android:textColor="@color/elderly_text_primary"
+                android:background="@color/elderly_surface"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/elderly_divider"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="20dp"
+                android:text="全部评论"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/elderly_text_primary"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@color/elderly_brand"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_comments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:nestedScrollingEnabled="false"
+                android:paddingHorizontal="20dp"
+                android:clipToPadding="false"/>
+
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/elderly_divider"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:gravity="center_vertical"
+        android:background="@color/elderly_surface"
+        android:elevation="8dp">
+
+        <EditText
+            android:id="@+id/et_comment_input"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_elderly_input"
+            android:hint="说点什么..."
+            android:textSize="18sp"
+            android:textColorHint="@color/elderly_text_hint"
+            android:textColor="@color/elderly_text_primary"
+            android:paddingHorizontal="20dp"
+            android:gravity="center_vertical"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:imeOptions="actionSend"/>
+
+        <ImageButton
+            android:id="@+id/btn_send_comment"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="12dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_send"
+            android:contentDescription="发送评论"
+            app:tint="@color/elderly_brand"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_like"
+                android:layout_width="wrap_content"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingHorizontal="12dp"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:id="@+id/iv_like"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_heart_outline"
+                    app:tint="@color/elderly_brand"/>
+
+                <TextView
+                    android:id="@+id/tv_like_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="0"
+                    android:textSize="18sp"
+                    android:textColor="@color/elderly_text_secondary"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingHorizontal="12dp"
+                android:layout_marginStart="4dp"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:id="@+id/iv_favorite"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_star_outline_yellow"/>
+
+                <TextView
+                    android:id="@+id/tv_favorite_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="0"
+                    android:textSize="18sp"
+                    android:textColor="@color/elderly_text_secondary"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_share"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginStart="4dp"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_menu_share"
+                    app:tint="@color/elderly_brand"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

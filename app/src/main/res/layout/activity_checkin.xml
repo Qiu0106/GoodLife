@@ -93,4 +93,17 @@
         android:background="@color/elderly_surface"
         android:layout_marginHorizontal="@dimen/elderly_padding_page"
         android:padding="@dimen/elderly_padding_card" />
+
+    <!-- Debug 按钮：触发3天未打卡预警 -->
+    <Button
+        android:id="@+id/btn_debug_alert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/elderly_padding_page"
+        android:layout_marginTop="@dimen/elderly_spacing_md"
+        android:layout_marginBottom="@dimen/elderly_spacing_lg"
+        android:text="Debug: 触发3天未打卡预警"
+        android:textSize="@dimen/elderly_text_body"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/red" />
 </LinearLayout>

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.HapticFeedbackConstants
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.smartelderlycare_app.R
 import com.example.smartelderlycare_app.ui.viewmodel.PostViewModel
-import com.google.android.material.card.MaterialCardView
+import com.google.android.material.tabs.TabLayout
 
 class CommunityActivity : AppCompatActivity() {
 
@@ -23,12 +22,10 @@ class CommunityActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var adapter: PostAdapter
-    private lateinit var tabActive: MaterialCardView
-    private lateinit var tabEnded: MaterialCardView
-    private lateinit var tvTabActive: TextView
-    private lateinit var tvTabEnded: TextView
+    private lateinit var tabLayout: TabLayout
 
-    private var isActiveTab = true
+    private val categories = listOf("推荐", "健康养生", "日常闲聊", "社区活动")
+    private var currentCategory: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +33,7 @@ class CommunityActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recyclerView_community)
         progressBar = findViewById(R.id.progressBar)
-        tabActive = findViewById(R.id.tabActive)
-        tabEnded = findViewById(R.id.tabEnded)
-        tvTabActive = findViewById(R.id.tvTabActive)
-        tvTabEnded = findViewById(R.id.tvTabEnded)
+        tabLayout = findViewById(R.id.tab_layout)
 
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
@@ -47,7 +41,7 @@ class CommunityActivity : AppCompatActivity() {
         adapter = PostAdapter(emptyList(), this)
         recyclerView.adapter = adapter
 
-        setupTabs()
+        setupTabLayout()
         observeViewModel()
         viewModel.getAllPosts()
 
@@ -56,45 +50,31 @@ class CommunityActivity : AppCompatActivity() {
         }
     }
 
-    private fun performHapticFeedback(view: View) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
-        } else {
-            @Suppress("DEPRECATION")
-            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+    private fun setupTabLayout() {
+        categories.forEach { category ->
+            tabLayout.addTab(tabLayout.newTab().setText(category))
         }
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    performHapticFeedback(it.view)
+                    val position = it.position
+                    currentCategory = if (position == 0) null else categories[position]
+                    loadPostsByCategory(currentCategory)
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
     }
 
-    private fun setupTabs() {
-        tabActive.setOnClickListener {
-            performHapticFeedback(it)
-            isActiveTab = true
-            updateTabUI()
-        }
-        tabEnded.setOnClickListener {
-            performHapticFeedback(it)
-            isActiveTab = false
-            updateTabUI()
-        }
-    }
-
-    private fun updateTabUI() {
-        if (isActiveTab) {
-            tabActive.setCardBackgroundColor(resources.getColor(R.color.elderly_brand, null))
-            tabActive.strokeColor = resources.getColor(R.color.elderly_brand, null)
-            tvTabActive.setTextColor(resources.getColor(R.color.white, null))
-
-            tabEnded.setCardBackgroundColor(resources.getColor(R.color.elderly_surface, null))
-            tabEnded.strokeColor = resources.getColor(R.color.elderly_divider, null)
-            tvTabEnded.setTextColor(resources.getColor(R.color.elderly_text_secondary, null))
+    private fun loadPostsByCategory(category: String?) {
+        if (category == null) {
+            viewModel.getAllPosts()
         } else {
-            tabEnded.setCardBackgroundColor(resources.getColor(R.color.elderly_brand, null))
-            tabEnded.strokeColor = resources.getColor(R.color.elderly_brand, null)
-            tvTabEnded.setTextColor(resources.getColor(R.color.white, null))
-
-            tabActive.setCardBackgroundColor(resources.getColor(R.color.elderly_surface, null))
-            tabActive.strokeColor = resources.getColor(R.color.elderly_divider, null)
-            tvTabActive.setTextColor(resources.getColor(R.color.elderly_text_secondary, null))
+            viewModel.getPostsByCategory(category)
         }
     }
 
@@ -122,8 +102,17 @@ class CommunityActivity : AppCompatActivity() {
         })
     }
 
+    private fun performHapticFeedback(view: View) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
+        } else {
+            @Suppress("DEPRECATION")
+            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        viewModel.getAllPosts()
+        loadPostsByCategory(currentCategory)
     }
 }

@@ -148,20 +148,6 @@
             android:stateListAnimator="@null"
             android:layout_marginBottom="@dimen/elderly_spacing_lg" />
 
-        <TextView
-            android:id="@+id/tvTestBmob"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="测试 Bmob 连接"
-            android:textColor="@color/elderly_text_hint"
-            android:textSize="@dimen/elderly_text_small"
-            android:layout_gravity="center"
-            android:paddingHorizontal="@dimen/elderly_spacing_lg"
-            android:paddingVertical="@dimen/elderly_spacing_md"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackground" />
-
     </LinearLayout>
 
 </ScrollView>

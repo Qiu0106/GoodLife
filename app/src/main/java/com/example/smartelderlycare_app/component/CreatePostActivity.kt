@@ -23,6 +23,7 @@ import com.example.smartelderlycare_app.data.model.Post
 import com.example.smartelderlycare_app.data.repository.BmobRepository
 import com.example.smartelderlycare_app.ui.viewmodel.PostViewModel
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.chip.ChipGroup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,9 +34,11 @@ class CreatePostActivity : AppCompatActivity() {
 
     private lateinit var btnCancel: TextView
     private lateinit var btnPublish: MaterialButton
+    private lateinit var etPostTitle: EditText
     private lateinit var etPostContent: EditText
     private lateinit var imagesContainer: LinearLayout
     private lateinit var btnAddImage: FrameLayout
+    private lateinit var chipGroupCategory: ChipGroup
 
     private val viewModel: PostViewModel by viewModels()
     private val repository = BmobRepository()
@@ -58,9 +61,11 @@ class CreatePostActivity : AppCompatActivity() {
     private fun initViews() {
         btnCancel = findViewById(R.id.btn_cancel)
         btnPublish = findViewById(R.id.btn_publish)
+        etPostTitle = findViewById(R.id.et_post_title)
         etPostContent = findViewById(R.id.et_post_content)
         imagesContainer = findViewById(R.id.images_container)
         btnAddImage = findViewById(R.id.btn_add_image)
+        chipGroupCategory = findViewById(R.id.chip_group_category)
 
         btnCancel.setOnClickListener {
             finish()
@@ -164,12 +169,20 @@ class CreatePostActivity : AppCompatActivity() {
     }
 
     private fun publishPost() {
+        val title = etPostTitle.text.toString().trim()
         val content = etPostContent.text.toString().trim()
+
+        if (title.isEmpty()) {
+            Toast.makeText(this, "请输入标题", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         if (content.isEmpty()) {
             Toast.makeText(this, "请输入内容", Toast.LENGTH_SHORT).show()
             return
         }
+
+        val category = getSelectedCategory()
 
         val sharedPreferences = getSharedPreferences("user", MODE_PRIVATE)
         val userId = sharedPreferences.getString("userObjectId", null)
@@ -179,13 +192,22 @@ class CreatePostActivity : AppCompatActivity() {
         val userAvatarUrl = sharedPreferences.getString("avatarUrl", null)
 
         if (selectedImageUris.isNotEmpty()) {
-            uploadImagesAndPublish(content, userId, userName, userAvatarUrl)
+            uploadImagesAndPublish(title, content, category, userId, userName, userAvatarUrl)
         } else {
-            publishPostDirectly(content, userId, userName, null, null, userAvatarUrl)
+            publishPostDirectly(title, content, category, userId, userName, null, null, userAvatarUrl)
         }
     }
 
-    private fun uploadImagesAndPublish(content: String, userId: String, userName: String, userAvatarUrl: String?) {
+    private fun getSelectedCategory(): String {
+        return when (chipGroupCategory.checkedChipId) {
+            R.id.chip_health -> "健康养生"
+            R.id.chip_chat -> "日常闲聊"
+            R.id.chip_activity -> "社区活动"
+            else -> "其他"
+        }
+    }
+
+    private fun uploadImagesAndPublish(title: String, content: String, category: String, userId: String, userName: String, userAvatarUrl: String?) {
         progressDialog?.dismiss()
         progressDialog = ProgressDialog(this).apply {
             setMessage("正在上传图片 (0/${selectedImageUris.size})...")
@@ -240,15 +262,16 @@ class CreatePostActivity : AppCompatActivity() {
                 }.toString()
             } else null
 
-            publishPostDirectly(content, userId, userName, coverUrl, imageUrlsJson, userAvatarUrl)
+            publishPostDirectly(title, content, category, userId, userName, coverUrl, imageUrlsJson, userAvatarUrl)
         }
     }
 
-    private fun publishPostDirectly(content: String, userId: String, userName: String, coverUrl: String?, imageUrls: String? = null, userAvatarUrl: String? = null) {
+    private fun publishPostDirectly(title: String, content: String, category: String, userId: String, userName: String, coverUrl: String?, imageUrls: String? = null, userAvatarUrl: String? = null) {
         val post = Post(
             userId = userId,
-            title = content.take(20) + if (content.length > 20) "..." else "",
+            title = title,
             content = content,
+            category = category,
             coverImageUrl = coverUrl,
             imageUrls = imageUrls,
             userName = userName,

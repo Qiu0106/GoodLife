@@ -15,8 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.smartelderlycare_app.R
-import com.example.smartelderlycare_app.data.repository.BmobTestHelper
-import com.example.smartelderlycare_app.data.repository.TestStatus
 import com.example.smartelderlycare_app.ui.viewmodel.UserViewModel
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
@@ -27,7 +25,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var etPassword: EditText
     private lateinit var btnLogin: Button
     private lateinit var btnRegister: Button
-    private lateinit var tvTestBmob: TextView
     private lateinit var tilPhone: TextInputLayout
     private lateinit var tilPassword: TextInputLayout
 
@@ -42,7 +39,6 @@ class LoginActivity : AppCompatActivity() {
         etPassword = findViewById(R.id.etPassword)
         btnLogin = findViewById(R.id.btnLogin)
         btnRegister = findViewById(R.id.btnRegister)
-        tvTestBmob = findViewById(R.id.tvTestBmob)
         tilPhone = findViewById(R.id.tilPhone)
         tilPassword = findViewById(R.id.tilPassword)
 
@@ -64,10 +60,6 @@ class LoginActivity : AppCompatActivity() {
             if (!validateInput(phone, password)) return@setOnClickListener
 
             viewModel.register(phone, password)
-        }
-
-        tvTestBmob.setOnClickListener {
-            testBmobConnection()
         }
 
         etPhone.setOnFocusChangeListener { _, hasFocus ->
@@ -113,35 +105,6 @@ class LoginActivity : AppCompatActivity() {
         } else {
             @Suppress("DEPRECATION")
             view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-        }
-    }
-
-    private fun testBmobConnection() {
-        lifecycleScope.launch {
-            Toast.makeText(this@LoginActivity, "正在测试 Bmob 连接...", Toast.LENGTH_SHORT).show()
-
-            val isInitialized = BmobTestHelper.checkBmobInitialization()
-            if (!isInitialized) {
-                Toast.makeText(this@LoginActivity, "Bmob 未初始化，请检查 MyApplication", Toast.LENGTH_LONG).show()
-                return@launch
-            }
-
-            val userResult = BmobTestHelper.testQueryUserTable()
-            val planResult = BmobTestHelper.testQueryAfterlifePlanTable()
-
-            val message = buildString {
-                appendLine("_User 表: ${if (userResult.status == TestStatus.SUCCESS) "✓" else "✗"}")
-                appendLine(userResult.message)
-                appendLine()
-                appendLine("AfterlifePlan 表: ${if (planResult.status == TestStatus.SUCCESS) "✓" else "✗"}")
-                appendLine(planResult.message)
-                appendLine()
-                appendLine("点击确定进入应用")
-            }
-
-            Toast.makeText(this@LoginActivity, message, Toast.LENGTH_LONG).show()
-
-            BmobTestHelper.printTestReport(listOf(userResult, planResult))
         }
     }
 

@@ -90,4 +90,6 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("org.pytorch:pytorch_android_lite:1.13.1")
     implementation("org.pytorch:pytorch_android_torchvision_lite:1.13.1")
+
+    implementation("io.coil-kt:coil:2.6.0")
 }
