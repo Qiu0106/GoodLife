@@ -54,4 +54,36 @@
         android:textSize="16sp"
         android:checked="true" />
 
+    <CheckBox
+        android:id="@+id/cbShouYi"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="寿衣"
+        android:textSize="16sp"
+        android:checked="true" />
+
+    <CheckBox
+        android:id="@+id/cbPaperMoney"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="纸钱"
+        android:textSize="16sp"
+        android:checked="true" />
+
+    <CheckBox
+        android:id="@+id/cbPaiWei"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="牌位"
+        android:textSize="16sp"
+        android:checked="true" />
+
+    <CheckBox
+        android:id="@+id/cbWanLian"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="挽联"
+        android:textSize="16sp"
+        android:checked="true" />
+
 </LinearLayout>

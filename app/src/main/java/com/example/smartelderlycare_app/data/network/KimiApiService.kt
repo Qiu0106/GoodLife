@@ -1,5 +1,6 @@
 package com.example.smartelderlycare_app.data.network
 
+import com.example.smartelderlycare_app.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
@@ -14,34 +15,36 @@ object KimiApiService {
 
     private const val BASE_URL = "https://api.moonshot.cn/v1/chat/completions"
 
-    // TODO: 请在此处设置您的 Moonshot API Key
-    // 推荐方式：在 Application 类或配置文件中管理，通过 BuildConfig 或秘密存储方案获取
-    private const val API_KEY_PLACEHOLDER = "sk-LCflVRDM0MbKLAcxuOYIMU4VPFNmbISPJ9mjpfLptcpznWkp"
-
     private val client: OkHttpClient = OkHttpSingleton.client
 
     private val mediaType = "application/json; charset=utf-8".toMediaType()
+
+    private fun getApiKey(): String {
+        return BuildConfig.KIMI_API_KEY.ifEmpty {
+            throw IllegalStateException("KIMI_API_KEY is not configured. Please add it to local.properties")
+        }
+    }
 
     /**
      * 发送消息给 Kimi 大模型并获取回复
      *
      * @param userMessage 用户输入的文本
-     * @param apiKey Moonshot API Key（可选，不传则使用默认值）
-     * @param model 模型名称，默认 "moonshot-v1-8k"
+     * @param apiKey Moonshot API Key（可选，不传则使用 BuildConfig 中的默认值）
+     * @param model 模型名称，默认 "kimi-k2-0711-preview"
      * @return AI 的回复文本，失败返回 null
      */
     suspend fun chat(
         userMessage: String,
-        apiKey: String = API_KEY_PLACEHOLDER,
-        model: String = "moonshot-v1-8k"
+        apiKey: String? = null,
+        model: String = "kimi-k2-0711-preview"
     ): Result<String> = withContext(Dispatchers.IO) {
         try {
+            val effectiveApiKey = apiKey ?: getApiKey()
             val requestBody = buildRequestBody(userMessage, model)
-            println("正在使用的 API Key 是: [${apiKey}]")
+            println("正在使用 Kimi API...")
             val request = Request.Builder()
                 .url(BASE_URL)
-                // 注意这里加了 .trim()
-                .addHeader("Authorization", "Bearer ${apiKey.trim()}")
+                .addHeader("Authorization", "Bearer ${effectiveApiKey.trim()}")
                 .addHeader("Content-Type", "application/json")
                 .post(requestBody)
                 .build()

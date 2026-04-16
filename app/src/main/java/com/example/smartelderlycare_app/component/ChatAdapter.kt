@@ -6,17 +6,16 @@ import java.util.Locale
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.smartelderlycare_app.R
 import java.util.*
 
-/**
- * 聊天消息适配器
- * 支持用户气泡（右侧蓝色）和 AI 气泡（左侧灰色）
- * 适老化设计：大字号 20sp，高对比度
- */
-class ChatAdapter : RecyclerView.Adapter<ChatAdapter.MessageViewHolder>() {
+class ChatAdapter(
+    private val onSpeakClick: ((String) -> Unit)? = null
+) : RecyclerView.Adapter<ChatAdapter.MessageViewHolder>() {
 
     companion object {
         const val VIEW_TYPE_USER = 1
@@ -34,7 +33,8 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.MessageViewHolder>() {
         val id: String = UUID.randomUUID().toString(),
         val content: String,
         val isUser: Boolean,
-        val timestamp: Long = System.currentTimeMillis()
+        val timestamp: Long = System.currentTimeMillis(),
+        val isComplete: Boolean = false
     )
 
     override fun getItemViewType(position: Int): Int {
@@ -48,10 +48,9 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.MessageViewHolder>() {
                 val view = inflater.inflate(R.layout.item_chat_user, parent, false)
                 UserMessageViewHolder(view)
             }
-
             else -> {
                 val view = inflater.inflate(R.layout.item_chat_ai, parent, false)
-                AiMessageViewHolder(view)
+                AiMessageViewHolder(view, onSpeakClick)
             }
         }
     }
@@ -67,17 +66,17 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.MessageViewHolder>() {
         notifyItemInserted(messages.size - 1)
     }
 
-    fun addAiMessage(content: String): String {
+    fun addAiMessage(content: String, isComplete: Boolean = false): String {
         val id = UUID.randomUUID().toString()
-        messages.add(ChatMessage(id = id, content = content, isUser = false))
+        messages.add(ChatMessage(id = id, content = content, isUser = false, isComplete = isComplete))
         notifyItemInserted(messages.size - 1)
         return id
     }
 
-    fun updateAiMessage(messageId: String, newContent: String) {
+    fun updateAiMessage(messageId: String, newContent: String, isComplete: Boolean = false) {
         val index = messages.indexOfFirst { it.id == messageId }
         if (index >= 0) {
-            messages[index] = messages[index].copy(content = newContent)
+            messages[index] = messages[index].copy(content = newContent, isComplete = isComplete)
             notifyItemChanged(index)
         }
     }
@@ -87,6 +86,18 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.MessageViewHolder>() {
     }
 
     fun getMessages(): List<ChatMessage> = messages.toList()
+
+    fun getMessageById(id: String): ChatMessage? {
+        return messages.find { it.id == id }
+    }
+
+    fun getAllMessages(): List<ChatMessage> = messages.toList()
+
+    fun setMessages(messageList: List<ChatMessage>) {
+        messages.clear()
+        messages.addAll(messageList)
+        notifyDataSetChanged()
+    }
 
     abstract class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         abstract fun bind(message: ChatMessage)
@@ -102,14 +113,24 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.MessageViewHolder>() {
         }
     }
 
-    class AiMessageViewHolder(itemView: View) : MessageViewHolder(itemView) {
+    class AiMessageViewHolder(
+        itemView: View,
+        private val onSpeakClick: ((String) -> Unit)?
+    ) : MessageViewHolder(itemView) {
         private val tvAiMessage: TextView = itemView.findViewById(R.id.tvAiMessage)
         private val tvAiTime: TextView = itemView.findViewById(R.id.tvAiTime)
+        private val btnSpeak: ImageButton = itemView.findViewById(R.id.btnSpeak)
+        private val layoutSpeak: LinearLayout = itemView.findViewById(R.id.layoutSpeak)
 
         override fun bind(message: ChatMessage) {
             tvAiMessage.text = message.content
             tvAiTime.text = formatTime(message.timestamp)
+
+            layoutSpeak.visibility = if (message.isComplete) View.VISIBLE else View.GONE
+
+            btnSpeak.setOnClickListener {
+                onSpeakClick?.invoke(message.content)
+            }
         }
     }
-
 }

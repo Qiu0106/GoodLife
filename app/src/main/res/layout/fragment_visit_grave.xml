@@ -56,12 +56,4 @@
             android:hint="请输入时间 (HH:MM)" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnSubmit"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="提交预约"
-        android:backgroundTint="#4CAF50"
-        android:textColor="#FFFFFF" />
-
 </LinearLayout>

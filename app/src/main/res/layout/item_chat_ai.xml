@@ -31,6 +31,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- 消息气泡 -->
         <TextView
             android:id="@+id/tvAiMessage"
             android:layout_width="wrap_content"
@@ -45,6 +46,41 @@
             android:lineSpacingMultiplier="1.3"
             android:text="AI 消息" />
 
+        <!-- 小喇叭按钮 - 单独在消息下面 -->
+        <LinearLayout
+            android:id="@+id/layoutSpeak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:background="@drawable/bg_button_voice"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/btnSpeak"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/bg_circle_white"
+                android:src="@drawable/ic_audio_vol"
+                android:scaleType="fitCenter"
+                android:padding="14dp"
+                android:elevation="4dp"
+                android:contentDescription="语音播报" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="点击播放语音"
+                android:textSize="18sp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <!-- 时间戳 -->
         <TextView
             android:id="@+id/tvAiTime"
             android:layout_width="wrap_content"

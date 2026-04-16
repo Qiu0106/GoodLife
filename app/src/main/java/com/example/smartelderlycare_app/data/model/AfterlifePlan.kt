@@ -31,6 +31,10 @@ data class AfterlifePlan(
     val flowers: Boolean = false,
     val candles: Boolean = false,
     val photos: Boolean = false,
+    val shouYi: Boolean = false,
+    val paperMoney: Boolean = false,
+    val paiWei: Boolean = false,
+    val wanLian: Boolean = false,
     val otherSupplies: String? = null,
     
     // 背景音乐

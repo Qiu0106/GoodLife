@@ -1,6 +1,7 @@
 package com.example.smartelderlycare_app
 
 import android.app.Application
+import com.example.smartelderlycare_app.component.FloatingViewManager
 
 class MyApplication : Application() {
 
@@ -12,5 +13,6 @@ class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        FloatingViewManager.getInstance().init(this)
     }
 }

@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="我的"
-            android:textSize="28sp"
+            android:textSize="32sp"
             android:textStyle="bold"
             android:textColor="@color/morandi_text_primary"
             android:layout_marginBottom="24dp" />
@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="用户"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textStyle="bold"
                     android:textColor="@color/morandi_text_primary"
                     android:layout_marginBottom="4dp" />
@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="--"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     android:textColor="@color/morandi_text_secondary"
                     android:layout_marginBottom="16dp" />
             </LinearLayout>
@@ -125,14 +125,14 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:text="👤"
-                        android:textSize="20sp"
+                        android:textSize="22sp"
                         android:gravity="center" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="个人资料"
-                        android:textSize="18sp"
+                        android:textSize="22sp"
                         android:textStyle="bold"
                         android:textColor="@color/morandi_text_primary"
                         android:layout_marginStart="8dp" />
@@ -144,7 +144,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="暂无个人资料"
-                    android:textSize="14sp"
+                    android:textSize="17sp"
                     android:textColor="@color/morandi_text_secondary"
                     android:lineSpacingMultiplier="1.4" />
             </LinearLayout>
@@ -177,14 +177,14 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:text="📋"
-                        android:textSize="20sp"
+                        android:textSize="22sp"
                         android:gravity="center" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="身后事计划"
-                        android:textSize="18sp"
+                        android:textSize="22sp"
                         android:textStyle="bold"
                         android:textColor="@color/morandi_text_primary"
                         android:layout_marginStart="8dp" />
@@ -196,7 +196,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="未配置身后事计划"
-                    android:textSize="14sp"
+                    android:textSize="17sp"
                     android:textColor="@color/morandi_text_secondary"
                     android:lineSpacingMultiplier="1.4" />
             </LinearLayout>
@@ -228,14 +228,14 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:text="💬"
-                        android:textSize="20sp"
+                        android:textSize="22sp"
                         android:gravity="center" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="社区互动"
-                        android:textSize="18sp"
+                        android:textSize="22sp"
                         android:textStyle="bold"
                         android:textColor="@color/morandi_text_primary"
                         android:layout_marginStart="8dp" />
@@ -251,11 +251,11 @@
                         android:id="@+id/btnMyPosts"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"
+                        android:layout_height="56dp"
                         android:layout_weight="1"
                         android:text="我的帖子"
-                        android:textSize="14sp"
-                        app:cornerRadius="24dp"
+                        android:textSize="18sp"
+                        app:cornerRadius="28dp"
                         app:strokeColor="@color/morandi_text_hint"
                         app:strokeWidth="1dp"
                         android:textColor="@color/morandi_text_primary"
@@ -265,11 +265,11 @@
                         android:id="@+id/btnMyFavorites"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"
+                        android:layout_height="56dp"
                         android:layout_weight="1"
                         android:text="我的收藏"
-                        android:textSize="14sp"
-                        app:cornerRadius="24dp"
+                        android:textSize="18sp"
+                        app:cornerRadius="28dp"
                         app:strokeColor="@color/morandi_text_hint"
                         app:strokeWidth="1dp"
                         android:textColor="@color/morandi_text_primary"
@@ -282,12 +282,12 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnEditProfile"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="64dp"
             android:text="编辑个人资料"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:backgroundTint="@color/elderly_brand"
-            app:cornerRadius="28dp"
+            app:cornerRadius="32dp"
             android:stateListAnimator="@null"
             android:layout_marginBottom="12dp" />
 
@@ -295,13 +295,13 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogout"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="64dp"
             android:text="退出登录"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:backgroundTint="@android:color/transparent"
             android:textColor="@color/morandi_text_secondary"
-            app:cornerRadius="28dp"
+            app:cornerRadius="32dp"
             app:strokeColor="@color/morandi_text_hint"
             app:strokeWidth="1.5dp"
             android:stateListAnimator="@null" />

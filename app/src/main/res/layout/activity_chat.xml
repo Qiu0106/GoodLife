@@ -27,21 +27,21 @@
         android:paddingEnd="@dimen/elderly_spacing_sm"
         android:elevation="4dp">
 
-        <TextView
+        <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:text="←"
-            android:textSize="32sp"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="?android:attr/selectableItemBackgroundBorderless" />
+            android:src="@drawable/ic_arrow_back_white"
+            android:scaleType="centerInside"
+            android:padding="8dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="返回" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="AI 语音助手"
+            android:text="AI 助手"
             android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="@color/white"
@@ -94,15 +94,15 @@
 
         <Button
             android:id="@+id/btnSend"
-            android:layout_width="72dp"
-            android:layout_height="64dp"
+            android:layout_width="wrap_content"
+            android:layout_height="65dp"
             android:layout_marginStart="@dimen/elderly_spacing_sm"
-            android:text="发送"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
             android:background="@drawable/bg_button_send"
-            android:elevation="2dp" />
+            android:elevation="2dp"
+            android:text="发送"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

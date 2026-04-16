@@ -17,6 +17,7 @@ data class User(
     val address: String? = null,
     val emergencyContact: String? = null, // 紧急联系人姓名
     val emergencyPhone: String? = null, // 紧急联系人电话
+    val emergencyRela: String? = null, // 紧急联系人关系
     val bloodType: String? = null, // "A型", "B型", "AB型", "O型", "未知"
     val medicalHistory: String? = null, // 过敏史/慢性病简述
     val signature: String? = null, // 个性签名/寄语

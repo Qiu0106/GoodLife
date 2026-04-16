@@ -39,7 +39,6 @@ class PostDetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var tvUserName: TextView
     private lateinit var tvPostContent: TextView
     private lateinit var btnVoice: ImageButton
-    private lateinit var btnShare: ImageView
     private lateinit var etCommentInput: EditText
     private lateinit var btnSendComment: ImageButton
     private lateinit var layoutLike: LinearLayout
@@ -105,7 +104,6 @@ class PostDetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         tvUserName = findViewById(R.id.tv_user_name)
         tvPostContent = findViewById(R.id.tv_post_content)
         btnVoice = findViewById(R.id.btn_voice)
-        btnShare = findViewById(R.id.btn_share)
         etCommentInput = findViewById(R.id.et_comment_input)
         btnSendComment = findViewById(R.id.btn_send_comment)
         layoutLike = findViewById(R.id.layout_like)

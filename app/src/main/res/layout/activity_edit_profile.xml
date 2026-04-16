@@ -312,6 +312,33 @@
                         android:textColor="@color/morandi_text_primary" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- 紧急联系人关系 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeColor="@color/morandi_pink"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:hintTextColor="@color/morandi_text_hint"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEmergencyRela"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:hint="与紧急联系人的关系（如：父子、夫妻）"
+                        android:inputType="text"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/morandi_text_primary" />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <!-- 血型选择器 -->
                 <TextView
                     android:layout_width="wrap_content"
@@ -351,34 +378,458 @@
                         android:gravity="center" />
                 </LinearLayout>
 
-                <!-- 过敏史/慢性病 -->
-                <com.google.android.material.textfield.TextInputLayout
+                <!-- 过敏史/慢性病简述 (多选) -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="过敏史/慢性病简述 (多选)"
+                    android:textSize="18sp"
+                    android:textColor="@color/morandi_text_primary"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <!-- 心脑血管 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="心脑血管"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/morandi_text_primary"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="12dp" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/cgCardiovascular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    app:boxBackgroundMode="outline"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:boxStrokeColor="@color/morandi_pink"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:hintTextColor="@color/morandi_text_hint"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+                    app:singleSelection="false"
+                    app:chipSpacing="12dp"
+                    app:chipSpacingHorizontal="12dp"
+                    app:chipSpacingVertical="8dp"
+                    app:selectionRequired="false">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etMedicalHistory"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:hint="过敏史/慢性病简述（选填）"
-                        android:inputType="textMultiLine"
-                        android:gravity="top|start"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:paddingTop="12dp"
-                        android:textSize="17sp"
-                        android:textColor="@color/morandi_text_primary" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipHypertension"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="高血压"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipCoronary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="冠心病"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipStroke"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="中风"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipAngina"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="心绞痛"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipArrhythmia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="心律失常"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipHyperlipidemia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="高血脂"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <!-- 代谢与呼吸 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="代谢与呼吸"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/morandi_text_primary"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="12dp" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/cgMetabolic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="false"
+                    app:chipSpacing="12dp"
+                    app:chipSpacingHorizontal="12dp"
+                    app:chipSpacingVertical="8dp"
+                    app:selectionRequired="false">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipDiabetes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="糖尿病"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipGout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="痛风"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipAsthma"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="哮喘"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipCOPD"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="慢阻肺"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipChronicBronchitis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="慢性支气管炎"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipHypothyroidism"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="甲减"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <!-- 骨骼与神经 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="骨骼与神经"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/morandi_text_primary"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="12dp" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/cgBoneNerve"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="false"
+                    app:chipSpacing="12dp"
+                    app:chipSpacingHorizontal="12dp"
+                    app:chipSpacingVertical="8dp"
+                    app:selectionRequired="false">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipOsteoporosis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="骨质疏松"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipArthritis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="关节炎"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipSpine"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="颈/腰椎病"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipAlzheimer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="老年痴呆"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipParkinson"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="帕金森"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipInsomnia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="失眠"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <!-- 过敏史 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="过敏史"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/morandi_text_primary"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="12dp" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/cgAllergy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="false"
+                    app:chipSpacing="12dp"
+                    app:chipSpacingHorizontal="12dp"
+                    app:chipSpacingVertical="8dp"
+                    app:selectionRequired="false"
+                    android:layout_marginBottom="12dp">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipPenicillinAllergy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="青霉素过敏"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipCephalosporinAllergy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="头孢过敏"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipSulfonamideAllergy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="磺胺过敏"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipAlcoholAllergy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="酒精过敏"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipPollenAllergy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="花粉过敏"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipSeafoodAllergy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="海鲜过敏"
+                        android:textSize="18sp"
+                        android:checkable="true"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:checkedIconVisible="true"
+                        app:checkedIcon="@drawable/ic_check_circle"
+                        app:chipStrokeColor="#4CAF50"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <!-- 补充说明 EditText -->
+                <EditText
+                    android:id="@+id/etMedicalOther"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:textSize="18sp"
+                    android:hint="补充其他过敏史或疾病..."
+                    android:inputType="textMultiLine"
+                    android:gravity="top|start"
+                    android:padding="12dp"
+                    android:background="@drawable/bg_edittext_supplement"
+                    android:textColor="@color/morandi_text_primary" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -444,7 +895,7 @@
             android:text="保存修改"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:backgroundTint="@color/morandi_accent_warm"
+            android:backgroundTint="@color/red"
             app:cornerRadius="32dp"
             android:stateListAnimator="@null"
             android:layout_marginBottom="16dp" />

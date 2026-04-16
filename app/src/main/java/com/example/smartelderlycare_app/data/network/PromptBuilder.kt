@@ -118,7 +118,7 @@ ${if (status.healthNotes.isNotEmpty()) "- 健康备注：${status.healthNotes}�
         })
 
         return JSONObject().apply {
-            put("model", "moonshot-v1-8k")
+            put("model", "kimi-k2-0905-preview")
             put("messages", messages)
             put("temperature", 0.7)
             put("max_tokens", 1000)

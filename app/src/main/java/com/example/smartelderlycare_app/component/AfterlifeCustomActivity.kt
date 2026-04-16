@@ -174,8 +174,9 @@ class AfterlifeCustomActivity : AppCompatActivity() {
             visitNotes = null
         )
 
-        // 保存到本地SharedPreferences
+        // 保存到本地SharedPreferences（绑定当前userId）
         val sharedPreferences = getSharedPreferences("afterlife", MODE_PRIVATE).edit()
+        sharedPreferences.putString("cachedUserId", userId)
         sharedPreferences.putString("name", basicInfo["name"])
         sharedPreferences.putString("age", basicInfo["age"])
         sharedPreferences.putString("contact", basicInfo["contact"])

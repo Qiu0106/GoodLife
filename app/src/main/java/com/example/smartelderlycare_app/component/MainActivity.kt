@@ -1,14 +1,21 @@
 package com.example.smartelderlycare_app.component
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.android.material.card.MaterialCardView
 import com.bumptech.glide.Glide
+import com.example.smartelderlycare_app.BuildConfig
 import com.example.smartelderlycare_app.R
+import com.example.smartelderlycare_app.data.network.WeatherApiService
+import com.example.smartelderlycare_app.util.LocationHelper
 import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
@@ -21,6 +28,24 @@ class MainActivity : AppCompatActivity() {
     private lateinit var ivAvatar: CircleImageView
     private lateinit var tvGreeting: TextView
     private lateinit var tvDate: TextView
+    private lateinit var tvWeatherIcon: TextView
+    private lateinit var tvTemperature: TextView
+
+    private lateinit var locationHelper: LocationHelper
+
+    private val locationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val fineLocation = permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false
+        val coarseLocation = permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false
+
+        if (fineLocation || coarseLocation) {
+            Log.d(TAG, "定位权限已授予")
+            loadWeatherWithLocation()
+        } else {
+            Log.w(TAG, "定位权限被拒绝，使用默认城市")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +70,7 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "setContentView 成功")
 
             initViews()
+            checkLocationPermissionAndLoadWeather()
             loadUserAvatar()
             updateGreetingMessage()
             setupClickListeners()
@@ -62,8 +88,88 @@ class MainActivity : AppCompatActivity() {
         ivAvatar = findViewById(R.id.iv_avatar)
         tvGreeting = findViewById(R.id.tv_greeting)
         tvDate = findViewById(R.id.tv_date)
+        tvWeatherIcon = findViewById(R.id.tv_weather_icon)
+        tvTemperature = findViewById(R.id.tv_temperature)
 
         Log.d(TAG, "所有组件初始化成功")
+    }
+
+    private fun loadWeatherWithLocation() {
+        if (!::locationHelper.isInitialized) {
+            locationHelper = LocationHelper(this)
+        }
+
+        locationHelper.getCurrentLocation(object : LocationHelper.LocationCallback {
+            override fun onSuccess(location: android.location.Location) {
+                Log.d(TAG, "获取定位成功: ${location.longitude}, ${location.latitude}")
+                loadWeather(location.longitude, location.latitude)
+            }
+
+            override fun onFailure(error: String) {
+                Log.e(TAG, "定位失败: $error")
+            }
+        })
+    }
+
+    private fun loadWeather(longitude: Double, latitude: Double) {
+        val apiKey = BuildConfig.WEATHER_API_KEY
+        if (apiKey.isEmpty() || apiKey == "YOUR_WEATHER_API_KEY_HERE") {
+            Log.w(TAG, "天气 API Key 未配置")
+            return
+        }
+
+        WeatherApiService.getWeatherInfo(
+            longitude = longitude,
+            latitude = latitude,
+            apiKey = apiKey,
+            onSuccess = { weatherInfo ->
+                runOnUiThread {
+                    tvWeatherIcon.text = weatherInfo.icon
+                    tvTemperature.text = "${weatherInfo.temp}°C"
+                    Log.d(TAG, "天气加载成功: ${weatherInfo.text}, ${weatherInfo.temp}°C")
+                }
+            },
+            onError = { error ->
+                runOnUiThread {
+                    Log.e(TAG, "天气加载失败: $error")
+                }
+            }
+        )
+    }
+
+    private fun checkLocationPermissionAndLoadWeather() {
+        when {
+            hasLocationPermission() -> {
+                loadWeatherWithLocation()
+            }
+            shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
+                Toast.makeText(this, "需要定位权限来获取当地天气", Toast.LENGTH_SHORT).show()
+                requestLocationPermission()
+            }
+            else -> {
+                requestLocationPermission()
+            }
+        }
+    }
+
+    private fun hasLocationPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED ||
+        ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestLocationPermission() {
+        locationPermissionLauncher.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
     }
 
     private fun loadUserAvatar() {

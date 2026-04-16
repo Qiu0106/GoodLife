@@ -15,6 +15,10 @@ class FuneralSuppliesFragment : Fragment() {
     private lateinit var cbFlowers: CheckBox
     private lateinit var cbCandles: CheckBox
     private lateinit var cbPhotos: CheckBox
+    private lateinit var cbShouYi: CheckBox
+    private lateinit var cbPaperMoney: CheckBox
+    private lateinit var cbPaiWei: CheckBox
+    private lateinit var cbWanLian: CheckBox
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,6 +31,10 @@ class FuneralSuppliesFragment : Fragment() {
         cbFlowers = view.findViewById(R.id.cbFlowers)
         cbCandles = view.findViewById(R.id.cbCandles)
         cbPhotos = view.findViewById(R.id.cbPhotos)
+        cbShouYi = view.findViewById(R.id.cbShouYi)
+        cbPaperMoney = view.findViewById(R.id.cbPaperMoney)
+        cbPaiWei = view.findViewById(R.id.cbPaiWei)
+        cbWanLian = view.findViewById(R.id.cbWanLian)
         return view
     }
 
@@ -37,6 +45,10 @@ class FuneralSuppliesFragment : Fragment() {
         if (cbFlowers.isChecked) supplies.add("鲜花")
         if (cbCandles.isChecked) supplies.add("蜡烛")
         if (cbPhotos.isChecked) supplies.add("照片")
+        if (cbShouYi.isChecked) supplies.add("寿衣")
+        if (cbPaperMoney.isChecked) supplies.add("纸钱")
+        if (cbPaiWei.isChecked) supplies.add("牌位")
+        if (cbWanLian.isChecked) supplies.add("挽联")
         return supplies
     }
 }

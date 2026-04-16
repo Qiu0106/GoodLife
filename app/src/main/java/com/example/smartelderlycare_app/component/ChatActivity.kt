@@ -1,12 +1,15 @@
 package com.example.smartelderlycare_app.component
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -21,37 +24,51 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import org.json.JSONObject
+import java.util.Locale
 
-class ChatActivity : AppCompatActivity() {
+class ChatActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     companion object {
         private const val TAG = "ChatActivity"
         private const val API_KEY = "sk-LCflVRDM0MbKLAcxuOYIMU4VPFNmbISPJ9mjpfLptcpznWkp"
+        private const val PREFS_NAME = "chat_prefs"
+        private const val KEY_CHAT_HISTORY = "chat_history"
     }
 
     private lateinit var rvMessages: RecyclerView
     private lateinit var etInput: EditText
     private lateinit var btnSend: Button
-    private lateinit var btnBack: TextView
-
+    private lateinit var btnBack: ImageButton
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var elderlyDataRepository: ElderlyDataRepository
+    private lateinit var prefs: SharedPreferences
 
     private var isAiTyping = false
+    private lateinit var textToSpeech: TextToSpeech
+    private var isSpeaking = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
         elderlyDataRepository = ElderlyDataRepository.getInstance(this)
+        textToSpeech = TextToSpeech(this, this)
+        prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
 
         initViews()
         setupRecyclerView()
         setupInputArea()
         setupClickListeners()
 
-        addWelcomeMessage()
+        loadChatHistory()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveChatHistory()
     }
 
     private fun initViews() {
@@ -62,7 +79,9 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        chatAdapter = ChatAdapter()
+        chatAdapter = ChatAdapter { messageContent ->
+            speakText(messageContent)
+        }
         layoutManager = LinearLayoutManager(this).apply {
             stackFromEnd = true
         }
@@ -100,8 +119,52 @@ class ChatActivity : AppCompatActivity() {
         val user = elderlyDataRepository.getCurrentUser()
         val name = user?.nickname ?: user?.realName ?: "长辈"
         val welcomeText = "您好！我是您的 AI 养老助手。我了解 ${name} 的健康状况和生活情况，可以为您提供健康建议和日常关怀帮助。请告诉我有什么可以帮您的？"
-        chatAdapter.addAiMessage(welcomeText)
+        chatAdapter.addAiMessage(welcomeText, isComplete = true)
         scrollToBottom()
+    }
+
+    private fun saveChatHistory() {
+        val messages = chatAdapter.getAllMessages()
+        val jsonArray = JSONArray()
+        for (msg in messages) {
+            val jsonObj = JSONObject().apply {
+                put("id", msg.id)
+                put("content", msg.content)
+                put("isUser", msg.isUser)
+                put("timestamp", msg.timestamp)
+                put("isComplete", msg.isComplete)
+            }
+            jsonArray.put(jsonObj)
+        }
+        prefs.edit().putString(KEY_CHAT_HISTORY, jsonArray.toString()).apply()
+    }
+
+    private fun loadChatHistory() {
+        val jsonStr = prefs.getString(KEY_CHAT_HISTORY, null)
+        if (jsonStr != null) {
+            try {
+                val jsonArray = JSONArray(jsonStr)
+                val messages = mutableListOf<ChatAdapter.ChatMessage>()
+                for (i in 0 until jsonArray.length()) {
+                    val jsonObj = jsonArray.getJSONObject(i)
+                    messages.add(ChatAdapter.ChatMessage(
+                        id = jsonObj.getString("id"),
+                        content = jsonObj.getString("content"),
+                        isUser = jsonObj.getBoolean("isUser"),
+                        timestamp = jsonObj.getLong("timestamp"),
+                        isComplete = jsonObj.getBoolean("isComplete")
+                    ))
+                }
+                if (messages.isNotEmpty()) {
+                    chatAdapter.setMessages(messages)
+                    scrollToBottom()
+                    return
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "加载聊天记录失败", e)
+            }
+        }
+        addWelcomeMessage()
     }
 
     private fun sendMessage() {
@@ -116,7 +179,7 @@ class ChatActivity : AppCompatActivity() {
         chatAdapter.addUserMessage(userMessage)
         scrollToBottom()
 
-        val aiMessageId = chatAdapter.addAiMessage("正在思考...")
+        val aiMessageId = chatAdapter.addAiMessage("正在思考...", isComplete = false)
         scrollToBottom()
 
         isAiTyping = true
@@ -153,7 +216,7 @@ class ChatActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.e(TAG, "请求异常", e)
             withContext(Dispatchers.Main) {
-                updateAiMessage(aiMessageId, "抱歉，发生异常：${e.message}")
+                updateAiMessage(aiMessageId, "抱歉，发生异常：${e.message}", isComplete = true)
                 isAiTyping = false
                 btnSend.isEnabled = true
             }
@@ -166,17 +229,21 @@ class ChatActivity : AppCompatActivity() {
         withContext(Dispatchers.Main) {
             for (i in 1..fullText.length) {
                 val partialText = fullText.substring(0, i)
-                updateAiMessage(messageId, partialText)
+                updateAiMessage(messageId, partialText, isComplete = false)
                 scrollToBottom()
                 delay(delayMs)
             }
+            updateAiMessage(messageId, fullText, isComplete = true)
+            chatAdapter.notifyDataSetChanged()
+            scrollToBottom()
+            delay(50)
             isAiTyping = false
             btnSend.isEnabled = true
         }
     }
 
-    private fun updateAiMessage(messageId: String, content: String) {
-        chatAdapter.updateAiMessage(messageId, content)
+    private fun updateAiMessage(messageId: String, content: String, isComplete: Boolean = false) {
+        chatAdapter.updateAiMessage(messageId, content, isComplete)
         if (messageId == chatAdapter.getLastAiMessageId()) {
             scrollToBottom()
         }
@@ -204,5 +271,32 @@ class ChatActivity : AppCompatActivity() {
                 layoutManager.scrollToPosition(itemCount - 1)
             }
         }
+    }
+
+    private fun speakText(text: String) {
+        if (isSpeaking) {
+            textToSpeech.stop()
+            isSpeaking = false
+        } else {
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
+            isSpeaking = true
+        }
+    }
+
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            val result = textToSpeech.setLanguage(Locale.CHINESE)
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Toast.makeText(this, "不支持中文语音", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(this, "语音初始化失败", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onDestroy() {
+        textToSpeech.stop()
+        textToSpeech.shutdown()
+        super.onDestroy()
     }
 }

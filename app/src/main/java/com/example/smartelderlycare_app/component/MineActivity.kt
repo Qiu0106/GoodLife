@@ -397,8 +397,10 @@ class MineActivity : AppCompatActivity() {
     private fun loadFromLocal() {
         val afterlifeSharedPreferences = getSharedPreferences("afterlife", MODE_PRIVATE)
         val hasPlan = afterlifeSharedPreferences.getBoolean("hasPlan", false)
+        val currentUserId = getSharedPreferences("user", MODE_PRIVATE).getString("userId", "") ?: ""
+        val cachedUserId = afterlifeSharedPreferences.getString("cachedUserId", "")
 
-        if (hasPlan) {
+        if (hasPlan && cachedUserId == currentUserId) {
             val name = afterlifeSharedPreferences.getString("name", "--")
             val age = afterlifeSharedPreferences.getString("age", "--")
             val funeralStyle = afterlifeSharedPreferences.getString("funeralStyle", "--")
@@ -430,6 +432,7 @@ class MineActivity : AppCompatActivity() {
         userViewModel.logout()
 
         getSharedPreferences("user", MODE_PRIVATE).edit().clear().apply()
+        getSharedPreferences("afterlife", MODE_PRIVATE).edit().clear().apply()
 
         val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

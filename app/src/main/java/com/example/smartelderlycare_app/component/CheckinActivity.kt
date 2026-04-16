@@ -239,6 +239,12 @@ class CheckinActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadUserInfo()
+        loadLeaderboard()
+    }
+
     /**
      * Debug 功能：模拟3天未打卡预警
      * 直接跳过时间校验，构造触发条件并执行预警

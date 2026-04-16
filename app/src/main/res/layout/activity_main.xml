@@ -73,6 +73,7 @@
                     android:layout_marginStart="@dimen/elderly_spacing_xs">
 
                     <TextView
+                        android:id="@+id/tv_weather_icon"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:text="☀️"
@@ -421,16 +422,9 @@
                 android:gravity="center">
 
                 <TextView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:text="🎙️"
-                    android:textSize="28sp"
-                    android:gravity="center" />
-
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="语音助手"
+                    android:text="AI助手"
                     android:textSize="@dimen/elderly_text_body_large"
                     android:textStyle="bold"
                     android:textColor="@color/white"
