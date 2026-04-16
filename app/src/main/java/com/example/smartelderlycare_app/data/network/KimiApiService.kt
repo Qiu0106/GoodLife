@@ -30,13 +30,13 @@ object KimiApiService {
      *
      * @param userMessage 用户输入的文本
      * @param apiKey Moonshot API Key（可选，不传则使用 BuildConfig 中的默认值）
-     * @param model 模型名称，默认 "kimi-k2-0711-preview"
+     * @param model 模型名称，默认 "kimi-k2.5"
      * @return AI 的回复文本，失败返回 null
      */
     suspend fun chat(
         userMessage: String,
         apiKey: String? = null,
-        model: String = "kimi-k2-0711-preview"
+        model: String = "kimi-k2-0905-preview"
     ): Result<String> = withContext(Dispatchers.IO) {
         try {
             val effectiveApiKey = apiKey ?: getApiKey()
