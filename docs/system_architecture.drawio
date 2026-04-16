@@ -1,0 +1,121 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="智能养老系统技术架构图" id="tech-architecture">
+    <mxGraphModel dx="1125" dy="744" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1600" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" value="智能养老系统 (Smart Elderly Care) 技术架构图" vertex="1">
+          <mxGeometry height="60" width="800" x="200" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="layer1" parent="1" style="swimlane;horizontal=0;fillColor=#E3F2FD;strokeColor=#1976D2;fontColor=#0D47A1;fontStyle=1;fontSize=14;verticalAlign=middle;textDirection=rtl;startSize=30;" value="前端界面层" vertex="1">
+          <mxGeometry height="120" width="1120" x="40" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="l1-item1" parent="layer1" style="rounded=1;fillColor=#BBDEFB;strokeColor=#2196F3;align=center;verticalAlign=middle;fontSize=18;" value="XML布局&#xa;(activity_main.xml等)" vertex="1">
+          <mxGeometry height="60" width="200" x="60" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l1-item2" parent="layer1" style="rounded=1;fillColor=#BBDEFB;strokeColor=#2196F3;align=center;verticalAlign=middle;fontSize=18;" value="Jetpack Compose&#xa;(StarMemorialCompose)&#xa;现代化声明式UI" vertex="1">
+          <mxGeometry height="60" width="200" x="300" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l1-item3" parent="layer1" style="rounded=1;fillColor=#BBDEFB;strokeColor=#2196F3;align=center;verticalAlign=middle;fontSize=18;" value="Material Design 3&#xa;组件库" vertex="1">
+          <mxGeometry height="60" width="150" x="540" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l1-item4" parent="layer1" style="rounded=1;fillColor=#BBDEFB;strokeColor=#2196F3;align=center;verticalAlign=middle;fontSize=18;" value="Glide 4.16&#xa;图片加载框架" vertex="1">
+          <mxGeometry height="60" width="150" x="730" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l1-item5" parent="layer1" style="rounded=1;fillColor=#BBDEFB;strokeColor=#2196F3;align=center;verticalAlign=middle;fontSize=18;" value="CircleImageView&#xa;圆形头像组件" vertex="1">
+          <mxGeometry height="60" width="150" x="920" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="layer2" parent="1" style="swimlane;horizontal=0;fillColor=#F3E5F5;strokeColor=#7B1FA2;fontColor=#4A148C;fontStyle=1;fontSize=14;startSize=30;" value="应用层" vertex="1">
+          <mxGeometry height="180" width="1120" x="40" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="l2-item1" parent="layer2" style="rounded=1;fillColor=#E1BEE7;strokeColor=#9C27B0;align=center;verticalAlign=middle;fontSize=18;" value="Activity组件&#xa;(MainActivity, LoginActivity,&#xa;等)" vertex="1">
+          <mxGeometry height="120" width="220" x="60" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l2-item2" parent="layer2" style="rounded=1;fillColor=#E1BEE7;strokeColor=#9C27B0;align=center;verticalAlign=middle;fontSize=18;" value="Fragment组件&#xa;(BasicInfoFragment,&#xa;BGMFragment等)" vertex="1">
+          <mxGeometry height="120" width="220" x="300" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l2-item3" parent="layer2" style="rounded=1;fillColor=#E1BEE7;strokeColor=#9C27B0;align=center;verticalAlign=middle;fontSize=17;" value="RecyclerView Adapter&#xa;(ChatAdapter, PostAdapter）" vertex="1">
+          <mxGeometry height="120" width="220" x="540" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l2-item4" parent="layer2" style="rounded=1;fillColor=#E1BEE7;strokeColor=#9C27B0;align=center;verticalAlign=middle;fontSize=17;" value="悬浮窗组件&#xa;(FloatingVoiceButton,&#xa;FloatingViewManager)" vertex="1">
+          <mxGeometry height="120" width="190" x="780" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l2-item5" parent="layer2" style="rounded=1;fillColor=#E1BEE7;strokeColor=#9C27B0;align=center;verticalAlign=middle;fontSize=17;" value="自定义视图&#xa;(StarrySkyView,&#xa;StarFieldView)" vertex="1">
+          <mxGeometry height="120" width="120" x="990" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="layer3" parent="1" style="swimlane;horizontal=0;fillColor=#E8F5E9;strokeColor=#388E3C;fontColor=#1B5E20;fontStyle=1;fontSize=14;startSize=30;" value="业务层" vertex="1">
+          <mxGeometry height="160" width="1120" x="40" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="l3-item1" parent="layer3" style="rounded=1;fillColor=#C8E6C9;strokeColor=#4CAF50;align=center;verticalAlign=middle;fontSize=18;" value="ViewModel层&#xa;(UserViewModel,&#xa;PostViewModel）" vertex="1">
+          <mxGeometry height="100" width="200" x="60" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l3-item2" parent="layer3" style="rounded=1;fillColor=#C8E6C9;strokeColor=#4CAF50;align=center;verticalAlign=middle;fontSize=18;" value="AI对话&#xa;(Kimi大模型集成,&#xa;PromptBuilder)" vertex="1">
+          <mxGeometry height="100" width="180" x="280" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l3-item3" parent="layer3" style="rounded=1;fillColor=#C8E6C9;strokeColor=#4CAF50;align=center;verticalAlign=middle;fontSize=18;" value="打卡健康&#xa;(CheckinActivity)" vertex="1">
+          <mxGeometry height="100" width="160" x="480" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l3-item4" parent="layer3" style="rounded=1;fillColor=#C8E6C9;strokeColor=#4CAF50;align=center;verticalAlign=middle;fontSize=18;" value="身后事计划&#xa;(AfterlifePlan)" vertex="1">
+          <mxGeometry height="100" width="160" x="660" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l3-item5" parent="layer3" style="rounded=1;fillColor=#C8E6C9;strokeColor=#4CAF50;align=center;verticalAlign=middle;fontSize=18;" value="社区社交&#xa;(Post, Comment)" vertex="1">
+          <mxGeometry height="100" width="160" x="830" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l3-item6" parent="layer3" style="rounded=1;fillColor=#C8E6C9;strokeColor=#4CAF50;align=center;verticalAlign=middle;fontSize=18;" value="星空纪念馆&#xa;(StarrySky)" vertex="1">
+          <mxGeometry height="100" width="110" x="1000" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="layer4" parent="1" style="swimlane;horizontal=0;fillColor=#FFF3E0;strokeColor=#F57C00;fontColor=#E65100;fontStyle=1;fontSize=14;startSize=30;" value="数据层" vertex="1">
+          <mxGeometry height="160" width="1120" x="40" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="l4-item1" parent="layer4" style="rounded=1;fillColor=#FFE0B2;strokeColor=#FF9800;align=center;verticalAlign=middle;fontSize=18;" value="数据模型&#xa;(User, Post,&#xa;AfterlifePlan等)" vertex="1">
+          <mxGeometry height="100" width="200" x="60" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l4-item2" parent="layer4" style="rounded=1;fillColor=#FFE0B2;strokeColor=#FF9800;align=center;verticalAlign=middle;fontSize=18;" value="Repository仓库&#xa;(BmobRepository,&#xa;ElderlyDataRepository)" vertex="1">
+          <mxGeometry height="100" width="230" x="290" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l4-item3" parent="layer4" style="rounded=1;fillColor=#FFE0B2;strokeColor=#FF9800;align=center;verticalAlign=middle;fontSize=18;" value="SharedPreferences&#xa;本地用户数据存储" vertex="1">
+          <mxGeometry height="100" width="160" x="550" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l4-item4" parent="layer4" style="rounded=1;fillColor=#FFE0B2;strokeColor=#FF9800;align=center;verticalAlign=middle;fontSize=18;" value="Bmob SDK&#xa;(Retrofit+OkHttp)&#xa;云端数据存储" vertex="1">
+          <mxGeometry height="100" width="160" x="740" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l4-item5" parent="layer4" style="rounded=1;fillColor=#FFE0B2;strokeColor=#FF9800;align=center;verticalAlign=middle;fontSize=18;" value="DataSyncManager&#xa;数据同步管理" vertex="1">
+          <mxGeometry height="100" width="160" x="930" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="layer5" parent="1" style="swimlane;horizontal=0;fillColor=#FFEBEE;strokeColor=#D32F2F;fontColor=#B71C1C;fontStyle=1;fontSize=14;startSize=30;verticalAlign=middle;labelPosition=center;verticalLabelPosition=middle;align=center;" value="后端服务层" vertex="1">
+          <mxGeometry height="140" width="1120" x="40" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="l5-item1" parent="layer5" style="rounded=1;fillColor=#FFCDD2;strokeColor=#F44336;align=center;verticalAlign=middle;fontSize=18;" value="Bmob云服务" vertex="1">
+          <mxGeometry height="80" width="200" x="60" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l5-item2" parent="layer5" style="rounded=1;fillColor=#FFCDD2;strokeColor=#F44336;align=center;verticalAlign=middle;fontSize=18;" value="Kimi API&#xa;(kimi2.0)" vertex="1">
+          <mxGeometry height="80" width="160" x="320" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l5-item3" parent="layer5" style="rounded=1;fillColor=#FFCDD2;strokeColor=#F44336;align=center;verticalAlign=middle;fontSize=18;" value="Weather API&#xa;天气数据服务" vertex="1">
+          <mxGeometry height="80" width="140" x="540" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l5-item4" parent="layer5" style="rounded=1;fillColor=#FFCDD2;strokeColor=#F44336;align=center;verticalAlign=middle;fontSize=18;" value="LeanCloud&#xa;消息推送服务" vertex="1">
+          <mxGeometry height="80" width="170" x="720" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l5-item5" parent="layer5" style="rounded=1;fillColor=#FFCDD2;strokeColor=#F44336;align=center;verticalAlign=middle;fontSize=18;" value="定位服务&#xa;(Android Location)" vertex="1">
+          <mxGeometry height="80" width="170" x="930" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="conn1" edge="1" parent="1" source="layer1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#666666;strokeWidth=2;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="layer2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn2" edge="1" parent="1" source="layer2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#666666;strokeWidth=2;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=18;" target="layer3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn3" edge="1" parent="1" source="layer3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#666666;strokeWidth=2;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="layer4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn4" edge="1" parent="1" source="layer4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#666666;strokeWidth=2;dashed=1;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=18;" target="layer5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="footer" parent="1" value="技术栈: Kotlin + Android SDK + Jetpack Compose + Material Design 3 + Retrofit + OkHttp + Bmob云 + Kimi API" vertex="1">
+          <mxGeometry height="30" width="800" x="200" y="960" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

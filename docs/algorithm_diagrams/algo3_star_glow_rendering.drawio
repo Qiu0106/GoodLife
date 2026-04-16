@@ -1,0 +1,118 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="算法三：星星发光渲染" id="algo3">
+    <mxGraphModel dx="1195" dy="790" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;" value="星星发光渲染层级（由内向外绘制）" vertex="1">
+          <mxGeometry height="30" width="400" x="350" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="order_label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;" value="绘制顺序&#xa;(从下到上)" vertex="1">
+          <mxGeometry height="40" width="80" x="217" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="l1_num" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFB6C1;strokeColor=#FF1493;fontSize=15;fontStyle=1;" value="①" vertex="1">
+          <mxGeometry height="36" width="36" x="227" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="l1_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF5F7;strokeColor=#FF1493;strokeWidth=2;fontSize=15;" value="" vertex="1">
+          <mxGeometry height="90" width="490" x="297" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="l1_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;" value="第1层: 外层大光晕 (alpha 15%)" vertex="1">
+          <mxGeometry height="25" width="300" x="317" y="158" as="geometry" />
+        </mxCell>
+        <mxCell id="l1_preview" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFB6C1;strokeColor=#FF69B4;opacity=30;fontSize=15;" value="" vertex="1">
+          <mxGeometry height="42" width="120" x="327" y="188" as="geometry" />
+        </mxCell>
+        <mxCell id="l1_desc" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;" value="RadialGradient, 半径 × 1.5&#xa;颜色渐变: 色 → 色×0.5 → 色×0.3 → 透明" vertex="1">
+          <mxGeometry height="38" width="280" x="467" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="l2_num" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FF69B4;strokeColor=#C71585;fontSize=15;fontStyle=1;" value="②" vertex="1">
+          <mxGeometry height="36" width="36" x="227" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="l2_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE4E9;strokeColor=#C71585;strokeWidth=2;fontSize=15;" value="" vertex="1">
+          <mxGeometry height="90" width="490" x="297" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="l2_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;" value="第2层: 中层光晕 (alpha 35%)" vertex="1">
+          <mxGeometry height="25" width="300" x="317" y="258" as="geometry" />
+        </mxCell>
+        <mxCell id="l2_preview" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FF69B4;strokeColor=#FF1493;opacity=50;fontSize=15;" value="" vertex="1">
+          <mxGeometry height="42" width="100" x="337" y="288" as="geometry" />
+        </mxCell>
+        <mxCell id="l2_desc" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;" value="RadialGradient, 标准半径&#xa;颜色渐变: 色 → 色×0.5 → 色×0.15 → 透明" vertex="1">
+          <mxGeometry height="38" width="290" x="467" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="l3_num" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FF69B4;fontSize=15;fontStyle=1;" value="③" vertex="1">
+          <mxGeometry height="36" width="36" x="227" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="l3_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FF69B4;strokeWidth=2;fontSize=15;" value="" vertex="1">
+          <mxGeometry height="90" width="490" x="297" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="l3_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;" value="第3层: 星星实体核心" vertex="1">
+          <mxGeometry height="25" width="200" x="317" y="358" as="geometry" />
+        </mxCell>
+        <mxCell id="l3_preview" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FF69B4;opacity=85;fontSize=15;" value="" vertex="1">
+          <mxGeometry height="42" width="70" x="352" y="388" as="geometry" />
+        </mxCell>
+        <mxCell id="l3_desc" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;" value="RadialGradient&#xa;颜色渐变: 白色 → 粉色 → 色×0.6 → 透明" vertex="1">
+          <mxGeometry height="38" width="290" x="447" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="l4_num" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#333333;strokeColor=#666666;fontSize=15;fontStyle=1;whiteColor=#FFFFFF;" value="④" vertex="1">
+          <mxGeometry height="36" width="36" x="227" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="l4_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;strokeWidth=2;fontSize=15;" value="" vertex="1">
+          <mxGeometry height="90" width="490" x="297" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="l4_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;" value="第4层: 名字胶囊底托 + 文字" vertex="1">
+          <mxGeometry height="25" width="240" x="317" y="458" as="geometry" />
+        </mxCell>
+        <mxCell id="l4_preview" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#99000000;strokeColor=#666666;opacity=55;fontSize=15;" value="" vertex="1">
+          <mxGeometry height="40" width="110" x="332" y="488" as="geometry" />
+        </mxCell>
+        <mxCell id="l4_text" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;whiteColor=#FFFFFF;" value="张三" vertex="1">
+          <mxGeometry height="30" width="110" x="332" y="493" as="geometry" />
+        </mxCell>
+        <mxCell id="l4_desc" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;" value="RoundRect 底托: #99000000 半透明黑色&#xa;文字: 白色 42sp + 阴影效果" vertex="1">
+          <mxGeometry height="38" width="280" x="462" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="l5_num" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFD700;strokeColor=#B8860B;fontSize=15;fontStyle=1;" value="⑤" vertex="1">
+          <mxGeometry height="36" width="36" x="227" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="l5_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFACD;strokeColor=#FFD700;strokeWidth=2;dashed=1;fontSize=15;" value="" vertex="1">
+          <mxGeometry height="90" width="490" x="297" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="l5_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;" value="第5层 (可选): 选中高亮金圈" vertex="1">
+          <mxGeometry height="25" width="220" x="317" y="558" as="geometry" />
+        </mxCell>
+        <mxCell id="l5_preview" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#FFD700;strokeWidth=3;dashed=1;fontSize=15;" value="" vertex="1">
+          <mxGeometry height="42" width="90" x="342" y="588" as="geometry" />
+        </mxCell>
+        <mxCell id="l5_desc" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;" value="STROKE 圆环 #FFD700&#xa;仅当星星被选中时绘制" vertex="1">
+          <mxGeometry height="38" width="230" x="452" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow1" edge="1" parent="1" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#999999;fontSize=15;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="707" y="245" as="sourcePoint" />
+            <mxPoint x="707" y="255" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow2" edge="1" parent="1" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#999999;fontSize=15;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="707" y="345" as="sourcePoint" />
+            <mxPoint x="707" y="355" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow3" edge="1" parent="1" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#999999;fontSize=15;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="707" y="445" as="sourcePoint" />
+            <mxPoint x="707" y="455" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow4" edge="1" parent="1" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#999999;fontSize=15;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="707" y="545" as="sourcePoint" />
+            <mxPoint x="707" y="555" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
