@@ -4,7 +4,6 @@ import android.util.Log
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
-import java.net.URLEncoder
 
 class WeatherApiService {
 
@@ -27,7 +26,6 @@ class WeatherApiService {
         fun getWeatherInfo(
             longitude: Double,
             latitude: Double,
-            apiKey: String,
             onSuccess: (WeatherInfo) -> Unit,
             onError: (String) -> Unit
         ) {

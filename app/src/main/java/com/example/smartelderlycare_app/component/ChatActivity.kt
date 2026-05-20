@@ -41,6 +41,7 @@ class ChatActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var etInput: EditText
     private lateinit var btnSend: Button
     private lateinit var btnBack: ImageButton
+    private lateinit var btnDeleteChat: ImageButton
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var elderlyDataRepository: ElderlyDataRepository
@@ -76,6 +77,7 @@ class ChatActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         etInput = findViewById(R.id.etInput)
         btnSend = findViewById(R.id.btnSend)
         btnBack = findViewById(R.id.btnBack)
+        btnDeleteChat = findViewById(R.id.btnDeleteChat)
     }
 
     private fun setupRecyclerView() {
@@ -113,6 +115,23 @@ class ChatActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private fun setupClickListeners() {
         btnSend.setOnClickListener { sendMessage() }
         btnBack.setOnClickListener { finish() }
+        btnDeleteChat.setOnClickListener { showDeleteChatDialog() }
+    }
+
+    private fun showDeleteChatDialog() {
+        android.app.AlertDialog.Builder(this)
+            .setTitle("删除聊天记录")
+            .setMessage("确定要删除所有聊天记录吗？此操作不可恢复。")
+            .setPositiveButton("删除") { _, _ ->
+                deleteChatHistory()
+            }
+            .setNegativeButton("取消", null)
+            .show()
+    }
+
+    private fun deleteChatHistory() {
+        prefs.edit().clear().apply()
+        chatAdapter.setMessages(emptyList())
     }
 
     private fun addWelcomeMessage() {

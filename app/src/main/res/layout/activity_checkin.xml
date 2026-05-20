@@ -102,8 +102,8 @@
         android:layout_marginHorizontal="@dimen/elderly_padding_page"
         android:layout_marginTop="@dimen/elderly_spacing_md"
         android:layout_marginBottom="@dimen/elderly_spacing_lg"
-        android:text="Debug: 触发3天未打卡预警"
-        android:textSize="@dimen/elderly_text_body"
+        android:backgroundTint="@color/red"
+        android:text="触发3天未打卡预警"
         android:textColor="@color/white"
-        android:backgroundTint="@color/red" />
+        android:textSize="@dimen/elderly_text_body" />
 </LinearLayout>

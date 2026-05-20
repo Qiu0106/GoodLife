@@ -8,6 +8,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
+import android.os.SystemClock
 import androidx.core.content.ContextCompat
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -38,6 +39,13 @@ class LocationHelper(private val context: Context) {
             val location = getLastKnownLocation()
             if (location != null && isLocationValid(location)) {
                 callback.onSuccess(location)
+                return
+            }
+
+            // 模拟器环境下使用上海坐标
+            val mockLocation = getMockLocationIfNeeded()
+            if (mockLocation != null) {
+                callback.onSuccess(mockLocation)
                 return
             }
 
@@ -86,6 +94,27 @@ class LocationHelper(private val context: Context) {
     private fun isLocationValid(location: Location): Boolean {
         val fiveMinutes = 5 * 60 * 1000L
         return System.currentTimeMillis() - location.time < fiveMinutes
+    }
+
+    /**
+     * 模拟器环境下返回上海坐标（经度 121.47，纬度 31.23）
+     * 真机上此方法返回 false，不会覆盖真实 GPS 数据
+     */
+    private fun getMockLocationIfNeeded(): Location? {
+        val isEmulator = android.os.Build.MODEL.contains("sdk_gphone64")
+            || android.os.Build.MODEL.contains("Emulator")
+            || android.os.Build.FINGERPRINT.contains("generic")
+            || android.os.Build.FINGERPRINT.contains("test_keys")
+
+        if (!isEmulator) return null
+
+        return Location(LocationManager.GPS_PROVIDER).apply {
+            latitude = 31.23
+            longitude = 121.47
+            accuracy = 100f
+            time = System.currentTimeMillis()
+            elapsedRealtimeNanos = SystemClock.elapsedRealtimeNanos()
+        }
     }
 
     private fun requestLocationUpdate(callback: LocationCallback) {

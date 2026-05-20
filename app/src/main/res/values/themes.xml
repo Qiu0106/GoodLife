@@ -19,6 +19,15 @@
 
     <style name="Theme.SmartElderlyCareApp" parent="Base.Theme.SmartElderlyCareApp" />
 
+    <style name="Theme.Transparent" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
     <style name="ElderlyTextView" parent="android:Widget.TextView">
         <item name="android:textSize">@dimen/elderly_text_body</item>
         <item name="android:textColor">@color/elderly_text_primary</item>

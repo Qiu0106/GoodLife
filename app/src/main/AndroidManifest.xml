@@ -6,6 +6,18 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- 高德地图所需权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 
     <application
         android:name=".MyApplication"
@@ -70,6 +82,16 @@
             android:name=".component.AfterlifeCustomActivity"
             android:exported="false" />
         <activity
+            android:name=".component.cemetery.CemeteryMapActivity"
+            android:exported="false" />
+        <activity
+            android:name=".component.cemetery.CemeteryDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".component.cemetery.ImagePreviewActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
             android:name=".component.StarFieldActivity"
             android:exported="false" />
         <activity
@@ -83,6 +105,23 @@
             android:name=".component.ChatActivity"
             android:exported="false"
             android:theme="@style/Theme.SmartElderlyCareApp" />
+
+        <!-- 药物提醒弹窗 Activity -->
+        <activity
+            android:name=".component.MedicationDialogActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Transparent"
+            android:launchMode="singleTop"
+            android:showOnLockScreen="true"
+            android:turnScreenOn="true"
+            android:excludeFromRecents="true" />
+
+        <!-- 药物闹钟 BroadcastReceiver -->
+        <receiver
+            android:name=".component.MedicationAlarmReceiver"
+            android:exported="false"
+            android:directBootAware="false" />
+
     </application>
 
 </manifest>

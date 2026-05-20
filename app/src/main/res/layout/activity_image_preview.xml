@@ -1,24 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="@android:color/black">
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vp_images"
+        android:id="@+id/viewPagerPreview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"/>
+        android:layout_height="match_parent" />
 
     <TextView
-        android:id="@+id/tv_indicator"
+        android:id="@+id/tvPreviewIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="40dp"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:background="@android:color/transparent"/>
+        android:text="1 / 1"
+        android:textSize="14sp"
+        android:textColor="@android:color/white"
+        android:background="#66000000"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="6dp" />
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/btnPreviewClose"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="top|start"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:contentDescription="关闭"
+        android:background="#66000000"
+        android:padding="10dp" />
+
+</FrameLayout>

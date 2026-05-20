@@ -32,10 +32,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="好生活"
+                android:text="好好活"
+                android:textColor="@color/elderly_text_primary"
                 android:textSize="@dimen/elderly_text_heading"
-                android:textStyle="bold"
-                android:textColor="@color/elderly_text_primary" />
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"

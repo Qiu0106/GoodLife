@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -43,6 +44,8 @@ class MineActivity : AppCompatActivity() {
     private lateinit var tvUserPhone: TextView
     private lateinit var tvPersonalInfo: TextView
     private lateinit var tvAfterlifePlan: TextView
+    private lateinit var layoutMedicationDisplay: LinearLayout
+    private lateinit var tvNoMedicationDisplay: TextView
     private lateinit var btnMyPosts: com.google.android.material.button.MaterialButton
     private lateinit var btnMyFavorites: com.google.android.material.button.MaterialButton
     private lateinit var btnEditProfile: Button
@@ -117,6 +120,8 @@ class MineActivity : AppCompatActivity() {
         tvUserPhone = findViewById(R.id.tvUserPhone)
         tvPersonalInfo = findViewById(R.id.tvPersonalInfo)
         tvAfterlifePlan = findViewById(R.id.tvAfterlifePlan)
+        layoutMedicationDisplay = findViewById(R.id.layout_medication_display)
+        tvNoMedicationDisplay = findViewById(R.id.tvNoMedicationDisplay)
         btnMyPosts = findViewById(R.id.btnMyPosts)
         btnMyFavorites = findViewById(R.id.btnMyFavorites)
         btnEditProfile = findViewById(R.id.btnEditProfile)
@@ -254,7 +259,13 @@ class MineActivity : AppCompatActivity() {
                     Log.d(TAG, "正在上传头像，跳过 ViewModel 头像更新")
                 }
 
-                loadPersonalInfo()
+                val userId = it.objectId ?: getSharedPreferences("user", MODE_PRIVATE)
+                    .getString("userObjectId", null)
+                    ?: getSharedPreferences("user", MODE_PRIVATE)
+                        .getString("objectId", null)
+                    ?: getSharedPreferences("user", MODE_PRIVATE)
+                        .getString("userId", null) ?: ""
+                loadPersonalInfo(userId)
             }
         })
 
@@ -298,7 +309,9 @@ class MineActivity : AppCompatActivity() {
     private fun loadData() {
         val sharedPreferences = getSharedPreferences("user", MODE_PRIVATE)
         val phone = sharedPreferences.getString("phone", "") ?: ""
-        val userId = sharedPreferences.getString("userId", "") ?: ""
+        val userId = sharedPreferences.getString("userObjectId", null)
+            ?: sharedPreferences.getString("objectId", null)
+            ?: sharedPreferences.getString("userId", null) ?: ""
         val nickname = sharedPreferences.getString("nickname", null)
         val avatarUrl = sharedPreferences.getString("avatarUrl", null)
 
@@ -312,7 +325,7 @@ class MineActivity : AppCompatActivity() {
         }
 
         // 加载个人资料信息
-        loadPersonalInfo()
+        loadPersonalInfo(userId)
 
         if (phone.isNotEmpty()) {
             userViewModel.getUserByPhone(phone)
@@ -320,6 +333,7 @@ class MineActivity : AppCompatActivity() {
 
         if (userId.isNotEmpty()) {
             afterlifeViewModel.getAfterlifePlansByUserId(userId)
+            loadMedications(userId)
         }
 
         if (tvAfterlifePlan.text.isEmpty()) {
@@ -327,7 +341,40 @@ class MineActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadPersonalInfo() {
+    private fun loadMedications(userId: String) {
+        lifecycleScope.launch {
+            val result = repository.getMedicationsByUserId(userId)
+            result.onSuccess { medications ->
+                layoutMedicationDisplay.removeAllViews()
+                if (medications.isEmpty()) {
+                    tvNoMedicationDisplay.visibility = View.VISIBLE
+                } else {
+                    tvNoMedicationDisplay.visibility = View.GONE
+                    medications.forEach { med ->
+                        val medView = TextView(this@MineActivity).apply {
+                            text = buildString {
+                                append("• ${med.name}")
+                                append("  (${med.frequency})")
+                                if (med.times.isNotEmpty()) {
+                                    append("\n   时间: ${med.times.joinToString(", ")}")
+                                }
+                            }
+                            textSize = 16f
+                            setTextColor(resources.getColor(R.color.morandi_text_primary, null))
+                            setLineSpacing(0f, 1.4f)
+                            setPadding(0, 8, 0, 8)
+                        }
+                        layoutMedicationDisplay.addView(medView)
+                    }
+                }
+            }.onFailure {
+                Log.e(TAG, "加载药物数据失败")
+                tvNoMedicationDisplay.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun loadPersonalInfo(userId: String) {
         val prefs = getSharedPreferences("user", MODE_PRIVATE)
 
         val nickname = prefs.getString("nickname", null) ?: "未设置"
@@ -336,6 +383,7 @@ class MineActivity : AppCompatActivity() {
         val birthDate = prefs.getString("birthDate", null)
         val emergencyContact = prefs.getString("emergencyContact", null)
         val emergencyPhone = prefs.getString("emergencyPhone", null)
+        val emergencyRela = prefs.getString("emergencyRela", null)
         val bloodType = prefs.getString("bloodType", null)
         val medicalHistory = prefs.getString("medicalHistory", null)
         val signature = prefs.getString("signature", null)
@@ -370,10 +418,13 @@ class MineActivity : AppCompatActivity() {
         if (!emergencyContact.isNullOrEmpty() || !emergencyPhone.isNullOrEmpty()) {
             infoBuilder.append("\n紧急联系人:\n")
             if (!emergencyContact.isNullOrEmpty()) {
-                infoBuilder.append("  姓名: $emergencyContact\n")
+                infoBuilder.append("  姓名：$emergencyContact\n")
             }
             if (!emergencyPhone.isNullOrEmpty()) {
-                infoBuilder.append("  电话: $emergencyPhone\n")
+                infoBuilder.append("  电话：$emergencyPhone\n")
+            }
+            if (!emergencyRela.isNullOrEmpty()) {
+                infoBuilder.append("  关系：$emergencyRela\n")
             }
         }
 
@@ -392,6 +443,32 @@ class MineActivity : AppCompatActivity() {
 
         val finalInfo = infoBuilder.toString().trim()
         tvPersonalInfo.text = if (finalInfo.isEmpty()) "暂无个人资料，请点击下方按钮编辑" else finalInfo
+
+        // 加载用药信息并追加到个人资料中
+        if (userId.isNotEmpty()) {
+            loadAndAppendMedicationInfo(userId, finalInfo)
+        }
+    }
+
+    private fun loadAndAppendMedicationInfo(userId: String, currentInfo: String) {
+        lifecycleScope.launch {
+            val result = repository.getMedicationsByUserId(userId)
+            result.onSuccess { medications ->
+                if (medications.isNotEmpty()) {
+                    val medInfo = medications.joinToString("\n") { med ->
+                        "• ${med.name} (${med.frequency})"
+                    }
+                    val updatedInfo = if (currentInfo.isEmpty()) {
+                        "用药提醒:\n$medInfo"
+                    } else {
+                        "$currentInfo\n\n用药提醒:\n$medInfo"
+                    }
+                    tvPersonalInfo.text = updatedInfo
+                }
+            }.onFailure {
+                Log.e(TAG, "加载用药信息失败（个人资料显示）")
+            }
+        }
     }
 
     private fun loadFromLocal() {
@@ -433,6 +510,7 @@ class MineActivity : AppCompatActivity() {
 
         getSharedPreferences("user", MODE_PRIVATE).edit().clear().apply()
         getSharedPreferences("afterlife", MODE_PRIVATE).edit().clear().apply()
+        getSharedPreferences("chat_prefs", MODE_PRIVATE).edit().clear().apply()
 
         val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

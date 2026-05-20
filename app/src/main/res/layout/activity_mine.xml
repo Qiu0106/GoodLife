@@ -150,6 +150,65 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- 用药提醒卡片 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/morandi_surface"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <!-- 标题栏 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:text="💊"
+                        android:textSize="22sp"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="用药提醒"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/morandi_text_primary"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
+
+                <!-- 药物列表 -->
+                <LinearLayout
+                    android:id="@+id/layout_medication_display"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <TextView
+                    android:id="@+id/tvNoMedicationDisplay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="暂无用药提醒"
+                    android:textSize="17sp"
+                    android:textColor="@color/morandi_text_secondary"
+                    android:lineSpacingMultiplier="1.4"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <!-- 身后事计划信息卡片 -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

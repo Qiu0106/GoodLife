@@ -49,6 +49,7 @@ object PromptBuilder {
 
     /**
      * 构建适老化人设 System Prompt
+     * 根据我的身体状况推荐食谱
      */
     fun buildSystemPrompt(status: ElderlyStatus): String {
         val medicationHint = when (status.medicationStatus) {

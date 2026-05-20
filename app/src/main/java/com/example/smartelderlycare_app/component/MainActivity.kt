@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.card.MaterialCardView
 import com.bumptech.glide.Glide
-import com.example.smartelderlycare_app.BuildConfig
 import com.example.smartelderlycare_app.R
 import com.example.smartelderlycare_app.data.network.WeatherApiService
 import com.example.smartelderlycare_app.util.LocationHelper
@@ -112,16 +111,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadWeather(longitude: Double, latitude: Double) {
-        val apiKey = BuildConfig.WEATHER_API_KEY
-        if (apiKey.isEmpty() || apiKey == "YOUR_WEATHER_API_KEY_HERE") {
-            Log.w(TAG, "天气 API Key 未配置")
-            return
-        }
-
         WeatherApiService.getWeatherInfo(
             longitude = longitude,
             latitude = latitude,
-            apiKey = apiKey,
             onSuccess = { weatherInfo ->
                 runOnUiThread {
                     tvWeatherIcon.text = weatherInfo.icon
@@ -259,8 +251,8 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "onResume - 刷新数据")
-        // 返回时刷新问候语和头像（防止切换日期或更换头像）
         loadUserAvatar()
         updateGreetingMessage()
+        checkLocationPermissionAndLoadWeather()
     }
 }

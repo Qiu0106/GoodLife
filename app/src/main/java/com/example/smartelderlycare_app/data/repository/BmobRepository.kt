@@ -596,6 +596,76 @@ class BmobRepository {
         }
     }
 
+    // ========== 药物提醒 (Medication) CRUD ==========
+
+    suspend fun createMedication(medication: Medication): Result<Medication> {
+        return safeApiCall {
+            val body = mapOf<String, Any?>(
+                "userId" to medication.userId,
+                "name" to medication.name,
+                "frequency" to medication.frequency,
+                "time" to medication.timesToString()
+            )
+            apiService.createObject("Medication", body.toJsonRequestBody())
+        }.map { response ->
+            medication.copy(
+                objectId = response.objectId,
+                createdAt = response.createdAt,
+                updatedAt = response.updatedAt
+            )
+        }
+    }
+
+    suspend fun getMedicationsByUserId(userId: String): Result<List<Medication>> {
+        return safeApiCall {
+            val where = """{"userId":"$userId"}"""
+            apiService.getObjects("Medication", where = where, order = "createdAt")
+        }.map { response ->
+            if (response.results != null) {
+                val type = object : TypeToken<List<Map<String, Any>>>() {}.type
+                val list: List<Map<String, Any>> = gson.fromJson(gson.toJson(response.results), type)
+                list.map { map ->
+                    Medication(
+                        objectId = map["objectId"] as? String,
+                        userId = map["userId"] as? String ?: "",
+                        name = map["name"] as? String ?: "",
+                        frequency = map["frequency"] as? String ?: "",
+                        times = Medication.parseTimes(map["time"] as? String),
+                        createdAt = map["createdAt"] as? String,
+                        updatedAt = map["updatedAt"] as? String
+                    )
+                }
+            } else {
+                emptyList()
+            }
+        }
+    }
+
+    suspend fun updateMedication(objectId: String, medication: Medication): Result<Medication> {
+        return safeApiCall {
+            val body = mapOf<String, Any?>(
+                "name" to medication.name,
+                "frequency" to medication.frequency,
+                "time" to medication.timesToString()
+            )
+            apiService.updateObject("Medication", objectId, body.toJsonRequestBody())
+        }.map { medication }
+    }
+
+    suspend fun deleteMedication(objectId: String): Result<Unit> {
+        return safeApiCall {
+            apiService.deleteObject("Medication", objectId)
+        }
+    }
+
+    suspend fun deleteMedicationsByUserId(userId: String): Result<Unit> {
+        return getMedicationsByUserId(userId).map { list ->
+            list.forEach { med ->
+                med.objectId?.let { deleteMedication(it) }
+            }
+        }
+    }
+
     suspend fun uploadPostImages(imageFiles: List<File>): Result<List<String>> {
         val urls = mutableListOf<String>()
         var hasError = false
@@ -759,5 +829,85 @@ class BmobRepository {
             val body = mapOf<String, Any?>("commentCount" to mapOf("__op" to "Increment", "amount" to -1))
             apiService.updateObject("Post", objectId, body.toJsonRequestBody())
         }.map { }
+    }
+
+    suspend fun getAllCemeteries(): Result<List<Cemetery>> {
+        return safeApiCall {
+            apiService.getObjects("Cemetery", order = "district", limit = 200)
+        }.map { response ->
+            if (response.results != null) {
+                val rawJson = gson.toJson(response.results)
+                Log.d(TAG, "公墓原始JSON长度: ${rawJson.length}")
+                val type = object : TypeToken<List<Map<String, Any>>>() {}.type
+                val list: List<Map<String, Any>> = gson.fromJson(rawJson, type)
+                val cemeteries = list.map { mapToCemetery(it) }
+                cemeteries
+            } else {
+                emptyList()
+            }
+        }
+    }
+
+    private fun mapToCemetery(map: Map<String, Any>): Cemetery {
+        fun extractString(key: String): String {
+            val value = map[key] ?: return ""
+            return when (value) {
+                is String -> value
+                else -> value.toString()
+            }
+        }
+
+        fun getStringSafe(key: String): String {
+            val rawKey = map.keys.find { it.trim().removePrefix("\uFEFF") == key } ?: key
+            val rawValue = map[rawKey] ?: return ""
+            return when (rawValue) {
+                is String -> rawValue
+                else -> rawValue.toString()
+            }
+        }
+
+        fun extractImageUrls(key: String): String {
+            val rawKey = map.keys.find { it.trim().removePrefix("\uFEFF") == key } ?: key
+            val rawValue = map[rawKey] ?: return ""
+            return when (rawValue) {
+                is List<*> -> {
+                    rawValue.mapNotNull { item ->
+                        when (item) {
+                            is Map<*, *> -> item["url"]?.toString()
+                            is String -> item
+                            else -> null
+                        }
+                    }.joinToString(",")
+                }
+                is Map<*, *> -> rawValue["url"]?.toString() ?: ""
+                is String -> rawValue
+                else -> ""
+            }
+        }
+
+        return Cemetery(
+            objectId = extractString("objectId"),
+            name = getStringSafe("name"),
+            district = getStringSafe("district"),
+            latitude = (map["latitude"] as? Number)?.toDouble() ?: (map["latitude"]?.toString()?.toDoubleOrNull() ?: 0.0),
+            longitude = (map["longitude"] as? Number)?.toDouble() ?: (map["longitude"]?.toString()?.toDoubleOrNull() ?: 0.0),
+            introduction = getStringSafe("introduction"),
+            address = getStringSafe("address"),
+            price = getStringSafe("price"),
+            service = getStringSafe("service"),
+            phone = getStringSafe("phone"),
+            imageUrls = getStringSafe("imageUrls"),
+            website = getStringSafe("website"),
+            createdAt = extractString("createdAt"),
+            updatedAt = extractString("updatedAt")
+        )
+    }
+
+    suspend fun getCemeteryById(objectId: String): Result<Cemetery> {
+        return safeApiCall {
+            apiService.getObject("Cemetery", objectId)
+        }.map { map ->
+            mapToCemetery(map)
+        }
     }
 }

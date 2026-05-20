@@ -2,6 +2,8 @@ package com.example.smartelderlycare_app.component
 
 import android.os.Bundle
 import android.util.Log
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -40,6 +42,7 @@ class CheckinActivity : AppCompatActivity() {
     private var userId: String = ""
     private var nickname: String = ""
     private var avatarUrl: String = ""
+    private var emergencyPhone: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,9 +57,21 @@ class CheckinActivity : AppCompatActivity() {
         tvCheckinText = findViewById(R.id.tv_checkin_text)
         progressBar = findViewById(R.id.progressBar)
 
-        // Debug 按钮：触发3天未打卡预警
+        // Debug 按钮：触发3天未打卡预警 → 直接拨号给紧急联系人
         findViewById<Button>(R.id.btn_debug_alert).setOnClickListener {
-            simulateThreeDaysNoCheckinAlert()
+            if (emergencyPhone.isBlank()) {
+                Toast.makeText(this, "未设置紧急联系人电话", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val formattedPhone = if (emergencyPhone.startsWith("+")) {
+                emergencyPhone
+            } else {
+                "+86$emergencyPhone"
+            }
+            val intent = Intent(Intent.ACTION_DIAL).apply {
+                data = Uri.parse("tel:$formattedPhone")
+            }
+            startActivity(intent)
         }
 
         loadUserInfo()
@@ -69,6 +84,7 @@ class CheckinActivity : AppCompatActivity() {
             ?: prefs.getString("objectId", null) ?: ""
         nickname = prefs.getString("nickname", "") ?: ""
         avatarUrl = prefs.getString("avatarUrl", "") ?: ""
+        emergencyPhone = prefs.getString("emergencyPhone", "") ?: ""
     }
 
     private fun loadCheckinData() {

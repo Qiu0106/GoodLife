@@ -11,8 +11,7 @@ class AfterlifePagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateA
         FuneralStyleFragment(),
         RelicsBurialFragment(),
         FuneralSuppliesFragment(),
-        BGMFragment(),
-        VisitGraveFragment()
+        BGMFragment()
     )
 
     override fun getItemCount(): Int {

@@ -3,10 +3,14 @@ package com.example.smartelderlycare_app.component
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.smartelderlycare_app.R
@@ -23,23 +27,45 @@ import com.example.smartelderlycare_app.ui.viewmodel.AfterlifePlanViewModel
 
 class AfterlifeCustomActivity : AppCompatActivity() {
 
+    private lateinit var layoutMenu: LinearLayout
+    private lateinit var layoutContent: LinearLayout
+    private lateinit var cardFuneralPlan: CardView
+    private lateinit var cardCemeterySelect: CardView
+    private lateinit var btnBack: TextView
+    private lateinit var tvContentTitle: TextView
     private lateinit var viewPager: ViewPager2
     private lateinit var btnPrevious: Button
     private lateinit var btnNext: Button
     private lateinit var btnSave: Button
     private lateinit var adapter: AfterlifePagerAdapter
-    
+    private lateinit var fragmentCemeteryContainer: android.widget.FrameLayout
+    private lateinit var layoutBottomButtons: LinearLayout
+
     private val viewModel: AfterlifePlanViewModel by viewModels()
     private var progressDialog: ProgressDialog? = null
+    private var visitGraveFragment: VisitGraveFragment? = null
+
+    companion object {
+        private const val PAGE_FUNERAL_PLAN = 0
+        private const val PAGE_CEMETERY_SELECT = 1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_afterlife_custom)
 
+        layoutMenu = findViewById(R.id.layoutMenu)
+        layoutContent = findViewById(R.id.layoutContent)
+        cardFuneralPlan = findViewById(R.id.cardFuneralPlan)
+        cardCemeterySelect = findViewById(R.id.cardCemeterySelect)
+        btnBack = findViewById(R.id.btnBack)
+        tvContentTitle = findViewById(R.id.tvContentTitle)
         viewPager = findViewById(R.id.viewPager)
         btnPrevious = findViewById(R.id.btnPrevious)
         btnNext = findViewById(R.id.btnNext)
         btnSave = findViewById(R.id.btnSave)
+        fragmentCemeteryContainer = findViewById(R.id.fragmentCemeteryContainer)
+        layoutBottomButtons = findViewById(R.id.layoutBottomButtons)
 
         adapter = AfterlifePagerAdapter(this)
         viewPager.adapter = adapter
@@ -65,13 +91,53 @@ class AfterlifeCustomActivity : AppCompatActivity() {
         btnSave.setOnClickListener {
             showConfirmationDialog()
         }
-        
-        // 观察ViewModel状态
+
+        cardFuneralPlan.setOnClickListener { navigateTo(PAGE_FUNERAL_PLAN) }
+        cardCemeterySelect.setOnClickListener { navigateTo(PAGE_CEMETERY_SELECT) }
+        btnBack.setOnClickListener { goBackToMenu() }
+
         observeViewModel()
     }
-    
+
+    private fun navigateTo(page: Int) {
+        layoutMenu.visibility = View.GONE
+        layoutContent.visibility = View.VISIBLE
+
+        if (page == PAGE_FUNERAL_PLAN) {
+            tvContentTitle.text = "治丧规划"
+            viewPager.visibility = View.VISIBLE
+            fragmentCemeteryContainer.visibility = View.GONE
+            layoutBottomButtons.visibility = View.VISIBLE
+            updateButtons(viewPager.currentItem)
+        } else {
+            tvContentTitle.text = "陵园选址"
+            viewPager.visibility = View.GONE
+            fragmentCemeteryContainer.visibility = View.VISIBLE
+            layoutBottomButtons.visibility = View.GONE
+
+            if (visitGraveFragment == null) {
+                visitGraveFragment = VisitGraveFragment()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentCemeteryContainer, visitGraveFragment!!)
+                    .commit()
+            }
+        }
+    }
+
+    private fun goBackToMenu() {
+        layoutContent.visibility = View.GONE
+        layoutMenu.visibility = View.VISIBLE
+    }
+
+    override fun onBackPressed() {
+        if (layoutContent.visibility == View.VISIBLE) {
+            goBackToMenu()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     private fun observeViewModel() {
-        // 观察加载状态
         viewModel.isLoading.observe(this, Observer { isLoading ->
             if (isLoading) {
                 showProgressDialog()
@@ -79,25 +145,23 @@ class AfterlifeCustomActivity : AppCompatActivity() {
                 hideProgressDialog()
             }
         })
-        
-        // 观察错误信息
+
         viewModel.errorMessage.observe(this, Observer { errorMessage ->
             errorMessage?.let {
                 Toast.makeText(this, it, Toast.LENGTH_LONG).show()
                 viewModel.clearError()
             }
         })
-        
-        // 观察成功信息
+
         viewModel.successMessage.observe(this, Observer { successMessage ->
             successMessage?.let {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                 viewModel.clearSuccess()
-                finish() // 保存成功后关闭页面
+                finish()
             }
         })
     }
-    
+
     private fun showProgressDialog() {
         progressDialog?.dismiss()
         progressDialog = ProgressDialog(this).apply {
@@ -106,21 +170,21 @@ class AfterlifeCustomActivity : AppCompatActivity() {
             show()
         }
     }
-    
+
     private fun hideProgressDialog() {
         progressDialog?.dismiss()
         progressDialog = null
     }
 
     private fun updateButtons(position: Int) {
-        btnPrevious.visibility = if (position > 0) android.view.View.VISIBLE else android.view.View.GONE
-        
+        btnPrevious.visibility = if (position > 0) View.VISIBLE else View.GONE
+
         if (position == adapter.itemCount - 1) {
-            btnNext.visibility = android.view.View.GONE
-            btnSave.visibility = android.view.View.VISIBLE
+            btnNext.visibility = View.GONE
+            btnSave.visibility = View.VISIBLE
         } else {
-            btnNext.visibility = android.view.View.VISIBLE
-            btnSave.visibility = android.view.View.GONE
+            btnNext.visibility = View.VISIBLE
+            btnSave.visibility = View.GONE
         }
     }
 
@@ -142,12 +206,10 @@ class AfterlifeCustomActivity : AppCompatActivity() {
         val burialMethod = (adapter.getFragment(2) as RelicsBurialFragment).getBurialMethod()
         val supplies = (adapter.getFragment(3) as FuneralSuppliesFragment).getSelectedSupplies()
         val bgm = (adapter.getFragment(4) as BGMFragment).getSelectedBGM()
-        val visitInfo = (adapter.getFragment(5) as VisitGraveFragment).getVisitInfo()
+        val visitInfo = visitGraveFragment?.getVisitInfo() ?: mapOf("date" to null, "time" to null, "notes" to null, "visitName" to null)
 
-        // 获取当前用户ID（这里使用设备标识作为临时用户ID，实际项目中应该使用登录用户的ID）
         val userId = getSharedPreferences("user", MODE_PRIVATE).getString("userId", "anonymous") ?: "anonymous"
 
-        // 创建AfterlifePlan对象
         val afterlifePlan = AfterlifePlan(
             userId = userId,
             name = basicInfo["name"] ?: "",
@@ -174,7 +236,6 @@ class AfterlifeCustomActivity : AppCompatActivity() {
             visitNotes = null
         )
 
-        // 保存到本地SharedPreferences（绑定当前userId）
         val sharedPreferences = getSharedPreferences("afterlife", MODE_PRIVATE).edit()
         sharedPreferences.putString("cachedUserId", userId)
         sharedPreferences.putString("name", basicInfo["name"])
@@ -190,29 +251,25 @@ class AfterlifeCustomActivity : AppCompatActivity() {
         sharedPreferences.putBoolean("hasPlan", true)
         sharedPreferences.apply()
 
-        // 上传到Bmob服务器 - 先保存基本信息，成功后保存祭拜信息
         saveToBmob(afterlifePlan, visitInfo, userId)
     }
 
     private fun saveToBmob(plan: AfterlifePlan, visitInfo: Map<String, String?>, userId: String) {
-        // 观察计划保存结果
         viewModel.currentPlan.observe(this, Observer { savedPlan ->
             savedPlan?.let {
-                // 基本信息保存成功，现在保存祭拜信息到 AfterlifePlanBmob_V 表
                 val visitInfoObj = AfterlifePlanVisitInfo(
                     planId = savedPlan.id?.toString() ?: "",
                     userId = userId,
                     visitDate = visitInfo["date"],
                     visitTime = visitInfo["time"],
-                    visitNotes = visitInfo["notes"]
+                    visitNotes = visitInfo["notes"],
+                    visitName = visitInfo["visitName"]
                 )
                 viewModel.createVisitInfo(visitInfoObj)
-                // 移除观察者，避免重复触发
                 viewModel.currentPlan.removeObservers(this)
             }
         })
 
-        // 开始保存基本信息
         viewModel.createAfterlifePlan(plan)
     }
 }

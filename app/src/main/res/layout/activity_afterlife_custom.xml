@@ -7,6 +7,7 @@
     android:background="@color/elderly_bg">
 
     <TextView
+        android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="身后事定制"
@@ -14,57 +15,235 @@
         android:textStyle="bold"
         android:gravity="center"
         android:paddingTop="@dimen/elderly_spacing_lg"
-        android:paddingBottom="@dimen/elderly_spacing_lg"
+        android:paddingBottom="@dimen/elderly_spacing_md"
         android:textColor="@color/elderly_text_primary" />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
+    <!-- 主内容切换容器 -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginHorizontal="@dimen/elderly_padding_page" />
+        android:layout_weight="1">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="@dimen/elderly_padding_page"
-        android:paddingVertical="@dimen/elderly_spacing_md">
-
-        <Button
-            android:id="@+id/btnNext"
+        <!-- ========== 菜单页：两个大矩形按钮 ========== -->
+        <LinearLayout
+            android:id="@+id/layoutMenu"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/elderly_button_height"
-            android:text="下一步"
-            android:textSize="@dimen/elderly_text_body_large"
-            android:textStyle="bold"
-            android:backgroundTint="@color/elderly_brand"
-            android:textColor="@color/white"
-            android:layout_marginBottom="@dimen/elderly_spacing_sm"
-            android:visibility="visible" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/elderly_padding_page"
+            android:visibility="visible">
 
-        <Button
-            android:id="@+id/btnPrevious"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/elderly_button_height"
-            android:text="上一步"
-            android:textSize="@dimen/elderly_text_body_large"
-            android:textStyle="bold"
-            android:backgroundTint="@color/elderly_divider"
-            android:textColor="@color/elderly_text_primary"
-            android:layout_marginBottom="@dimen/elderly_spacing_sm"
-            android:visibility="gone" />
+            <!-- 治丧规划 大按钮 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardFuneralPlan"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="@dimen/elderly_spacing_lg"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardCornerRadius="@dimen/elderly_corner_radius_large"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#FFF3E0">
 
-        <Button
-            android:id="@+id/btnSave"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="@dimen/elderly_padding_card">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📋"
+                        android:textSize="48sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="治丧规划"
+                        android:textSize="26sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/elderly_text_primary"
+                        android:layout_marginTop="@dimen/elderly_spacing_sm" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="基础信息 · 葬礼风格 · 遗物安葬 · 用品 · 音乐"
+                        android:textSize="15sp"
+                        android:textColor="@color/morandi_text_secondary"
+                        android:layout_marginTop="@dimen/elderly_spacing_xs"
+                        android:gravity="center" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 陵园选址 大按钮 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardCemeterySelect"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="@dimen/elderly_spacing_lg"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardCornerRadius="@dimen/elderly_corner_radius_large"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#F3E5F5">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="@dimen/elderly_padding_card">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🗺️"
+                        android:textSize="48sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="陵园选址"
+                        android:textSize="26sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/elderly_text_primary"
+                        android:layout_marginTop="@dimen/elderly_spacing_sm" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="预约看墓 · 上海市公墓地图"
+                        android:textSize="15sp"
+                        android:textColor="@color/morandi_text_secondary"
+                        android:layout_marginTop="@dimen/elderly_spacing_xs"
+                        android:gravity="center" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <!-- ========== 内容页：返回按钮 + ViewPager/陵园选址 + 底部按钮 ========== -->
+        <LinearLayout
+            android:id="@+id/layoutContent"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/elderly_button_height"
-            android:text="保存配置"
-            android:textSize="@dimen/elderly_text_body_large"
-            android:textStyle="bold"
-            android:backgroundTint="@color/elderly_brand"
-            android:textColor="@color/white"
-            android:visibility="gone" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <!-- 返回按钮行 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="@dimen/elderly_spacing_md"
+                android:paddingVertical="@dimen/elderly_spacing_sm"
+                android:background="@color/morandi_surface"
+                android:elevation="2dp">
+
+                <TextView
+                    android:id="@+id/btnBack"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="返回"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/morandi_accent_warm"
+                    android:gravity="start|center_vertical"
+                    android:paddingHorizontal="@dimen/elderly_spacing_md"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground" />
+
+                <TextView
+                    android:id="@+id/tvContentTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="治丧规划"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/elderly_text_primary" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <!-- 内容区域 -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/elderly_padding_page"
+                    android:visibility="visible" />
+
+                <FrameLayout
+                    android:id="@+id/fragmentCemeteryContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+            <!-- 底部按钮（仅治丧规划显示） -->
+            <LinearLayout
+                android:id="@+id/layoutBottomButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/elderly_padding_page"
+                android:paddingVertical="@dimen/elderly_spacing_md"
+                android:visibility="visible">
+
+                <Button
+                    android:id="@+id/btnNext"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/elderly_button_height"
+                    android:text="下一步"
+                    android:textSize="@dimen/elderly_text_body_large"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/elderly_brand"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="@dimen/elderly_spacing_sm"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/btnPrevious"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/elderly_button_height"
+                    android:text="上一步"
+                    android:textSize="@dimen/elderly_text_body_large"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/elderly_divider"
+                    android:textColor="@color/elderly_text_primary"
+                    android:layout_marginBottom="@dimen/elderly_spacing_sm"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/elderly_button_height"
+                    android:text="保存配置"
+                    android:textSize="@dimen/elderly_text_body_large"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/elderly_brand"
+                    android:textColor="@color/white"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

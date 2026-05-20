@@ -47,9 +47,15 @@
             android:textColor="@color/white"
             android:gravity="center" />
 
-        <View
+        <ImageButton
+            android:id="@+id/btnDeleteChat"
             android:layout_width="48dp"
-            android:layout_height="48dp" />
+            android:layout_height="48dp"
+            android:src="@drawable/ic_delete_chat"
+            android:scaleType="centerInside"
+            android:padding="10dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="删除聊天记录" />
 
     </LinearLayout>
 

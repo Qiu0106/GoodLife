@@ -13,6 +13,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.smartelderlycare_app.component.cemetery.ImagePreviewActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.setPadding
 import androidx.lifecycle.lifecycleScope
@@ -239,8 +240,8 @@ class PostDetailActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private fun showImagePreview(index: Int) {
         val intent = Intent(this, ImagePreviewActivity::class.java).apply {
-            putStringArrayListExtra("images", imageUrls)
-            putExtra("currentIndex", index)
+            putStringArrayListExtra("imageUrls", imageUrls)
+            putExtra("position", index)
         }
         startActivity(intent)
     }

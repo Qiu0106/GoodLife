@@ -277,7 +277,7 @@
                         android:id="@+id/etEmergencyContact"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:hint="紧急联系人姓名（如：儿子、老伴）"
+                        android:hint="紧急联系人姓名"
                         android:inputType="textPersonName"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
@@ -884,6 +884,65 @@
                         android:textSize="17sp"
                         android:textColor="@color/morandi_text_primary" />
                 </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 用药提醒设置卡片 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/morandi_surface"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="💊 用药提醒设置"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/morandi_text_primary" />
+
+                    <Button
+                        android:id="@+id/btn_add_medication"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="+ 添加药物"
+                        android:textSize="14sp"
+                        android:backgroundTint="@color/morandi_accent_warm" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_medication_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <TextView
+                    android:id="@+id/tv_no_medication"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="暂无用药提醒，点击上方按钮添加"
+                    android:textSize="15sp"
+                    android:textColor="@color/morandi_text_hint"
+                    android:gravity="center"
+                    android:paddingVertical="24dp"
+                    android:visibility="gone" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

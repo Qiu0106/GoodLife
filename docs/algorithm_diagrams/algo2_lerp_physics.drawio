@@ -1,55 +1,57 @@
 <mxfile host="app.diagrams.net">
   <diagram name="算法二：Lerp物理引擎" id="algo2">
-    <mxGraphModel dx="1006" dy="665" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="600" math="0" shadow="0">
+    <mxGraphModel dx="1195" dy="790" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="600" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="start" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=16;" value="每帧调用 updateAndDraw&#xa;(由 ValueAnimator 驱动 60fps)" vertex="1">
-          <mxGeometry height="50" width="240" x="480" y="20" as="geometry" />
+          <mxGeometry height="50" width="240" x="480" y="30" as="geometry" />
         </mxCell>
         <mxCell id="decision1" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=16;" value="isFingerDown?" vertex="1">
           <mxGeometry height="80" width="160" x="520" y="110" as="geometry" />
         </mxCell>
         <mxCell id="calcDist" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=16;" value="计算到手指的距离" vertex="1">
-          <mxGeometry height="40" width="160" x="300" y="230" as="geometry" />
+          <mxGeometry height="40" width="160" x="370" y="170" as="geometry" />
         </mxCell>
         <mxCell id="decision2" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=16;" value="distance&#xa;&amp;lt; 400px?" vertex="1">
-          <mxGeometry height="80" width="160" x="300" y="310" as="geometry" />
+          <mxGeometry height="80" width="160" x="370" y="260" as="geometry" />
         </mxCell>
         <mxCell id="attract" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5f5e3;strokeColor=#2e7d32;fontSize=16;" value="home 向手指偏移 15%&#xa;(lerp factor = 0.08)" vertex="1">
-          <mxGeometry height="50" width="180" x="181" y="430" as="geometry" />
+          <mxGeometry height="50" width="180" x="240" y="430" as="geometry" />
         </mxCell>
         <mxCell id="returnHome" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5f5e3;strokeColor=#2e7d32;fontSize=16;" value="Lerp 归位到 originalHome&#xa;(lerp factor = 0.02)" vertex="1">
-          <mxGeometry height="50" width="200" x="600" y="230" as="geometry" />
+          <mxGeometry height="50" width="200" x="670" y="170" as="geometry" />
         </mxCell>
         <mxCell id="lerpPos" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=16;" value="bgStar.x = lerp(x, homeX, 0.02)&#xa;bgStar.y = lerp(y, homeY, 0.02)" vertex="1">
-          <mxGeometry height="50" width="240" x="461" y="520" as="geometry" />
+          <mxGeometry height="50" width="240" x="650" y="430" as="geometry" />
         </mxCell>
         <mxCell id="draw" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fce4d6;strokeColor=#c65911;fontSize=16;" value="计算闪烁 alpha (sin函数)&#xa;绘制圆形到 Canvas" vertex="1">
-          <mxGeometry height="50" width="240" x="461" y="620" as="geometry" />
+          <mxGeometry height="50" width="240" x="650" y="520" as="geometry" />
         </mxCell>
         <mxCell id="e1" edge="1" parent="1" source="start" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=16;" target="decision1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e2" edge="1" parent="1" source="decision1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontColor=#006600;fontSize=16;" target="calcDist" value="是">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="e2" edge="1" parent="1" source="decision1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontColor=#006600;fontSize=16;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="calcDist" value="是">
+          <mxGeometry relative="1" x="-0.2724" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="450" y="150" />
+            </Array>
+            <mxPoint x="520" y="140" as="sourcePoint" />
+            <mxPoint x="430" y="160" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="e3" edge="1" parent="1" source="decision1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontColor=#006600;fontSize=16;" target="returnHome" value="否">
+        <mxCell id="e3" edge="1" parent="1" source="decision1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontColor=#006600;fontSize=16;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="returnHome" value="否">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="e4" edge="1" parent="1" source="calcDist" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=16;" target="decision2">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="e5" edge="1" parent="1" source="decision2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontColor=#006600;fontSize=16;" target="attract" value="是">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e6" edge="1" parent="1" source="decision2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontColor=#990000;fontSize=16;exitX=1;exitY=1;exitDx=0;exitDy=0;" target="lerpPos" value="否">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="460" y="370" />
-              <mxPoint x="460" y="520" />
+              <mxPoint x="330" y="300" />
             </Array>
-            <mxPoint x="460" y="360" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="e7" edge="1" parent="1" source="returnHome" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=16;" target="lerpPos">
@@ -60,6 +62,13 @@
         </mxCell>
         <mxCell id="e9" edge="1" parent="1" source="lerpPos" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=16;" target="draw">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="VBIThf_KPncHbAGLcmcp-3" edge="1" parent="1" source="decision2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontColor=#006600;fontSize=16;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="lerpPos" value="否">
+          <mxGeometry relative="1" x="-0.5757" as="geometry">
+            <mxPoint x="1" as="offset" />
+            <mxPoint x="670" y="280" as="sourcePoint" />
+            <mxPoint x="760" y="300" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>

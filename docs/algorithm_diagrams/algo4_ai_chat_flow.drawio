@@ -1,77 +1,99 @@
 <mxfile host="app.diagrams.net">
   <diagram name="算法四：AI对话流程" id="algo4">
-    <mxGraphModel dx="1006" dy="665" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="600" math="0" shadow="0">
+    <mxGraphModel dx="579" dy="383" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="600" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="user" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=15;fontStyle=1;" value="用户输入文本消息" vertex="1">
+        <mxCell id="user" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=17;fontStyle=1;" value="用户输入文本消息" vertex="1">
           <mxGeometry height="50" width="140" x="40" y="120" as="geometry" />
         </mxCell>
-        <mxCell id="a1" edge="1" parent="1" source="user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=15;" target="promptBuilder">
+        <mxCell id="a1" edge="1" parent="1" source="user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=17;" target="promptBuilder">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="promptBuilder" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=15;" value="PromptBuilder&#xa;构建 System Prompt&#xa;注入用户人设和上下文" vertex="1">
-          <mxGeometry height="80" width="160" x="240" y="105" as="geometry" />
+        <mxCell id="promptBuilder" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=17;" value="构建 System Prompt&lt;br&gt;注入用户人设和上下文" vertex="1">
+          <mxGeometry height="80" width="180" x="240" y="105" as="geometry" />
         </mxCell>
-        <mxCell id="a2" edge="1" parent="1" source="promptBuilder" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=15;" target="kimiApi">
+        <mxCell id="a2" edge="1" parent="1" source="promptBuilder" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=17;" target="kimiApi">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="kimiApi" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=15;" value="KimiApiService&#xa;POST /v1/chat/completions" vertex="1">
-          <mxGeometry height="80" width="160" x="460" y="105" as="geometry" />
+        <mxCell id="kimiApi" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=17;" value="KimiApiService&#xa;POST /v1/chat/completions" vertex="1">
+          <mxGeometry height="80" width="170" x="600" y="105" as="geometry" />
         </mxCell>
-        <mxCell id="a3" edge="1" parent="1" source="kimiApi" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=15;" target="server">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="server" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=15;" value="Moonshot API Server&lt;br&gt;kimi 2.5 模型" vertex="1">
-          <mxGeometry height="80" width="160" x="680" y="105" as="geometry" />
-        </mxCell>
-        <mxCell id="a4" edge="1" parent="1" source="server" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=15;" target="parseJson">
+        <mxCell id="a3" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=17;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="server">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="760" y="210" />
-              <mxPoint x="650" y="210" />
-              <mxPoint x="650" y="295" />
+              <mxPoint x="490" y="150" />
+              <mxPoint x="490" y="150" />
+            </Array>
+            <mxPoint x="490" y="150" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="server" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=17;" value="Moonshot API Server&lt;br&gt;kimi 2.5 模型" vertex="1">
+          <mxGeometry height="80" width="160" x="410" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="a4" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=17;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="490" y="280" />
+              <mxPoint x="490" y="295" />
+            </Array>
+            <mxPoint x="490" y="280" as="sourcePoint" />
+            <mxPoint x="600" y="295" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="parseJson" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5f5e3;strokeColor=#2e7d32;fontSize=17;" value="解析 JSON Response&#xa;提取 choices[0].message" vertex="1">
+          <mxGeometry height="70" width="170" x="600" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="a5" edge="1" parent="1" source="parseJson" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=17;" target="typewriter">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="683" y="340" />
+              <mxPoint x="683" y="340" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="parseJson" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5f5e3;strokeColor=#2e7d32;fontSize=15;" value="解析 JSON Response&#xa;提取 choices[0].message" vertex="1">
-          <mxGeometry height="70" width="160" x="460" y="260" as="geometry" />
+        <mxCell id="typewriter" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4d6;strokeColor=#c65911;fontSize=17;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;打字机效果逐字显示&lt;br&gt;ChatAdapter通知刷新&lt;/span&gt;" vertex="1">
+          <mxGeometry height="70" width="175" x="595" y="390" as="geometry" />
         </mxCell>
-        <mxCell id="a5" edge="1" parent="1" source="parseJson" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=15;" target="typewriter">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="complete" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5f5e3;strokeColor=#2e7d32;fontSize=17;fontStyle=1;" value="AI 回复完成" vertex="1">
+          <mxGeometry height="40" width="140" x="612.5" y="510" as="geometry" />
         </mxCell>
-        <mxCell id="typewriter" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4d6;strokeColor=#c65911;fontSize=15;fontStyle=1;" value="打字机效果逐字显示&#xa;ChatAdapter 通知刷新 UI" vertex="1">
-          <mxGeometry height="70" width="180" x="460" y="400" as="geometry" />
-        </mxCell>
-        <mxCell id="complete" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5f5e3;strokeColor=#2e7d32;fontSize=15;fontStyle=1;" value="AI 回复完成" vertex="1">
-          <mxGeometry height="40" width="140" x="480" y="520" as="geometry" />
-        </mxCell>
-        <mxCell id="a6" edge="1" parent="1" source="typewriter" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=15;" target="complete">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="vconn" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=15;" value="">
+        <mxCell id="a6" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=17;" target="complete">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="540" y="185" as="sourcePoint" />
-            <mxPoint x="540" y="260" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="682.5" y="470" />
+              <mxPoint x="682.5" y="470" />
+            </Array>
+            <mxPoint x="682.5" y="460" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="notes_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f9f9f9;strokeColor=#cccccc;fontSize=15;" value="" vertex="1">
-          <mxGeometry height="180" width="350" x="40" y="280" as="geometry" />
+        <mxCell id="vconn" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fontSize=17;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="684.7" y="220" />
+              <mxPoint x="684.7" y="220" />
+            </Array>
+            <mxPoint x="684.7" y="185" as="sourcePoint" />
+            <mxPoint x="684.7" y="260" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="notes_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;" value="PromptBuilder 设计要点" vertex="1">
-          <mxGeometry height="20" width="200" x="60" y="290" as="geometry" />
+        <mxCell id="notes_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f9f9f9;strokeColor=#cccccc;fontSize=17;" value="" vertex="1">
+          <mxGeometry height="180" width="460" x="70" y="370" as="geometry" />
         </mxCell>
-        <mxCell id="notes_content" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=15;" value="• 角色: “好好活”智能养老助手&#xa;&#xa;• 特征: 温暖耐心、适老化语言、不使用专业术语&#xa;&#xa;• 上下文注入: 用户昵称、今日步数、用药状态、心情指数" vertex="1">
-          <mxGeometry height="120" width="310" x="60" y="315" as="geometry" />
+        <mxCell id="notes_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=17;fontStyle=1;" value="PromptBuilder 设计要点" vertex="1">
+          <mxGeometry height="20" width="200" x="90" y="375" as="geometry" />
         </mxCell>
-        <mxCell id="files_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f0f0;strokeColor=#999999;fontSize=15;" value="" vertex="1">
-          <mxGeometry height="120" width="320" x="680" y="260" as="geometry" />
+        <mxCell id="notes_content" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=17;" value="• 角色: “好好活”智能养老助手&#xa;&#xa;• 特征: 温暖耐心、适老化语言、不使用专业术语&#xa;&#xa;• 上下文注入: 用户昵称、今日步数、用药状态、心情指数" vertex="1">
+          <mxGeometry height="120" width="440" x="90" y="410" as="geometry" />
         </mxCell>
-        <mxCell id="files_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;" value="关键文件" vertex="1">
-          <mxGeometry height="20" width="100" x="700" y="270" as="geometry" />
+        <mxCell id="files_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f0f0;strokeColor=#999999;fontSize=17;" value="" vertex="1">
+          <mxGeometry height="120" width="270" x="70" y="215" as="geometry" />
         </mxCell>
-        <mxCell id="files_content" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=15;" value="• KimiApiService.kt - API 调用&#xa;• PromptBuilder.kt - 提示词构建&#xa;• ChatActivity.kt - 聊天界面&#xa;• ChatAdapter.kt - 消息适配器" vertex="1">
-          <mxGeometry height="70" width="280" x="700" y="290" as="geometry" />
+        <mxCell id="files_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=17;fontStyle=1;" value="关键文件" vertex="1">
+          <mxGeometry height="30" width="100" x="90" y="215" as="geometry" />
+        </mxCell>
+        <mxCell id="files_content" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=17;" value="• KimiApiService.kt - API 调用&#xa;• PromptBuilder.kt - 提示词构建&#xa;• ChatActivity.kt - 聊天界面&#xa;• ChatAdapter.kt - 消息适配器" vertex="1">
+          <mxGeometry height="70" width="280" x="80" y="240" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

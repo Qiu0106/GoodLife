@@ -26,13 +26,17 @@ class AfterlifePlanVBmob {
     // 祭拜备注
     var visitNotes: String? = null
 
+    // 预约目标（公墓名称）
+    var visitName: String? = null
+
     fun toMap(): Map<String, Any?> {
         return mapOf(
             "planId" to planId,
             "userId" to userId,
             "visitDate" to visitDate,
             "visitTime" to visitTime,
-            "visitNotes" to visitNotes
+            "visitNotes" to visitNotes,
+            "visitName" to visitName
         )
     }
 
@@ -43,6 +47,7 @@ class AfterlifePlanVBmob {
             visitDate = visitDate,
             visitTime = visitTime,
             visitNotes = visitNotes,
+            visitName = visitName,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
@@ -57,6 +62,7 @@ class AfterlifePlanVBmob {
                 visitDate = info.visitDate
                 visitTime = info.visitTime
                 visitNotes = info.visitNotes
+                visitName = info.visitName
             }
         }
 
@@ -70,6 +76,7 @@ class AfterlifePlanVBmob {
                 visitDate = map["visitDate"] as? String
                 visitTime = map["visitTime"] as? String
                 visitNotes = map["visitNotes"] as? String
+                visitName = map["visitName"] as? String
             }
         }
     }
@@ -82,6 +89,7 @@ data class AfterlifePlanVisitInfo(
     val visitDate: String? = null,
     val visitTime: String? = null,
     val visitNotes: String? = null,
+    val visitName: String? = null,
     val createdAt: String? = null,
     val updatedAt: String? = null
 )
