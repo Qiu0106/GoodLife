@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>上海市公墓地图</title>
+    <style>
+        * { margin: 0; padding: 0; }
+        html, body, #container { width: 100%; height: 100%; }
+        .amap-info-window {
+            font-size: 14px;
+            line-height: 1.5;
+            max-width: 260px;
+            cursor: pointer;
+        }
+        .amap-info-window .title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1A1A1A;
+            margin-bottom: 4px;
+        }
+        .amap-info-window .district {
+            font-size: 12px;
+            color: #1565C0;
+            margin-bottom: 6px;
+        }
+        .amap-info-window .intro {
+            font-size: 13px;
+            color: #4A4A4A;
+            margin-bottom: 8px;
+        }
+        .amap-info-window .detail-hint {
+            font-size: 12px;
+            color: #1565C0;
+            text-align: right;
+            border-top: 1px solid #E0E0E0;
+            padding-top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: "AMAP_SECURITY_PLACEHOLDER"
+        };
+    </script>
+    <script src="https://webapi.amap.com/maps?v=2.0&key=AMAP_KEY_PLACEHOLDER"></script>
+    <script>
+        var map = null;
+        var currentMarkers = [];
+        var currentInfoWindow = null;
+        var cemeteryData = [];
+
+        function initMap() {
+            map = new AMap.Map('container', {
+                center: [121.4737, 31.2304],
+                zoom: 11,
+                resizeEnable: true
+            });
+
+            map.on('click', function() {
+                if (currentInfoWindow) {
+                    currentInfoWindow.close();
+                    currentInfoWindow = null;
+                }
+                try { Android.onMapClick(); } catch(e) {}
+            });
+        }
+
+        function refreshMarkers(jsonStr) {
+            clearMarkers();
+
+            try {
+                cemeteryData = JSON.parse(jsonStr);
+            } catch(e) {
+                cemeteryData = [];
+            }
+
+            if (cemeteryData.length === 0) return;
+
+            var bounds = [];
+            cemeteryData.forEach(function(item, idx) {
+                var position = [item.lng, item.lat];
+                bounds.push(position);
+
+                var content = '<div class="amap-info-window" onclick="onInfoWindowClick(\'' + escapeHtml(item.objectId) + '\')">' +
+                    '<div class="title">' + escapeHtml(item.name) + '</div>' +
+                    '<div class="district">' + escapeHtml(item.district) + '</div>' +
+                    '<div class="intro">' + escapeHtml(item.intro) + '</div>' +
+                    '<div class="detail-hint">查看详情 →</div>' +
+                    '</div>';
+
+                var marker = new AMap.Marker({
+                    position: position,
+                    title: item.name,
+                    map: map,
+                    zIndex: 100
+                });
+
+                marker._dataIndex = idx;
+                marker._dataName = item.name;
+                marker._dataIntro = item.intro;
+                marker._dataObjectId = item.objectId;
+                marker._content = content;
+
+                marker.on('click', function(e) {
+                    openInfoWindow(this);
+                    try { Android.onMarkerClick(this._dataIndex); } catch(e) {}
+                });
+
+                currentMarkers.push(marker);
+            });
+
+            if (cemeteryData.length === 1) {
+                map.setZoomAndCenter(15, bounds[0]);
+            } else {
+                map.setBounds(new AMap.Bounds(bounds));
+            }
+        }
+
+        function clearMarkers() {
+            if (currentInfoWindow) {
+                currentInfoWindow.close();
+                currentInfoWindow = null;
+            }
+            currentMarkers.forEach(function(m) { m.setMap(null); });
+            currentMarkers = [];
+            cemeteryData = [];
+        }
+
+        function openInfoWindow(marker) {
+            if (currentInfoWindow) {
+                currentInfoWindow.close();
+            }
+            var infoWindow = new AMap.InfoWindow({
+                content: marker._content,
+                offset: new AMap.Pixel(0, -30)
+            });
+            infoWindow.open(map, marker.getPosition());
+            currentInfoWindow = infoWindow;
+        }
+
+        function onInfoWindowClick(objectId) {
+            try { Android.onInfoWindowClick(objectId); } catch(e) {}
+        }
+
+        function focusMarker(index, lat, lng, name, intro, objectId) {
+            var position = [lng, lat];
+            map.setZoomAndCenter(15, position);
+
+            var marker = currentMarkers[index];
+            if (marker) {
+                openInfoWindow(marker);
+            } else {
+                var content = '<div class="amap-info-window" onclick="onInfoWindowClick(\'' + escapeHtml(objectId) + '\')">' +
+                    '<div class="title">' + escapeHtml(name) + '</div>' +
+                    '<div class="intro">' + escapeHtml(intro) + '</div>' +
+                    '<div class="detail-hint">查看详情 →</div>' +
+                    '</div>';
+                var infoWindow = new AMap.InfoWindow({
+                    content: content,
+                    offset: new AMap.Pixel(0, -30)
+                });
+                infoWindow.open(map, position);
+                currentInfoWindow = infoWindow;
+            }
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;')
+                      .replace(/</g, '&lt;')
+                      .replace(/>/g, '&gt;')
+                      .replace(/"/g, '&quot;')
+                      .replace(/'/g, '&#39;');
+        }
+
+        window.onload = function() {
+            initMap();
+        };
+    </script>
+</body>
+</html>

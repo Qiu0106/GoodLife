@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/elderly_bg">
+
+    <!-- 顶部返回栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/elderly_spacing_md"
+        android:paddingVertical="@dimen/elderly_spacing_sm"
+        android:background="@color/morandi_surface"
+        android:elevation="2dp">
+
+        <TextView
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/elderly_spacing_md"
+            android:text="返回"
+            android:textColor="@color/morandi_accent_warm"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="208dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="公墓详情"
+            android:textColor="@color/elderly_text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="48dp"
+            android:layout_height="1dp" />
+    </LinearLayout>
+
+    <!-- 加载中 -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        android:visibility="visible" />
+
+    <!-- 主内容 ScrollView -->
+    <ScrollView
+        android:id="@+id/layoutContent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 图片轮播区 -->
+            <FrameLayout
+                android:id="@+id/layoutImageContainer"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:background="#E8E8E8">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPagerImages"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvImageIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="12dp"
+                    android:text="1 / 1"
+                    android:textSize="12sp"
+                    android:textColor="@android:color/white"
+                    android:background="#66000000"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+            <!-- 核心信息区 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/morandi_surface"
+                android:padding="@dimen/elderly_padding_card"
+                android:layout_marginHorizontal="@dimen/elderly_spacing_md"
+                android:layout_marginTop="@dimen/elderly_spacing_md"
+                android:elevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tvName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/elderly_text_primary" />
+
+                    <TextView
+                        android:id="@+id/tvPriceTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"
+                        android:background="@color/morandi_accent_warm"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="4dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvDistrict"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/morandi_text_secondary"
+                    android:layout_marginTop="@dimen/elderly_spacing_xs" />
+
+                <TextView
+                    android:id="@+id/tvAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@color/elderly_text_primary"
+                    android:layout_marginTop="@dimen/elderly_spacing_sm"
+                    android:lineSpacingMultiplier="1.4"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/morandi_accent_warm"
+                    android:layout_marginTop="@dimen/elderly_spacing_sm"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingVertical="4dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <!-- 图文详情区 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/morandi_surface"
+                android:padding="@dimen/elderly_padding_card"
+                android:layout_marginHorizontal="@dimen/elderly_spacing_md"
+                android:layout_marginTop="@dimen/elderly_spacing_md"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="公墓简介"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/elderly_text_primary" />
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="3dp"
+                    android:background="#FFF3E0"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="@dimen/elderly_spacing_sm" />
+
+                <TextView
+                    android:id="@+id/tvIntroduction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@color/morandi_text_secondary"
+                    android:lineSpacingMultiplier="1.6"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <!-- 特色服务区 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#E8F5E9"
+                android:padding="@dimen/elderly_padding_card"
+                android:layout_marginHorizontal="@dimen/elderly_spacing_md"
+                android:layout_marginTop="@dimen/elderly_spacing_md"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="特色服务"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="#2E7D32" />
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="3dp"
+                    android:background="#A5D6A7"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="@dimen/elderly_spacing_sm" />
+
+                <TextView
+                    android:id="@+id/tvService"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#33691E"
+                    android:lineSpacingMultiplier="1.6"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <!-- 访问官网 -->
+            <TextView
+                android:id="@+id/tvWebsite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🌐 访问官网"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/morandi_accent_warm"
+                android:gravity="center"
+                android:paddingVertical="@dimen/elderly_spacing_md"
+                android:layout_marginHorizontal="@dimen/elderly_spacing_md"
+                android:layout_marginTop="@dimen/elderly_spacing_md"
+                android:background="@color/morandi_surface"
+                android:clickable="true"
+                android:focusable="true"
+                android:elevation="2dp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
